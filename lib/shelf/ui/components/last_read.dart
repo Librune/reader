@@ -11,7 +11,9 @@ class LastRead extends HookConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
     final coverUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnKoweh-PQ4QqVdN68jGWZXe4eRi1BXIwJ9g&s";
     final cachedNetWorkImageProvider = CachedNetworkImageProvider(coverUrl);
-    final coverScheme = useFuture(ColorScheme.fromImageProvider(provider: cachedNetWorkImageProvider));
+    final colorSchemeFuture =
+        useMemoized(() => ColorScheme.fromImageProvider(provider: cachedNetWorkImageProvider), [coverUrl]);
+    final coverScheme = useFuture(colorSchemeFuture);
     return Material(
       child: Card.filled(
           elevation: 0,
