@@ -1,6 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/hooks/use_brightness.dart';
 import 'package:reader/app/architecture/service/path.dart';
@@ -11,6 +12,7 @@ import 'package:reader/preference/ui/preference_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDisplayMode.setHighRefreshRate();
   await PathService().init();
   runApp(const ProviderScope(child: ReaderApp()));
 }
