@@ -14,7 +14,8 @@
       "name": "reader (profile mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+      "args": ["--no-enable-impeller"]
     },
     {
       "name": "reader (release mode)",
