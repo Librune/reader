@@ -47,6 +47,8 @@ dependencies:
   nil: ^1.1.1
   flutter_svg: ^2.0.17
   cached_network_image: ^3.4.1
+  smooth_page_indicator: ^1.2.0+3
+  dynamic_color: ^1.7.0
 
 dev_dependencies:
   flutter_test:

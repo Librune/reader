@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/shelf/ui/components/last_read.dart';
@@ -13,6 +14,8 @@ class ShelfScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppTopBar(
         title: "今日尚未阅读",
+        canPop: false,
+        titleLeftPadding: 20,
         actions: [
           IconButton(
             onPressed: () {},
@@ -22,9 +25,11 @@ class ShelfScreen extends HookConsumerWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.push("/preference");
+            },
             icon: SvgPicture.asset(
-              "assets/svg/ic_topbar_more.svg",
+              "assets/svg/ic_topbar_settings.svg",
               width: 18,
             ),
           )
@@ -33,9 +38,10 @@ class ShelfScreen extends HookConsumerWidget {
       body: CustomScrollView(
         slivers: [
           SliverPadding(
-            padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+            padding: EdgeInsets.only(left: 14, right: 14, bottom: 16),
             sliver: SliverToBoxAdapter(
               child: LastRead(),
+              // child: ShelfSwitcher(),
             ),
           )
         ],
