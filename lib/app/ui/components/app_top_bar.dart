@@ -2,28 +2,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/ui/router.dart';
 
 class AppTopBar extends HookConsumerWidget implements PreferredSizeWidget {
   const AppTopBar({
     super.key,
-    this.canPop = true,
+    this.canPop,
+    this.actions,
     required this.title,
-  });
-  final String title;
-  final bool canPop;
+  }) : assert(title != null && (title is String || title is Widget));
+  final dynamic title;
+  final bool? canPop;
+  final List<Widget>? actions;
   @override
   PreferredSizeWidget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final _canPop = canPop ?? router.canPop();
+    final _title = title is String ? Text(title, style: textTheme.titleSmall) : title;
     return AppBar(
       elevation: 0,
       scrolledUnderElevation: 0,
       titleSpacing: 0,
+      centerTitle: false,
       backgroundColor: colorScheme.surfaceContainerLowest,
       title: Padding(
-        padding: EdgeInsets.only(left: 4),
-        child: Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        padding: EdgeInsets.only(left: _canPop ? 4 : 16),
+        child: _title,
       ),
-      leading: canPop
+      leading: _canPop
           ? IconButton(
               style: ButtonStyle(
                 padding: WidgetStateProperty.all(EdgeInsets.zero),
@@ -39,6 +46,7 @@ class AppTopBar extends HookConsumerWidget implements PreferredSizeWidget {
               },
             )
           : null,
+      actions: actions,
     );
   }
 

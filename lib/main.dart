@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/hooks/use_brightness.dart';
 import 'package:reader/app/architecture/service/path.dart';
+import 'package:reader/app/ui/router.dart';
 import 'package:reader/app/ui/theme/theme.dart';
 import 'package:reader/app/provider/app_provider.dart';
 import 'package:reader/preference/ui/preference_screen.dart';
@@ -21,11 +22,12 @@ class ReaderApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final preference = ref.watch(appProvider.select((value) => value.preference));
     useBrightness(context, autoDarkMode: preference.autoDarkMode, isDarkMode: preference.isDarkMode);
-    return MaterialApp(
-        title: '阅读',
-        theme: AppTheme.light,
-        darkTheme: AppTheme.dark,
-        themeMode: preference.colorMode,
-        home: PreferenceScreen());
+    return MaterialApp.router(
+      title: '阅读',
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: preference.colorMode,
+      routerConfig: router,
+    );
   }
 }
