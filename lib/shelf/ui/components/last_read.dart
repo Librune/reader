@@ -32,16 +32,16 @@ class LastRead extends HookConsumerWidget {
                 Expanded(
                     child: Container(
                   padding: EdgeInsets.only(top: 4, bottom: 4),
-                  height: 90,
+                  height: 86,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("额尔古纳河右岸",
-                          style: TextStyle(color: colorScheme.onSurface, fontSize: 16, fontWeight: FontWeight.bold)),
+                          style: TextStyle(color: colorScheme.onSurface, fontSize: 14, fontWeight: FontWeight.bold)),
                       Padding(
                         padding: EdgeInsets.only(top: 3),
                         child: Text("迟子建\t\t人民文学出版社",
-                            style: textTheme.bodySmall?.copyWith(
+                            style: textTheme.labelSmall?.copyWith(
                                 color: switch (coverScheme) {
                               AsyncSnapshot(:final data?) => data.onSurface.withAlpha(180),
                               _ => colorScheme.onSurface.withAlpha(180),
@@ -51,7 +51,7 @@ class LastRead extends HookConsumerWidget {
                       Padding(
                         padding: EdgeInsets.only(bottom: 6),
                         child: Text("最近阅读：第 1 章",
-                            style: textTheme.bodySmall?.copyWith(
+                            style: textTheme.labelSmall?.copyWith(
                                 color: switch (coverScheme) {
                               AsyncSnapshot(:final data?) => data.onSurface.withAlpha(180),
                               _ => colorScheme.onSurface.withAlpha(180),
@@ -78,8 +78,8 @@ class LastRead extends HookConsumerWidget {
                       // image from provider
                       Image(
                     image: cachedNetWorkImageProvider,
-                    width: 64,
-                    height: 86,
+                    width: 60,
+                    height: 82,
                     fit: BoxFit.cover,
                   ),
                 )

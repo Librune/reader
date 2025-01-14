@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/shelf/ui/components/last_read.dart';
+import 'package:reader/shelf/ui/components/shelf_preference.dart';
 
 class ShelfScreen extends HookConsumerWidget {
   const ShelfScreen({super.key});
@@ -41,6 +42,13 @@ class ShelfScreen extends HookConsumerWidget {
             padding: EdgeInsets.only(left: 14, right: 14, bottom: 16),
             sliver: SliverToBoxAdapter(
               child: LastRead(),
+              // child: ShelfSwitcher(),
+            ),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.only(left: 14, right: 14, bottom: 16),
+            sliver: SliverToBoxAdapter(
+              child: ShelfPreference(),
               // child: ShelfSwitcher(),
             ),
           )
