@@ -50,6 +50,7 @@ dependencies:
   smooth_page_indicator: ^1.2.0+3
   dynamic_color: ^1.7.0
   flutter_displaymode: ^0.6.0
+  salomon_bottom_bar: ^3.3.2
 
 dev_dependencies:
   flutter_test:

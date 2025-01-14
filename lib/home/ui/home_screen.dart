@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/shelf/ui/shelf_screen.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
@@ -9,51 +11,37 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    final currentIndex = useState(0);
     return Scaffold(
         body: ShelfScreen(),
-        bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 4,
-                  offset: Offset(0, 0), // 负值使阴影向上
-                ),
-              ],
-            ),
-            child: NavigationBar(
-                backgroundColor: scaffoldBackgroundColor,
-                indicatorColor: scaffoldBackgroundColor,
-                height: 60,
-                destinations: [
-                  NavigationDestination(
-                    icon: Transform.translate(
-                      offset: Offset(0, 4),
-                      child: SvgPicture.asset(
-                        "assets/svg/ic_bottom_book.svg",
-                        colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
-                      ),
-                    ),
-                    label: '书架',
-                  ),
-                  NavigationDestination(
-                    icon: Transform.translate(
-                        offset: Offset(0, 4),
-                        child: SvgPicture.asset(
-                          "assets/svg/ic_bottom_compass.svg",
-                          colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
-                        )),
-                    label: '排行',
-                  ),
-                  NavigationDestination(
-                    icon: Transform.translate(
-                        offset: Offset(0, 4),
-                        child: SvgPicture.asset(
-                          "assets/svg/ic_bottom_preference.svg",
-                          colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
-                        )),
-                    label: '设置',
-                  ),
-                ])));
+        bottomNavigationBar: SalomonBottomBar(
+          currentIndex: currentIndex.value,
+          onTap: (p0) => currentIndex.value = p0,
+          margin: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+          items: [
+            /// Home
+            SalomonBottomBarItem(
+                icon: SvgPicture.asset("assets/svg/ic_bottom_book.svg",
+                    colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 22),
+                title: Text("书架"),
+                selectedColor: colorScheme.scrim),
+
+            SalomonBottomBarItem(
+                icon: SvgPicture.asset("assets/svg/ic_bottom_compass.svg",
+                    colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 22),
+                title: Text("探索"),
+                selectedColor: colorScheme.scrim),
+            SalomonBottomBarItem(
+                icon: SvgPicture.asset("assets/svg/ic_bottom_ghost.svg",
+                    colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 22),
+                title: Text("书源"),
+                selectedColor: colorScheme.scrim),
+            SalomonBottomBarItem(
+                icon: SvgPicture.asset("assets/svg/ic_bottom_preference.svg",
+                    colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 22),
+                title: Text("设置"),
+                selectedColor: colorScheme.scrim),
+          ],
+        ));
   }
 }
