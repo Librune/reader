@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:reader/home/ui/home_screen.dart';
 import 'package:reader/preference/ui/preference_screen.dart';
 import 'package:reader/shelf/ui/shelf_screen.dart';
 
@@ -10,8 +11,12 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const ShelfScreen(),
+      builder: (context, state) => const HomeScreen(),
     ),
+    //  GoRoute(
+    //   path: '/',
+    //   builder: (context, state) => const ShelfScreen(),
+    // ),
     // GoRoute(
     //   path: '/reader/:name/:aid/:cIndex',
     //   builder: (context, state) {

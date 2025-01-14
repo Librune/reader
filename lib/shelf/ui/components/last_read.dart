@@ -8,24 +8,30 @@ class LastRead extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+    final brightness = Theme.of(context).brightness;
     final textTheme = Theme.of(context).textTheme;
     final coverUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnKoweh-PQ4QqVdN68jGWZXe4eRi1BXIwJ9g&s";
     final cachedNetWorkImageProvider = CachedNetworkImageProvider(coverUrl);
-    final colorSchemeFuture =
-        useMemoized(() => ColorScheme.fromImageProvider(provider: cachedNetWorkImageProvider), [coverUrl]);
+    final colorSchemeFuture = useMemoized(
+        () => ColorScheme.fromImageProvider(provider: cachedNetWorkImageProvider, brightness: brightness),
+        [coverUrl, brightness]);
     final coverScheme = useFuture(colorSchemeFuture);
     return Material(
       child: Card.filled(
           elevation: 0,
+          margin: EdgeInsets.zero,
           color: switch (coverScheme) {
             AsyncSnapshot(:final data?) => data.tertiary.withAlpha(50),
             _ => colorScheme.tertiary.withAlpha(50),
           },
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(12),
+          // ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.zero,
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

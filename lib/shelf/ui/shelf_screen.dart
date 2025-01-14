@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -10,11 +11,16 @@ class ShelfScreen extends HookConsumerWidget {
   const ShelfScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final colorTheme = Theme.of(context).colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppTopBar(
-        title: "今日尚未阅读",
+        title: ClipOval(
+          child: CachedNetworkImage(
+            imageUrl: "https://avatars.githubusercontent.com/u/25399519?v=4",
+            width: 32,
+          ),
+        ),
         canPop: false,
         titleLeftPadding: 20,
         actions: [
@@ -22,6 +28,7 @@ class ShelfScreen extends HookConsumerWidget {
             onPressed: () {},
             icon: SvgPicture.asset(
               "assets/svg/ic_topbar_search.svg",
+              colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
               width: 18,
             ),
           ),
@@ -31,6 +38,7 @@ class ShelfScreen extends HookConsumerWidget {
             },
             icon: SvgPicture.asset(
               "assets/svg/ic_topbar_settings.svg",
+              colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
               width: 18,
             ),
           )
@@ -39,7 +47,7 @@ class ShelfScreen extends HookConsumerWidget {
       body: CustomScrollView(
         slivers: [
           SliverPadding(
-            padding: EdgeInsets.only(left: 14, right: 14, bottom: 16),
+            padding: EdgeInsets.only(left: 0, right: 0, bottom: 16),
             sliver: SliverToBoxAdapter(
               child: LastRead(),
               // child: ShelfSwitcher(),
