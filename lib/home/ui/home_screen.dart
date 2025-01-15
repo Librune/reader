@@ -15,46 +15,40 @@ class HomeScreen extends HookConsumerWidget {
     final currentIndex = useState(0);
     return Scaffold(
         body: ShelfScreen(),
-        bottomNavigationBar: SalomonBottomBar(
+        bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex.value,
-          onTap: (p0) => currentIndex.value = p0,
-          margin: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          selectedItemColor: colorScheme.onSurface,
+          selectedItemColor: colorScheme.primary,
+          unselectedItemColor: colorScheme.secondary,
+          selectedLabelStyle: TextStyle(fontSize: 10),
+          unselectedLabelStyle: TextStyle(fontSize: 10),
+          onTap: (value) {
+            currentIndex.value = value;
+          },
           items: [
-            /// Home
-            SalomonBottomBarItem(
-                icon: SvgPicture.asset("assets/svg/ic_bottom_book.svg",
-                    colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 22),
-                title: Text(
-                  "书架",
-                  style: textTheme.bodySmall?.copyWith(color: colorScheme.error),
+            BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  "assets/svg/ic_bottom_books.svg",
+                  colorFilter: ColorFilter.mode(
+                      currentIndex.value == 0 ? colorScheme.primary : colorScheme.secondary, BlendMode.srcIn),
+                  width: 22,
                 ),
-                selectedColor: colorScheme.scrim),
-
-            SalomonBottomBarItem(
-                icon: SvgPicture.asset("assets/svg/ic_bottom_compass.svg",
-                    colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 22),
-                title: Text(
-                  "探索",
-                  style: textTheme.bodySmall,
+                label: "书架"),
+            BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  "assets/svg/ic_bottom_discover.svg",
+                  colorFilter: ColorFilter.mode(
+                      currentIndex.value == 1 ? colorScheme.primary : colorScheme.secondary, BlendMode.srcIn),
+                  width: 22,
                 ),
-                selectedColor: colorScheme.scrim),
-            SalomonBottomBarItem(
-                icon: SvgPicture.asset("assets/svg/ic_bottom_ghost.svg",
-                    colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 22),
-                title: Text(
-                  "书源",
-                  style: textTheme.bodySmall,
+                label: "搜索"),
+            BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  "assets/svg/ic_bottom_ext.svg",
+                  colorFilter: ColorFilter.mode(
+                      currentIndex.value == 2 ? colorScheme.primary : colorScheme.secondary, BlendMode.srcIn),
+                  width: 22,
                 ),
-                selectedColor: colorScheme.scrim),
-            SalomonBottomBarItem(
-                icon: SvgPicture.asset("assets/svg/ic_bottom_preference.svg",
-                    colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 22),
-                title: Text(
-                  "设置",
-                  style: textTheme.bodySmall,
-                ),
-                selectedColor: colorScheme.scrim),
+                label: "设置"),
           ],
         ));
   }
