@@ -31,7 +31,7 @@ class LastRead extends HookConsumerWidget {
             borderRadius: BorderRadius.zero,
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
