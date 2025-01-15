@@ -19,7 +19,7 @@ class ShelfScreen extends HookConsumerWidget {
         title: ClipOval(
           child: CachedNetworkImage(
             imageUrl: "https://avatars.githubusercontent.com/u/25399519?v=4",
-            width: 32,
+            width: 28,
           ),
         ),
         canPop: false,
