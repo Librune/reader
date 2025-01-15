@@ -19,7 +19,7 @@ class LastRead extends HookConsumerWidget {
     return Material(
       child: Card.filled(
           elevation: 0,
-          margin: EdgeInsets.only(left: 0),
+          margin: EdgeInsets.symmetric(horizontal: 20),
           color: switch (coverScheme) {
             AsyncSnapshot(:final data?) => data.tertiary.withAlpha(50),
             _ => colorScheme.tertiary.withAlpha(50),

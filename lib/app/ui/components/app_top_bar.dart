@@ -24,6 +24,7 @@ class AppTopBar extends HookConsumerWidget implements PreferredSizeWidget {
     final textTheme = Theme.of(context).textTheme;
     final _canPop = canPop ?? router.canPop();
     final _title = title is String ? Text(title, style: textTheme.titleSmall) : title;
+    actions?.add(const SizedBox(width: 4));
     return AppBar(
       elevation: 0,
       scrolledUnderElevation: 0,
