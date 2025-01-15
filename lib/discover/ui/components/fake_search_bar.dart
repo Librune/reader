@@ -16,7 +16,7 @@ class FakeSearchBar extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(32),
-          color: colorScheme.secondaryFixed,
+          color: colorScheme.surfaceContainerHighest,
         ),
         child: Row(
           children: [

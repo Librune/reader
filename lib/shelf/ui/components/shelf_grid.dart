@@ -47,7 +47,6 @@ class ShelfGrid extends HookConsumerWidget {
       itemBuilder: (context, index) {
         return Container(
             decoration: BoxDecoration(
-              color: Colors.white,
               borderRadius: BorderRadius.circular(8),
             ),
             child: LayoutBuilder(
