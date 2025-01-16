@@ -26,7 +26,9 @@ class ShelfScreen extends HookConsumerWidget {
         titleLeftPadding: 20,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.push("/search");
+            },
             icon: SvgPicture.asset(
               "assets/svg/ic_topbar_search.svg",
               colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),

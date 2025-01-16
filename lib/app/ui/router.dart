@@ -4,6 +4,7 @@ import 'package:reader/app/ui/components/bottom_nav.dart';
 import 'package:reader/discover/ui/discover_screen.dart';
 
 import 'package:reader/preference/ui/preference_screen.dart';
+import 'package:reader/search/ui/search_screen.dart';
 import 'package:reader/shelf/ui/shelf_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -51,5 +52,9 @@ final router = GoRouter(navigatorKey: rootNavigatorKey, initialLocation: "/shelf
             builder: (context, state) => const PreferenceScreen(),
           ),
         ])
-      ])
+      ]),
+  GoRoute(
+    path: "/search",
+    builder: (context, state) => SearchScreen(),
+  )
 ]);
