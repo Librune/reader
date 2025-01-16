@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
+import 'package:reader/app/ui/components/svg_btn.dart';
 
 class SearchScreen extends HookConsumerWidget {
   const SearchScreen({super.key});
@@ -51,7 +52,7 @@ class SearchScreen extends HookConsumerWidget {
                     ),
                     child: Text(
                       "搜索",
-                      style: TextStyle(fontSize: 13),
+                      style: TextStyle(fontSize: 14, height: 1),
                     )),
               )
             ],
@@ -60,6 +61,55 @@ class SearchScreen extends HookConsumerWidget {
           // TextButton(onPressed: () {}, child: Text("搜索"))
         ],
       )),
+      body: Column(
+        children: [
+          Padding(
+              padding: EdgeInsets.only(left: 16, right: 4, top: 0),
+              child: Row(
+                children: [
+                  Text(
+                    "搜索历史",
+                    style: textTheme.titleSmall,
+                  ),
+                  Spacer(),
+                  SvgBtn(svgName: "ic_btn_clean")
+                ],
+              )),
+          Expanded(
+              child: ListView.separated(
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                dense: false,
+                contentPadding: EdgeInsets.only(left: 24, right: 4),
+                horizontalTitleGap: 12,
+                leading: SvgPicture.asset(
+                  "assets/svg/ic_leading_star.svg",
+                  width: 16,
+                ),
+                title: Text(
+                  "搜索历史 $index",
+                  style: textTheme.bodyMedium,
+                ),
+                onTap: () {},
+                trailing: SvgBtn(
+                  svgName: "ic_btn_close",
+                  size: 14,
+                ),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return Divider(
+                height: 1,
+                thickness: .7,
+                indent: 56,
+                endIndent: 18,
+                color: colorScheme.surfaceContainerHighest,
+              );
+            },
+            itemCount: 48,
+          )),
+        ],
+      ),
     );
   }
 }
