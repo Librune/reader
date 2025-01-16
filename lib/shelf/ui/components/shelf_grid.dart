@@ -44,7 +44,7 @@ class ShelfGrid extends HookConsumerWidget {
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 20),
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 100, crossAxisSpacing: 20, mainAxisSpacing: 10, childAspectRatio: .58),
+          maxCrossAxisExtent: 112, crossAxisSpacing: 20, mainAxisSpacing: 10, childAspectRatio: .58),
       itemBuilder: (context, index) {
         return Container(
             decoration: BoxDecoration(

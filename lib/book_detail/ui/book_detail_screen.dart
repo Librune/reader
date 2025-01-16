@@ -58,25 +58,37 @@ class BookDetailScreen extends HookConsumerWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 32, right: 32, top: 32, bottom: 20),
+            padding: EdgeInsets.only(left: 0, right: 0, top: 32, bottom: 20),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                BookTag(
-                  value: "番茄小说",
-                  label: "来源",
-                  colorScheme: coverScheme.data,
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: BookTag(
+                      value: "番茄小说",
+                      label: "来源",
+                      colorScheme: coverScheme.data,
+                    ),
+                  ),
                 ),
-                BookTag(
-                  value: "共728章",
-                  label: "篇幅",
-                  colorScheme: coverScheme.data,
-                ),
-                BookTag(
-                  value: "1天前",
-                  label: "上次更新",
-                  colorScheme: coverScheme.data,
-                ),
+                Expanded(
+                    flex: 1,
+                    child: Center(
+                      child: BookTag(
+                        value: "共728章",
+                        label: "篇幅",
+                        colorScheme: coverScheme.data,
+                      ),
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: Center(
+                      child: BookTag(
+                        value: "1天前",
+                        label: "上次更新",
+                        colorScheme: coverScheme.data,
+                      ),
+                    )),
               ],
             ),
           ),
@@ -92,7 +104,7 @@ class BookDetailScreen extends HookConsumerWidget {
               padding: EdgeInsets.only(left: 24, right: 24, top: 20),
               child: Text(
                   "【已实体出版，线上平台有售】【盗墓+悬疑+鉴宝】我是一个东北山村的穷小子，二十世一纪初，为了出人头地，我加入了一个北方派盗墓团伙。从南到北，江湖百态，三教九流，这么多年从少年混到了中年，酒量见长，岁月蹉跎，我曾接触过许许多多的奇人异事，各位如有兴趣，不妨搬来小板凳，听一听，一位盗墓贼的江湖见闻。",
-                  style: TextStyle(color: coverScheme.data!.onSurface.withAlpha(180), fontSize: 13))),
+                  style: TextStyle(color: coverScheme.data!.onSurface.withAlpha(180), fontSize: 14))),
           Spacer(),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -112,7 +124,7 @@ class BookDetailScreen extends HookConsumerWidget {
             ],
           ),
           SizedBox(
-            height: 16,
+            height: 12 + MediaQuery.of(context).padding.bottom,
           )
         ],
       ),
