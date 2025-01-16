@@ -90,7 +90,9 @@ class SearchScreen extends HookConsumerWidget {
                   "搜索历史 $index",
                   style: textTheme.bodyMedium,
                 ),
-                onTap: () {},
+                onTap: () {
+                  context.replace('/book_search_result/Demo');
+                },
                 trailing: SvgBtn(
                   svgName: "ic_btn_close",
                   size: 14,
