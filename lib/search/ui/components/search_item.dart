@@ -14,12 +14,28 @@ class BookSearchItem extends HookConsumerWidget {
       child: Row(
         spacing: 14,
         children: [
-          CachedNetworkImage(
-            imageUrl:
-                "https://s3proxy.cdn-zlib.sk/covers400/collections/userbooks/e16fa36143dbe6a456b3d00bc17a18bb8f85dffa01fba1e4ed4335519049fb78.jpg",
-            width: 64,
-            height: 86,
-            fit: BoxFit.cover,
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(80),
+                  spreadRadius: 1,
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: CachedNetworkImage(
+                imageUrl:
+                    "https://s3proxy.cdn-zlib.sk/covers400/collections/userbooks/e16fa36143dbe6a456b3d00bc17a18bb8f85dffa01fba1e4ed4335519049fb78.jpg",
+                width: 64,
+                height: 86,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           Expanded(
             child: ConstrainedBox(
