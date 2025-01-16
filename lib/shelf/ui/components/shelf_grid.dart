@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/theme/text.dart';
 
@@ -51,22 +52,27 @@ class ShelfGrid extends HookConsumerWidget {
             ),
             child: LayoutBuilder(
               builder: (context, constraints) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.network(
-                      books[index]["cover"]!,
-                      width: constraints.maxWidth,
-                      height: constraints.maxHeight - 32,
-                      fit: BoxFit.cover,
-                    ),
-                    Text(
-                      books[index]["name"]!,
-                      style: TextStyle(fontSize: 13, height: 2),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                return GestureDetector(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.network(
+                        books[index]["cover"]!,
+                        width: constraints.maxWidth,
+                        height: constraints.maxHeight - 32,
+                        fit: BoxFit.cover,
+                      ),
+                      Text(
+                        books[index]["name"]!,
+                        style: TextStyle(fontSize: 13, height: 2),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    context.push("/book_detail/qidian/10086");
+                  },
                 );
               },
             ));
