@@ -34,7 +34,11 @@ class RankCard extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 12,
               children: [
-                CachedNetworkImage(imageUrl: favIcon),
+                SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CachedNetworkImage(imageUrl: favIcon),
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
