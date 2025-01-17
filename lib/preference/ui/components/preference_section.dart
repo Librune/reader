@@ -28,21 +28,18 @@ class PreferenceSection extends HookConsumerWidget {
             padding: const EdgeInsets.only(bottom: 8, left: 8),
             child: Text(
               title,
-              style: typography.labelMedium?.copyWith(color: colorScheme.secondary.withOpacity(.7)),
+              style: typography.labelMedium?.copyWith(color: colorScheme.secondary),
             ),
           ),
-          Material(
-            color: Colors.transparent,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Material(
-                color: colorScheme.surfaceContainerLow.withOpacity(.7),
-                child: Column(
-                  children: children,
-                ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Material(
+              color: colorScheme.surface,
+              child: Column(
+                children: children,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

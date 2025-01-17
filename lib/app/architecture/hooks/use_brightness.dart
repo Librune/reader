@@ -14,9 +14,12 @@ void useBrightness(BuildContext context, {required bool autoDarkMode, required b
     final needDark = isIOS ? !isDarkMode : isDarkMode;
     statusbarColor = needDark ? Brightness.light : Brightness.dark;
   }
-  // 设置顶栏字体颜色
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarBrightness: statusbarColor,
-    statusBarIconBrightness: statusbarColor,
-  ));
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.top]);
+  if (Platform.isAndroid || Platform.isIOS) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarBrightness: statusbarColor,
+        statusBarIconBrightness: statusbarColor,
+        systemNavigationBarColor: Colors.transparent));
+  }
 }

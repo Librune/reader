@@ -9,29 +9,27 @@ class FakeSearchBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    return Material(
-      child: Container(
-        height: 40,
-        margin: EdgeInsets.only(top: 0, left: 16, right: 16),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(32),
-          color: colorScheme.surfaceContainerHighest,
-        ),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              "assets/svg/ic_topbar_search.svg",
-              colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
-              width: 18,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              "搜索书籍",
-              style: textTheme.bodyMedium?.copyWith(height: 1),
-            ),
-          ],
-        ),
+    return Container(
+      height: 40,
+      margin: EdgeInsets.only(top: 0, left: 16, right: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(32),
+        color: colorScheme.surfaceContainerHighest,
+      ),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            "assets/svg/ic_topbar_search.svg",
+            colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
+            width: 18,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            "搜索书籍",
+            style: textTheme.bodyMedium?.copyWith(height: 1),
+          ),
+        ],
       ),
     );
   }

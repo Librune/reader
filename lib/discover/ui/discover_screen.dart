@@ -44,20 +44,16 @@ class DiscoverScreen extends HookConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: 20),
             sliver: SliverAnimatedGrid(
               initialItemCount: 10,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 250, crossAxisSpacing: 20, mainAxisSpacing: 20, childAspectRatio: 1.2),
               itemBuilder: (context, index, animation) {
                 return FadeTransition(
                   opacity: animation,
                   child: RankCardGrid(
-                    favIcon:
-                        'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.qidian.com&size=32',
                     name: '起点读书',
-                    rankNum: 14,
-                    subRankNum: 72,
                   ),
                 );
               },
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 340, crossAxisSpacing: 20, mainAxisSpacing: 20, childAspectRatio: 1.2),
             ),
           )
           // SliverPadding(

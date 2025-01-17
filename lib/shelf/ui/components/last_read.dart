@@ -16,82 +16,81 @@ class LastRead extends HookConsumerWidget {
         () => ColorScheme.fromImageProvider(provider: cachedNetWorkImageProvider, brightness: brightness),
         [coverUrl, brightness]);
     final coverScheme = useFuture(colorSchemeFuture);
-    return Material(
-      child: Card.filled(
-          elevation: 0,
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          color: switch (coverScheme) {
-            AsyncSnapshot(:final data?) => data.tertiary.withAlpha(50),
-            _ => colorScheme.tertiary.withAlpha(50),
-          },
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(12),
-          // ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                    child: Container(
-                  padding: EdgeInsets.only(top: 4, bottom: 4),
-                  height: 86,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("额尔古纳河右岸",
-                          style: TextStyle(color: colorScheme.onSurface, fontSize: 14, fontWeight: FontWeight.bold)),
-                      Padding(
-                        padding: EdgeInsets.only(top: 3),
-                        child: Text("迟子建\t\t人民文学出版社",
-                            style: textTheme.labelSmall?.copyWith(
-                                color: switch (coverScheme) {
-                              AsyncSnapshot(:final data?) => data.onSurface.withAlpha(180),
-                              _ => colorScheme.onSurface.withAlpha(180),
-                            })),
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 6),
-                        child: Text("最近阅读：第 1 章",
-                            style: textTheme.labelSmall?.copyWith(
-                                color: switch (coverScheme) {
-                              AsyncSnapshot(:final data?) => data.onSurface.withAlpha(180),
-                              _ => colorScheme.onSurface.withAlpha(180),
-                            })),
-                      ),
-                      LinearProgressIndicator(
-                        value: 0.1,
-                        borderRadius: BorderRadius.circular(12),
-                        backgroundColor: switch (coverScheme) {
-                          AsyncSnapshot(:final data?) => data.tertiary.withAlpha(100),
-                          _ => colorScheme.tertiary.withAlpha(50),
-                        },
-                        valueColor: AlwaysStoppedAnimation(switch (coverScheme) {
-                          AsyncSnapshot(:final data?) => data.tertiary.withAlpha(250),
-                          _ => colorScheme.tertiary.withAlpha(50),
-                        }),
-                      )
-                    ],
+    return Card.filled(
+      elevation: 0,
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      color: switch (coverScheme) {
+        AsyncSnapshot(:final data?) => data.tertiary.withAlpha(50),
+        _ => colorScheme.tertiary.withAlpha(50),
+      },
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.circular(12),
+      // ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                child: Container(
+              padding: EdgeInsets.only(top: 4, bottom: 4),
+              height: 86,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("额尔古纳河右岸",
+                      style: TextStyle(color: colorScheme.onSurface, fontSize: 14, fontWeight: FontWeight.bold)),
+                  Padding(
+                    padding: EdgeInsets.only(top: 3),
+                    child: Text("迟子建\t\t人民文学出版社",
+                        style: textTheme.labelSmall?.copyWith(
+                            color: switch (coverScheme) {
+                          AsyncSnapshot(:final data?) => data.onSurface.withAlpha(180),
+                          _ => colorScheme.onSurface.withAlpha(180),
+                        })),
                   ),
-                )),
-                Padding(
-                  padding: EdgeInsets.only(left: 24),
-                  child:
-                      // image from provider
-                      Image(
-                    image: cachedNetWorkImageProvider,
-                    width: 60,
-                    height: 82,
-                    fit: BoxFit.cover,
+                  Spacer(),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 6),
+                    child: Text("最近阅读：第 1 章",
+                        style: textTheme.labelSmall?.copyWith(
+                            color: switch (coverScheme) {
+                          AsyncSnapshot(:final data?) => data.onSurface.withAlpha(180),
+                          _ => colorScheme.onSurface.withAlpha(180),
+                        })),
                   ),
-                )
-              ],
-            ),
-          )),
+                  LinearProgressIndicator(
+                    value: 0.1,
+                    borderRadius: BorderRadius.circular(12),
+                    backgroundColor: switch (coverScheme) {
+                      AsyncSnapshot(:final data?) => data.tertiary.withAlpha(100),
+                      _ => colorScheme.tertiary.withAlpha(50),
+                    },
+                    valueColor: AlwaysStoppedAnimation(switch (coverScheme) {
+                      AsyncSnapshot(:final data?) => data.tertiary.withAlpha(250),
+                      _ => colorScheme.tertiary.withAlpha(50),
+                    }),
+                  )
+                ],
+              ),
+            )),
+            Padding(
+              padding: EdgeInsets.only(left: 24),
+              child:
+                  // image from provider
+                  Image(
+                image: cachedNetWorkImageProvider,
+                width: 60,
+                height: 82,
+                fit: BoxFit.cover,
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

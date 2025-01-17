@@ -39,8 +39,7 @@ class ShelfGrid extends HookConsumerWidget {
         "author": "Harper Lee"
       }
     ];
-    return Material(
-        child: GridView.builder(
+    return GridView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 20),
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -78,6 +77,6 @@ class ShelfGrid extends HookConsumerWidget {
             ));
       },
       itemCount: books.length,
-    ));
+    );
   }
 }

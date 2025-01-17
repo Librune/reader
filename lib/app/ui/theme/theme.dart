@@ -24,6 +24,8 @@ abstract final class AppTheme {
   static ThemeData light = FlexThemeData.light(
     scheme: FlexScheme.greys,
     subThemesData: const FlexSubThemesData(
+      scaffoldBackgroundBaseColor: FlexScaffoldBaseColor.surfaceContainer,
+      bottomNavigationBarBackgroundSchemeColor: SchemeColor.surfaceContainer,
       interactionEffects: true,
       tintedDisabledControls: true,
       useM2StyleDividerInM3: true,
@@ -43,6 +45,8 @@ abstract final class AppTheme {
   static ThemeData dark = FlexThemeData.dark(
     scheme: FlexScheme.greys,
     subThemesData: const FlexSubThemesData(
+      scaffoldBackgroundBaseColor: FlexScaffoldBaseColor.surfaceContainer,
+      bottomNavigationBarBackgroundSchemeColor: SchemeColor.surfaceContainer,
       interactionEffects: true,
       tintedDisabledControls: true,
       blendOnColors: true,

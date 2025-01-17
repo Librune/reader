@@ -1,10 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/hooks/use_brightness.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/ui/router.dart';
 import 'package:reader/app/ui/theme/theme.dart';
 import 'package:reader/app/provider/app_provider.dart';
+import 'package:reader/book_detail/ui/book_detail_screen.dart';
+import 'package:reader/preference/ui/preference_screen.dart';
+import 'package:reader/search/ui/search_result_screen.dart';
+import 'package:reader/search/ui/search_screen.dart';
+import 'package:reader/shelf/ui/shelf_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

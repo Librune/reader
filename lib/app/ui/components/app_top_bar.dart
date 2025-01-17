@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/router.dart';
@@ -30,7 +31,11 @@ class AppTopBar extends HookConsumerWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       titleSpacing: 0,
       centerTitle: false,
-      backgroundColor: color ?? colorScheme.surfaceContainerLowest,
+      backgroundColor: color ?? colorScheme.surfaceContainer,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
+      ),
       title: Padding(
         padding: EdgeInsets.only(left: _canPop ? 4 : titleLeftPadding),
         child: _title,
