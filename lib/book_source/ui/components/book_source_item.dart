@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/ui/components/svg_btn.dart';
 
 class BookSourceItem extends ConsumerWidget {
   const BookSourceItem({super.key});
@@ -14,7 +15,7 @@ class BookSourceItem extends ConsumerWidget {
       elevation: 0,
       color: colorScheme.surfaceContainerLowest,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+        padding: EdgeInsets.only(left: 18, bottom: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -25,16 +26,17 @@ class BookSourceItem extends ConsumerWidget {
                   style: textTheme.titleSmall,
                 ),
                 Spacer(),
-                SvgPicture.asset(
-                  "assets/svg/ic_card_right.svg",
-                  width: 24,
-                  height: 24,
-                  colorFilter: ColorFilter.mode(colorScheme.secondary, BlendMode.srcIn),
-                ),
+                SvgBtn(svgName: "ic_card_settings"),
+                // SvgPicture.asset(
+                //   "assets/svg/ic_card_right.svg",
+                //   width: 24,
+                //   height: 24,
+                //   colorFilter: ColorFilter.mode(colorScheme.secondary, BlendMode.srcIn),
+                // ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 2, bottom: 3),
+            Transform.translate(
+              offset: Offset(0, -8),
               child: Row(
                 children: [
                   Transform.scale(
