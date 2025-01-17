@@ -18,7 +18,7 @@ class DiscoverScreen extends HookConsumerWidget {
       body: CustomScrollView(
         slivers: [
           SliverPadding(
-            padding: EdgeInsets.only(left: 0, right: 0, bottom: 20, top: 0),
+            padding: EdgeInsets.only(left: 0, right: 0, bottom: 24, top: 2),
             sliver: SliverToBoxAdapter(child: FakeSearchBar()),
           ),
           // SliverPadding(
