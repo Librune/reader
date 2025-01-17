@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
@@ -18,7 +19,11 @@ class BookSourceListScreen extends HookConsumerWidget {
           child: ListView.separated(
             itemCount: 10,
             itemBuilder: (context, index) {
-              return BookSourceItem();
+              return BookSourceItem(
+                onPressed: () {
+                  context.push("/book_source/detail/1");
+                },
+              );
             },
             separatorBuilder: (BuildContext context, int index) {
               return SizedBox(
