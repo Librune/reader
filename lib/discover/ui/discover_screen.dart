@@ -45,7 +45,7 @@ class DiscoverScreen extends HookConsumerWidget {
             sliver: SliverAnimatedGrid(
               initialItemCount: 10,
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 250, crossAxisSpacing: 20, mainAxisSpacing: 20, childAspectRatio: 1.2),
+                  maxCrossAxisExtent: 250, crossAxisSpacing: 16, mainAxisSpacing: 20, childAspectRatio: 1.5),
               itemBuilder: (context, index, animation) {
                 return FadeTransition(
                   opacity: animation,
