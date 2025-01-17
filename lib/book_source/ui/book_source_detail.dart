@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_js/flutter_js.dart';
 import 'package:flutter_js/javascript_runtime.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
+import 'package:reader/book_source/data/model/book_source.dart';
 
 class BookSourceDetail extends HookConsumerWidget {
   const BookSourceDetail({super.key});
@@ -65,6 +67,14 @@ class BookSourceDetail extends HookConsumerWidget {
       return asyncResult.stringResult;
     }
 
+    final execDistJs = useFuture<BookSourceModel?>(useMemoized(() async {
+      final javascriptRuntime = getJavascriptRuntime(forceJavascriptCoreOnAndroid: false);
+      final distJs = await DefaultAssetBundle.of(context).loadString('assets/js/bks.test.js');
+      final res =
+          await javascriptRuntime.evaluateAsync("""JSON.stringify((() => {$distJs})())""", sourceUrl: 'bks.test.js');
+      return BookSourceModel.fromJson(jsonDecode(res.stringResult));
+    }));
+
     useEffect(() {
       return null;
     }, []);
@@ -73,7 +83,7 @@ class BookSourceDetail extends HookConsumerWidget {
     return Scaffold(
       appBar: AppTopBar(title: "刺猬猫阅读"),
       body: Text(
-        task.data ?? "Loading...",
+        execDistJs.data?.name ?? "Loading...",
       ),
     );
   }

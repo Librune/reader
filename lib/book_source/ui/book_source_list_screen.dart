@@ -15,7 +15,7 @@ class BookSourceListScreen extends HookConsumerWidget {
           actions: [SvgBtn(svgName: "ic_btn_plus")],
         ),
         body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: ListView.separated(
             itemCount: 10,
             itemBuilder: (context, index) {
