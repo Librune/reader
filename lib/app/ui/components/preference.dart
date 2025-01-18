@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nil/nil.dart';
 
@@ -35,8 +36,11 @@ class PreferenceSection extends HookConsumerWidget {
             borderRadius: BorderRadius.circular(12),
             child: Material(
               color: colorScheme.surface,
-              child: Column(
-                children: children,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: Column(
+                  children: children,
+                ),
               ),
             ),
           ),
@@ -78,6 +82,13 @@ abstract class PereferenceItem extends HookConsumerWidget {
   final IconData? suffixIconData;
   final Widget? suffixIconWidget;
   final Color? backgroundColor;
+
+  Color get _backgroundColor => backgroundColor ?? const Color(0x00000000);
+  TextStyle get _titleStyle => titleStyle ?? const TextStyle(fontWeight: FontWeight.w600, fontSize: 14);
+  TextStyle _subtitleStyle(ColorScheme colorScheme) =>
+      subtitleStyle ?? TextStyle(fontSize: 12, color: colorScheme.onSurface.withAlpha(150));
+  //  final subtitleStyle =
+  //       this.subtitleStyle ?? typography.bodySmall?.copyWith(color: colorScheme.onSurface.withOpacity(.6));
 }
 
 class PreferenceTap extends PereferenceItem {
@@ -195,6 +206,39 @@ class PreferenceSwitch extends PereferenceItem {
         child: Switch(
           value: value,
           onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+}
+
+class PreferenceInput extends PereferenceItem {
+  const PreferenceInput({
+    super.key,
+    required super.title,
+    required super.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return ListTile(
+      tileColor: _backgroundColor,
+      title: Text(title, style: _titleStyle),
+      subtitle: TextField(
+        style: TextStyle(fontSize: 14),
+        decoration: InputDecoration(
+          hintStyle: TextStyle(fontSize: 14, color: colorScheme.onSurface.withAlpha(150)),
+          hintMaxLines: 1,
+          contentPadding: EdgeInsets.only(left: 2, right: 2, bottom: 0),
+          fillColor: Colors.transparent,
+          hintText: subtitle,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: colorScheme.onSurface.withAlpha(50)),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: colorScheme.onSurface.withAlpha(50)),
+          ),
         ),
       ),
     );
