@@ -13,6 +13,16 @@ return {
       icon: 'ic_btn_satellite',
       action: guestLoginAction,
     },
+    {
+      label: '测试按钮 1',
+      icon: 'ic_btn_satellite',
+      action: guestLoginAction,
+    },
+    {
+      label: '测试按钮 2',
+      icon: 'ic_btn_satellite',
+      action: guestLoginAction,
+    },
   ],
   forms: [
     {

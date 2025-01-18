@@ -26,7 +26,7 @@ class AppTopBar extends HookConsumerWidget implements PreferredSizeWidget {
     final _canPop = canPop ?? router.canPop();
     final _title =
         title is String ? Text(title, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)) : title;
-    (actions)?.add(const SizedBox(width: 4));
+    (actions)?.add(const SizedBox(width: 8));
     return AppBar(
       elevation: 0,
       scrolledUnderElevation: 0,
@@ -38,7 +38,7 @@ class AppTopBar extends HookConsumerWidget implements PreferredSizeWidget {
         systemNavigationBarColor: Colors.transparent,
       ),
       title: Padding(
-        padding: EdgeInsets.only(left: _canPop ? 4 : titleLeftPadding),
+        padding: EdgeInsets.only(left: _canPop ? 8 : titleLeftPadding),
         child: _title,
       ),
       leading: _canPop
@@ -50,7 +50,7 @@ class AppTopBar extends HookConsumerWidget implements PreferredSizeWidget {
               ),
               icon: const Icon(
                 CupertinoIcons.back,
-                size: 20,
+                size: 22,
               ),
               onPressed: () {
                 context.pop();

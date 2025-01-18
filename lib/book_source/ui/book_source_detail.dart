@@ -7,6 +7,7 @@ import 'package:flutter_js/flutter_js.dart';
 import 'package:flutter_js/javascript_runtime.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/app/ui/components/preference.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
@@ -82,18 +83,52 @@ class BookSourceDetail extends HookConsumerWidget {
 
     return switch (execDistJs) {
       AsyncSnapshot(:final data?) => Scaffold(
-          appBar: AppTopBar(
-            title: data.name,
-            actions: data.actions.map<Widget>((action) {
-              return IconButton(
-                onPressed: () {},
-                icon: SvgPicture.asset(
-                  "assets/svg/${action['icon']}.svg",
-                  colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
-                ),
-              );
-            }).toList(),
-          ),
+          appBar: AppTopBar(title: data.name, actions: [
+            SvgBtn(
+              onPressed: () {},
+              svgName: "ic_action_save",
+              size: 22,
+            ),
+            PullDownButton(
+              itemBuilder: (context) => data.actions.map<PullDownMenuItem>((action) {
+                return PullDownMenuItem(
+                  title: action['label'],
+                  itemTheme: PullDownMenuItemTheme(
+                    textStyle: TextStyle(color: colorScheme.onSurface, fontSize: 15),
+                  ),
+                  iconWidget: SvgPicture.asset(
+                    "assets/svg/${action['icon']}.svg",
+                    colorFilter: ColorFilter.mode(colorScheme.secondary, BlendMode.srcIn),
+                  ),
+                  onTap: () {},
+                );
+              }).toList(),
+              // [
+              //   PullDownMenuItem(
+              //     title: 'Menu item',
+              //     onTap: () {},
+              //   ),
+              //   PullDownMenuItem(
+              //     title: 'Menu item 2',
+              //     onTap: () {},
+              //   ),
+              // ],
+              buttonBuilder: (context, showMenu) => SvgBtn(
+                onPressed: showMenu,
+                svgName: "ic_topbar_more",
+                size: 22,
+              ),
+            )
+            // ...data.actions.map<Widget>((action) {
+            //   return IconButton(
+            //     onPressed: () {},
+            //     icon: SvgPicture.asset(
+            //       "assets/svg/${action['icon']}.svg",
+            //       colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
+            //     ),
+            //   );
+            // })
+          ]),
           body: ListView.separated(
               itemBuilder: (context, index) {
                 final formGroup = data.forms[index];
