@@ -18,7 +18,7 @@ class BottomNav extends ConsumerWidget {
         bottomNavigationBar: BottomNavigationBar(
             currentIndex: navigationShell.currentIndex,
             selectedItemColor: colorScheme.primary,
-            unselectedItemColor: colorScheme.secondary,
+            unselectedItemColor: colorScheme.secondary.withAlpha(200),
             selectedLabelStyle: TextStyle(fontSize: 10),
             unselectedLabelStyle: TextStyle(fontSize: 10),
             onTap: (value) {
@@ -29,7 +29,9 @@ class BottomNav extends ConsumerWidget {
                   icon: SvgPicture.asset(
                     "${item.svgPath}.svg",
                     colorFilter: ColorFilter.mode(
-                        navigationShell.currentIndex == index ? colorScheme.primary : colorScheme.secondary,
+                        navigationShell.currentIndex == index
+                            ? colorScheme.primary
+                            : colorScheme.secondary.withAlpha(200),
                         BlendMode.srcIn),
                     width: 22,
                   ),
