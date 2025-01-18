@@ -23,7 +23,9 @@ class PreferenceScreen extends HookConsumerWidget {
               PreferenceTap(
                 title: "来源管理",
                 subtitle: "C、R、U、D 书籍来源",
-                onTap: () {},
+                onTap: () {
+                  context.push('/book_source');
+                },
               ),
               PreferenceTap(
                   title: "正则管理",
