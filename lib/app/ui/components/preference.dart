@@ -223,24 +223,28 @@ class PreferenceInput extends PereferenceItem {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     return ListTile(
-      tileColor: _backgroundColor,
-      title: Text(title, style: _titleStyle),
-      subtitle: TextField(
-        style: TextStyle(fontSize: 14),
-        decoration: InputDecoration(
-          hintStyle: TextStyle(fontSize: 14, color: colorScheme.onSurface.withAlpha(150)),
-          hintMaxLines: 1,
-          contentPadding: EdgeInsets.only(left: 2, right: 2, bottom: 0),
-          fillColor: Colors.transparent,
-          hintText: subtitle,
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: colorScheme.onSurface.withAlpha(50)),
+        tileColor: _backgroundColor,
+        title: Text(title, style: _titleStyle),
+        subtitle: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: 42),
+          child: TextField(
+            cursorHeight: 18,
+            style: TextStyle(fontSize: 14, color: colorScheme.onSurface),
+            decoration: InputDecoration(
+              hintStyle: TextStyle(fontSize: 14, color: colorScheme.onSurface.withAlpha(150)),
+              hintMaxLines: 1,
+              isDense: false,
+              contentPadding: EdgeInsets.only(left: 2, right: 2, bottom: 2),
+              fillColor: Colors.transparent,
+              hintText: subtitle,
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: colorScheme.onSurface.withAlpha(50)),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: colorScheme.onSurface.withAlpha(50)),
+              ),
+            ),
           ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: colorScheme.onSurface.withAlpha(50)),
-          ),
-        ),
-      ),
-    );
+        ));
   }
 }
