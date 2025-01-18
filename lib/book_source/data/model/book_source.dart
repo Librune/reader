@@ -27,7 +27,7 @@ class BookSourceFormModel with _$BookSourceFormModel {
   const BookSourceFormModel._();
 }
 
-enum BookSourceFormItemType { input, button, checkbox, select }
+enum BookSourceFormItemType { input, button, checkbox, select, toggle }
 
 @freezed
 class BookSourceFormItemGroup with _$BookSourceFormItemGroup {

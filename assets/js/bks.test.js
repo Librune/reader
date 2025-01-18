@@ -10,7 +10,7 @@ return {
   actions: [
     {
       label: '游客登录',
-      icon: 'account_circle',
+      icon: 'ic_btn_satellite',
       action: guestLoginAction,
     },
   ],
@@ -41,14 +41,38 @@ return {
       ],
     },
     {
-      title: '代理设置',
+      title: '网络设置',
       subtitle: '设置代理，如果你需要通过代理访问，请设置代理',
       form: [
         {
           type: 'input',
           field: 'proxy',
           title: '代理',
-          placeholder: 'socks5://localhost:3721',
+          placeholder: '设定代理地址',
+        },
+        {
+          type: 'input',
+          field: 'proxy',
+          title: '用户名',
+          placeholder: '设定用户名',
+        },
+        {
+          type: 'input',
+          field: 'proxy',
+          title: '密码',
+          placeholder: '设定密码',
+        },
+      ],
+    },
+    {
+      title: '杂项',
+      subtitle: '一些额外的配置项目',
+      form: [
+        {
+          type: 'toggle',
+          field: 'log',
+          title: '捕获日志',
+          placeholder: '是否捕获并存储请求日志到本地',
         },
       ],
     },

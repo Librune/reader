@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_js/flutter_js.dart';
 import 'package:flutter_js/javascript_runtime.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
+import 'package:reader/app/ui/components/preference.dart';
+import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
 
 class BookSourceDetail extends HookConsumerWidget {
@@ -67,7 +70,7 @@ class BookSourceDetail extends HookConsumerWidget {
       return asyncResult.stringResult;
     }
 
-    final execDistJs = useFuture<BookSourceModel?>(useMemoized(() async {
+    final execDistJs = useFuture<BookSourceModel>(useMemoized(() async {
       final javascriptRuntime = getJavascriptRuntime(forceJavascriptCoreOnAndroid: false);
       final distJs = await DefaultAssetBundle.of(context).loadString('assets/js/bks.test.js');
       final res =
@@ -75,16 +78,47 @@ class BookSourceDetail extends HookConsumerWidget {
       return BookSourceModel.fromJson(jsonDecode(res.stringResult));
     }));
 
-    useEffect(() {
-      return null;
-    }, []);
-    final task = useFuture(useMemoized(evalJS));
+    final colorScheme = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      appBar: AppTopBar(title: "刺猬猫阅读"),
-      body: Text(
-        execDistJs.data?.name ?? "Loading...",
-      ),
-    );
+    return switch (execDistJs) {
+      AsyncSnapshot(:final data?) => Scaffold(
+          appBar: AppTopBar(
+            title: data.name,
+            actions: data.actions.map<Widget>((action) {
+              return IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  "assets/svg/${action['icon']}.svg",
+                  colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
+                ),
+              );
+            }).toList(),
+          ),
+          body: ListView.separated(
+              itemBuilder: (context, index) {
+                final formGroup = data.forms[index];
+                return PreferenceSection(
+                    title: formGroup.title,
+                    children: formGroup.form
+                        .map((ele) => switch (ele.type) {
+                              BookSourceFormItemType.toggle => PreferenceSwitch(
+                                  value: false,
+                                  onChanged: (value) {},
+                                  title: ele.title,
+                                  subtitle: ele.placeholder ?? "暂无说明",
+                                  onTap: () {}),
+                              _ => PreferenceTap(title: ele.title, subtitle: ele.placeholder ?? "暂无说明", onTap: () {})
+                            })
+                        .toList());
+              },
+              separatorBuilder: (context, index) {
+                return SizedBox(
+                  height: 8,
+                );
+              },
+              itemCount: data.forms.length),
+        ),
+      _ => Center(child: CircularProgressIndicator()),
+    };
   }
 }
