@@ -10,7 +10,8 @@ class LastRead extends HookConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final brightness = Theme.of(context).brightness;
     final textTheme = Theme.of(context).textTheme;
-    final coverUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnKoweh-PQ4QqVdN68jGWZXe4eRi1BXIwJ9g&s";
+    final coverUrl =
+        "https://s3proxy.cdn-zlib.sk/covers400/collections/userbooks/191d6353def0e77dc46397273292afa8009c0730ce8fd307a38f6b26fa624208.jpg";
     final cachedNetWorkImageProvider = CachedNetworkImageProvider(coverUrl);
     final colorSchemeFuture = useMemoized(
         () => ColorScheme.fromImageProvider(provider: cachedNetWorkImageProvider, brightness: brightness),
@@ -18,7 +19,7 @@ class LastRead extends HookConsumerWidget {
     final coverScheme = useFuture(colorSchemeFuture);
     return Card.filled(
       elevation: 0,
-      margin: EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: 0),
       color: switch (coverScheme) {
         AsyncSnapshot(:final data?) => data.tertiary.withAlpha(50),
         _ => colorScheme.tertiary.withAlpha(50),
@@ -30,23 +31,22 @@ class LastRead extends HookConsumerWidget {
         borderRadius: BorderRadius.zero,
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
                 child: Container(
               padding: EdgeInsets.only(top: 4, bottom: 4),
-              height: 86,
+              height: 90,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("额尔古纳河右岸",
-                      style: TextStyle(color: colorScheme.onSurface, fontSize: 14, fontWeight: FontWeight.bold)),
+                  Text("恶意", style: TextStyle(color: colorScheme.onSurface, fontSize: 17, fontWeight: FontWeight.bold)),
                   Padding(
                     padding: EdgeInsets.only(top: 3),
-                    child: Text("迟子建\t\t人民文学出版社",
-                        style: textTheme.labelSmall?.copyWith(
+                    child: Text("东野圭吾\t\t双叶社",
+                        style: textTheme.bodySmall?.copyWith(
                             color: switch (coverScheme) {
                           AsyncSnapshot(:final data?) => data.onSurface.withAlpha(180),
                           _ => colorScheme.onSurface.withAlpha(180),
@@ -56,7 +56,7 @@ class LastRead extends HookConsumerWidget {
                   Padding(
                     padding: EdgeInsets.only(bottom: 6),
                     child: Text("最近阅读：第 1 章",
-                        style: textTheme.labelSmall?.copyWith(
+                        style: textTheme.bodySmall?.copyWith(
                             color: switch (coverScheme) {
                           AsyncSnapshot(:final data?) => data.onSurface.withAlpha(180),
                           _ => colorScheme.onSurface.withAlpha(180),
