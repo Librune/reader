@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reader/app/ui/components/bottom_nav.dart';
 import 'package:reader/book_detail/ui/book_detail_screen.dart';
+import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/ui/book_source_detail.dart';
 import 'package:reader/book_source/ui/book_source_list_screen.dart';
 import 'package:reader/book_source/ui/book_source_preference.dart';
@@ -84,15 +85,21 @@ final router = GoRouter(navigatorKey: rootNavigatorKey, initialLocation: "/shelf
     },
   ),
   GoRoute(
-    path: "/book_source/preference/:id",
+    path: "/book_source/preference",
     builder: (context, state) {
-      return BookSourcePreference();
+      final BookSourceModel model = state.extra! as BookSourceModel;
+      return BookSourcePreference(
+        model: model,
+      );
     },
   ),
   GoRoute(
-    path: "/book_source/detail/:id",
+    path: "/book_source/detail",
     builder: (context, state) {
-      return BookSourceDetail();
+      final BookSourceModel model = state.extra! as BookSourceModel;
+      return BookSourceDetail(
+        model: model,
+      );
     },
   )
 ]);

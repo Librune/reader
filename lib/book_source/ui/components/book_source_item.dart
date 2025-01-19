@@ -11,8 +11,10 @@ class BookSourceItem extends ConsumerWidget {
     super.key,
     required this.source,
     this.onPressed,
+    this.onActionPressed,
   });
   final void Function()? onPressed;
+  final void Function()? onActionPressed;
 
   final BookSourceModel source;
 
@@ -40,9 +42,7 @@ class BookSourceItem extends ConsumerWidget {
                   Spacer(),
                   SvgBtn(
                     svgName: "ic_card_settings",
-                    onPressed: () {
-                      context.push("/book_source/preference/1");
-                    },
+                    onPressed: onActionPressed,
                   ),
                 ],
               ),

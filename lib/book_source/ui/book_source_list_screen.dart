@@ -33,8 +33,11 @@ class BookSourceListScreen extends HookConsumerWidget {
                     final bks = value[index];
                     return BookSourceItem(
                       source: bks,
+                      onActionPressed: () {
+                        context.push("/book_source/preference", extra: bks);
+                      },
                       onPressed: () {
-                        context.push("/book_source/detail/1");
+                        context.push("/book_source/detail", extra: bks);
                       },
                     );
                   },
