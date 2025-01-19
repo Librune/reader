@@ -25,7 +25,7 @@ class BookSource extends _$BookSource {
         final json = jsonDecode(bksManifest.readAsStringSync());
         final List<BookSourceModel> list = [];
         for (var ele in json) {
-          final bks = await BookSourceModel.fromJs(File(join(bksPath, ele["uuid"], "index.js")));
+          final bks = await BookSourceModel.fromJs(File(join(bksPath, ele["uuid"], "index.js")), uuid: ele["uuid"]);
           list.add(bks);
         }
         return list;

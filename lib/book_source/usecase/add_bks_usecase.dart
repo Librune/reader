@@ -6,7 +6,6 @@ import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
-import 'package:uuid/uuid.dart';
 
 class AddBookSourceUsecase {
   static final _log = Log('AddBookSourceUsecase');
@@ -28,20 +27,19 @@ class AddBookSourceUsecase {
     throw Exception('未选择任何文件');
   }
 
-  static _copyFile(File file, {String? id, String name = 'index.js'}) async {
-    final dirPath = join(bksDir, id);
+  static _copyFile(File file, {required String uuid, String name = 'index.js'}) async {
+    final dirPath = join(bksDir, uuid);
     if (!Directory(dirPath).existsSync()) {
       Directory(dirPath).createSync(recursive: true);
     }
-    final target = join(bksDir, id, name);
+    final target = join(bksDir, uuid, name);
     return await file.copy(target);
   }
 
   static Future<BookSourceModel> js() async {
-    final id = Uuid().v4();
     final file = await _pickFile();
-    final bks = (await BookSourceModel.fromJs(file)).copyWith(uuid: id);
-    await _copyFile(file, id: id);
+    final bks = (await BookSourceModel.fromJs(file));
+    await _copyFile(file, uuid: bks.uuid);
     return bks;
   }
 }

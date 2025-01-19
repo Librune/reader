@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
+import 'package:uuid/uuid.dart';
 
 part 'book_source.g.dart';
 part 'book_source.freezed.dart';
@@ -18,13 +19,13 @@ enum BookSourceFileType { js, ts, wasm, zip, bks }
 class BookSourceModel with _$BookSourceModel {
   const factory BookSourceModel({
     required String js,
+    required String uuid,
     required String name,
     required String author,
     @Default(true) enabled,
     @Default([]) List<dynamic> actions,
     @Default([]) List<BookSourceFormModel> forms,
     String? favIcon,
-    String? uuid,
   }) = _BookSourceModel;
   factory BookSourceModel.fromJson(Map<String, dynamic> json) => _$BookSourceModelFromJson(json);
   const BookSourceModel._();
@@ -62,6 +63,8 @@ const instance = new BookSource();
     return file;
   }
 
+  Map<String, dynamic> get envs => jsonDecode(envsFile.readAsStringSync());
+
   saveEnvs(GlobalKey<FormBuilderState> key) {
     key.currentState?.saveAndValidate();
     final data = key.currentState?.value;
@@ -74,7 +77,8 @@ const instance = new BookSource();
         fontSize: 16.0);
   }
 
-  static Future<BookSourceModel> fromJs(File jsFile) async {
+  static Future<BookSourceModel> fromJs(File jsFile, {String? uuid}) async {
+    uuid ??= Uuid().v4();
     JavascriptRuntime jsRuntime = getJavascriptRuntime(forceJavascriptCoreOnAndroid: false)
       ..setInspectable(true)
       ..evaluate("""
@@ -108,7 +112,7 @@ $js
 const instance = new BookSource();
 instance.info();
 """);
-      return BookSourceModel.fromJson({...jsonDecode(jsResult.stringResult), "js": js});
+      return BookSourceModel.fromJson({...jsonDecode(jsResult.stringResult), "js": js, "uuid": uuid});
     } catch (e) {
       throw Exception('Failed to parse JS file: ${e.toString()}');
     }
