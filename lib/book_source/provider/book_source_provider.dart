@@ -26,6 +26,7 @@ class BookSource extends _$BookSource {
         final List<BookSourceModel> list = [];
         for (var ele in json) {
           final bks = await BookSourceModel.fromJs(File(join(bksPath, ele["uuid"], "index.js")), uuid: ele["uuid"]);
+          _log.i(bks.js);
           list.add(bks);
         }
         return list;
@@ -50,6 +51,20 @@ class BookSource extends _$BookSource {
         return;
       default:
         return;
+    }
+  }
+
+  delete(String uuid) {
+    final data = state.value!;
+    final index = data.indexWhere((element) => element.uuid == uuid);
+    if (index != -1) {
+      final bks = data[index];
+      final dir = Directory(join(bksPath, bks.uuid));
+      if (dir.existsSync()) {
+        dir.deleteSync(recursive: true);
+      }
+      data.removeAt(index);
+      state = AsyncData(data);
     }
   }
 

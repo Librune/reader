@@ -32,6 +32,14 @@ class BookSourceModel with _$BookSourceModel {
 
   JavascriptRuntime get jsRuntime => getJavascriptRuntime(forceJavascriptCoreOnAndroid: false)
     ..setInspectable(true)
+    ..onMessage("invokeToast", (dynamic message) {
+      Fluttertoast.showToast(
+          msg: message['data'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0);
+    })
     ..evaluate("""
 $PRXOY_JS_OBJ
 $LOG_JS_OBJ
@@ -40,7 +48,15 @@ class __BOOK_SOURCE__ {
     return JSON.stringify(obj)
   }
 
-  info(){
+  action=(act)=>{
+    this[act]();
+  }
+
+  toast=(message)=>{
+    sendMessage('invokeToast', JSON.stringify({data:message}));
+  }
+
+  info=()=>{
     return this.export({
       name: this.name,
       author: this.author,
@@ -50,8 +66,9 @@ class __BOOK_SOURCE__ {
 """)
     ..evaluateAsync("""
 $js
-const instance = new BookSource();
-""");
+var bks = new BookSource();
+""")
+    ..executePendingJob();
 
   String get bksPath => join(PathService().appPath, 'bks');
 
@@ -64,6 +81,16 @@ const instance = new BookSource();
   }
 
   Map<String, dynamic> get envs => jsonDecode(envsFile.readAsStringSync());
+
+  action(String act) async {
+    await jsRuntime.evaluateAsync("""
+bks.action('$act');
+""");
+  }
+
+  delete() {
+    Directory(join(bksPath, uuid)).deleteSync(recursive: true);
+  }
 
   saveEnvs(GlobalKey<FormBuilderState> key) {
     key.currentState?.saveAndValidate();

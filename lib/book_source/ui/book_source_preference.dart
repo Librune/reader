@@ -37,7 +37,9 @@ class BookSourcePreference extends HookConsumerWidget {
                   "assets/svg/${action['icon']}.svg",
                   colorFilter: ColorFilter.mode(colorScheme.secondary, BlendMode.srcIn),
                 ),
-                onTap: () {},
+                onTap: () {
+                  model.action(action['action']);
+                },
               );
             }).toList(),
             buttonBuilder: (context, showMenu) => SvgBtn(
