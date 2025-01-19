@@ -22,45 +22,55 @@ import 'text.dart';
 abstract final class AppTheme {
   // The defined light theme.
   static ThemeData light = FlexThemeData.light(
-    scheme: FlexScheme.greys,
-    subThemesData: const FlexSubThemesData(
-      scaffoldBackgroundBaseColor: FlexScaffoldBaseColor.surfaceContainer,
-      bottomNavigationBarBackgroundSchemeColor: SchemeColor.surfaceContainer,
-      interactionEffects: true,
-      tintedDisabledControls: true,
-      useM2StyleDividerInM3: true,
-      splashType: FlexSplashType.inkSplash,
-      inputDecoratorIsFilled: true,
-      inputDecoratorBorderType: FlexInputBorderType.outline,
-      alignedDropdown: true,
-      navigationRailUseIndicator: true,
-      navigationRailLabelType: NavigationRailLabelType.all,
-    ),
-    textTheme: textTheme,
-    visualDensity: FlexColorScheme.comfortablePlatformDensity,
-    materialTapTargetSize: MaterialTapTargetSize.padded,
-    cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
-  );
+      scheme: FlexScheme.greys,
+      subThemesData: const FlexSubThemesData(
+        scaffoldBackgroundBaseColor: FlexScaffoldBaseColor.surfaceContainer,
+        bottomNavigationBarBackgroundSchemeColor: SchemeColor.surfaceContainer,
+        interactionEffects: true,
+        tintedDisabledControls: true,
+        useM2StyleDividerInM3: true,
+        splashType: FlexSplashType.inkSplash,
+        inputDecoratorIsFilled: true,
+        inputDecoratorBorderType: FlexInputBorderType.outline,
+        alignedDropdown: true,
+        navigationRailUseIndicator: true,
+        navigationRailLabelType: NavigationRailLabelType.all,
+      ),
+      textTheme: textTheme,
+      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+      cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+      pageTransitionsTheme: PageTransitionsTheme(
+        builders: <TargetPlatform, PageTransitionsBuilder>{
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
+      ));
   // The defined dark theme.
   static ThemeData dark = FlexThemeData.dark(
-    scheme: FlexScheme.greys,
-    subThemesData: const FlexSubThemesData(
-      scaffoldBackgroundBaseColor: FlexScaffoldBaseColor.surfaceContainer,
-      bottomNavigationBarBackgroundSchemeColor: SchemeColor.surfaceContainer,
-      interactionEffects: true,
-      tintedDisabledControls: true,
-      blendOnColors: true,
-      useM2StyleDividerInM3: true,
-      splashType: FlexSplashType.inkSplash,
-      inputDecoratorIsFilled: true,
-      inputDecoratorBorderType: FlexInputBorderType.outline,
-      alignedDropdown: true,
-      navigationRailUseIndicator: true,
-      navigationRailLabelType: NavigationRailLabelType.all,
-    ),
-    textTheme: textTheme,
-    visualDensity: FlexColorScheme.comfortablePlatformDensity,
-    materialTapTargetSize: MaterialTapTargetSize.padded,
-    cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
-  );
+      scheme: FlexScheme.greys,
+      subThemesData: const FlexSubThemesData(
+        scaffoldBackgroundBaseColor: FlexScaffoldBaseColor.surfaceContainer,
+        bottomNavigationBarBackgroundSchemeColor: SchemeColor.surfaceContainer,
+        interactionEffects: true,
+        tintedDisabledControls: true,
+        blendOnColors: true,
+        useM2StyleDividerInM3: true,
+        splashType: FlexSplashType.inkSplash,
+        inputDecoratorIsFilled: true,
+        inputDecoratorBorderType: FlexInputBorderType.outline,
+        alignedDropdown: true,
+        navigationRailUseIndicator: true,
+        navigationRailLabelType: NavigationRailLabelType.all,
+      ),
+      textTheme: textTheme,
+      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+      cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+      pageTransitionsTheme: PageTransitionsTheme(
+        builders: <TargetPlatform, PageTransitionsBuilder>{
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
+      ));
 }
