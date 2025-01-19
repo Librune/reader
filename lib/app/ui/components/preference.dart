@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nil/nil.dart';
 
@@ -217,7 +219,10 @@ class PreferenceInput extends PereferenceItem {
     super.key,
     required super.title,
     required super.subtitle,
+    required this.name,
   });
+
+  final String name;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -227,8 +232,9 @@ class PreferenceInput extends PereferenceItem {
         title: Text(title, style: _titleStyle),
         subtitle: ConstrainedBox(
           constraints: BoxConstraints(maxHeight: 42),
-          child: TextField(
+          child: FormBuilderTextField(
             cursorHeight: 18,
+            name: name,
             style: TextStyle(fontSize: 14, color: colorScheme.onSurface),
             decoration: InputDecoration(
               hintStyle: TextStyle(fontSize: 14, color: colorScheme.onSurface.withAlpha(150)),

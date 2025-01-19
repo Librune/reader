@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
@@ -34,9 +37,7 @@ class BookSource extends _$BookSource {
     }
   }
 
-  pickNew({
-    BookSourceFileType type = BookSourceFileType.js,
-  }) async {
+  pickNew({BookSourceFileType type = BookSourceFileType.js}) async {
     switch (type) {
       case BookSourceFileType.js:
         final data = state.value!;
@@ -46,7 +47,6 @@ class BookSource extends _$BookSource {
           return;
         }
         state = AsyncData([bks, ...data]);
-
         return;
       default:
         return;
@@ -69,4 +69,11 @@ class BookSource extends _$BookSource {
   }
 
   File get bksManifest => File(join(bksPath, "index.json"));
+  File getEnvsFile(String uuid) {
+    final file = File(join(bksPath, uuid, "envs.json"));
+    if (!file.existsSync()) {
+      file.writeAsStringSync("{}");
+    }
+    return file;
+  }
 }

@@ -62,6 +62,8 @@ dependencies:
   fluttertoast: ^8.2.10
   unicode: ^1.1.8
   uuid: ^4.5.1
+  flutter_form_builder: ^9.7.0
+  form_builder_validators: ^11.1.1
 
 dev_dependencies:
   flutter_test:

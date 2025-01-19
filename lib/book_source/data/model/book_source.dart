@@ -1,8 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_js/flutter_js.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:path/path.dart';
+import 'package:reader/app/architecture/service/path.dart';
 
 part 'book_source.g.dart';
 part 'book_source.freezed.dart';
@@ -27,6 +32,8 @@ class BookSourceModel with _$BookSourceModel {
   JavascriptRuntime get jsRuntime => getJavascriptRuntime(forceJavascriptCoreOnAndroid: false)
     ..setInspectable(true)
     ..evaluate("""
+$PRXOY_JS_OBJ
+$LOG_JS_OBJ
 class __BOOK_SOURCE__ {
   export(obj){
     return JSON.stringify(obj)
@@ -35,7 +42,7 @@ class __BOOK_SOURCE__ {
   info(){
     return this.export({
       name: this.name,
-      author: this.author
+      author: this.author,
     })
   }
 };
@@ -45,19 +52,51 @@ $js
 const instance = new BookSource();
 """);
 
+  String get bksPath => join(PathService().appPath, 'bks');
+
+  File get envsFile {
+    final file = File(join(bksPath, uuid, "envs.json"));
+    if (!file.existsSync()) {
+      file.writeAsStringSync("{}");
+    }
+    return file;
+  }
+
+  saveEnvs(GlobalKey<FormBuilderState> key) {
+    key.currentState?.saveAndValidate();
+    final data = key.currentState?.value;
+    envsFile.writeAsStringSync(jsonEncode(data));
+    Fluttertoast.showToast(
+        msg: "保存成功",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        fontSize: 16.0);
+  }
+
   static Future<BookSourceModel> fromJs(File jsFile) async {
     JavascriptRuntime jsRuntime = getJavascriptRuntime(forceJavascriptCoreOnAndroid: false)
       ..setInspectable(true)
       ..evaluate("""
+$PRXOY_JS_OBJ
+$LOG_JS_OBJ
 class __BOOK_SOURCE__ {
   export(obj){
     return JSON.stringify(obj)
   }
 
   info(){
+    if(this.proxyFeature){
+      this.forms.push(proxyObj)
+    }
+    if(this.logFeature){
+      this.forms.push(logObj)
+    }
     return this.export({
       name: this.name,
-      author: this.author
+      author: this.author,
+      forms: this.forms,
+      actions: this.actions
     })
   }
 };
@@ -100,3 +139,44 @@ class BookSourceFormItemGroup with _$BookSourceFormItemGroup {
   factory BookSourceFormItemGroup.fromJson(Map<String, dynamic> json) => _$BookSourceFormItemGroupFromJson(json);
   const BookSourceFormItemGroup._();
 }
+
+const PRXOY_JS_OBJ = """
+const proxyObj = {
+      title: '网络设置',
+      subtitle: '设置代理，如果你需要通过代理访问，请设置代理',
+      form: [
+        {
+          type: 'input',
+          field: 'proxy',
+          title: '代理',
+          placeholder: '设定代理地址',
+        },
+        {
+          type: 'input',
+          field: 'proxy',
+          title: '用户名',
+          placeholder: '设定用户名',
+        },
+        {
+          type: 'input',
+          field: 'proxy',
+          title: '密码',
+          placeholder: '设定密码',
+        },
+      ],
+    };
+""";
+const LOG_JS_OBJ = """
+const logObj = {
+      title: '杂项',
+      subtitle: '一些额外的配置项目',
+      form: [
+        {
+          type: 'toggle',
+          field: 'log',
+          title: '捕获日志',
+          placeholder: '是否捕获并存储请求日志到本地',
+        },
+      ],
+    };
+""";
