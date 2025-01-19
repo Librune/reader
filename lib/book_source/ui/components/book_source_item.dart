@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
+import 'package:reader/book_source/data/model/book_source.dart';
 
 class BookSourceItem extends ConsumerWidget {
-  const BookSourceItem({super.key, this.onPressed});
+  const BookSourceItem({
+    super.key,
+    required this.source,
+    this.onPressed,
+  });
   final void Function()? onPressed;
+
+  final BookSourceModel source;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +34,7 @@ class BookSourceItem extends ConsumerWidget {
               Row(
                 children: [
                   Text(
-                    "起点读书",
+                    source.name,
                     style: textTheme.titleSmall,
                   ),
                   Spacer(),

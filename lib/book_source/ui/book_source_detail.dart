@@ -157,7 +157,9 @@ class BookSourceDetail extends HookConsumerWidget {
               },
               itemCount: data.forms.length),
         ),
-      _ => Center(child: CircularProgressIndicator()),
+      _ => Material(
+          child: Center(child: CircularProgressIndicator()),
+        ),
     };
   }
 }
