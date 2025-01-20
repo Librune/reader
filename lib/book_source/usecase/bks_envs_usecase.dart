@@ -9,7 +9,7 @@ class BksEnvsUsecase {
   static save(GlobalKey<FormBuilderState> key, {required String uuid}) {
     key.currentState?.saveAndValidate();
     final data = key.currentState?.value;
-    BksFilesUsecase.getEnvFile(uuid).writeAsStringSync(jsonEncode(data));
+    BookSourceFilesUsecase.getEnvFile(uuid).writeAsStringSync(jsonEncode(data));
     Fluttertoast.showToast(
         msg: "保存成功",
         toastLength: Toast.LENGTH_SHORT,
@@ -18,5 +18,5 @@ class BksEnvsUsecase {
         fontSize: 16.0);
   }
 
-  static read({required String uuid}) => jsonDecode(BksFilesUsecase.getEnvFile(uuid).readAsStringSync());
+  static read({required String uuid}) => jsonDecode(BookSourceFilesUsecase.getEnvFile(uuid).readAsStringSync());
 }

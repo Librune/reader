@@ -8,7 +8,7 @@ import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/usecase/bks_runtime_usecase.dart';
 
-class AddBookSourceUsecase {
+class BookSourceNewUsecase {
   static final _log = Log('AddBookSourceUsecase');
   static final bksDir = join(PathService().appPath, 'bks');
   static Future<File> _pickFile() async {

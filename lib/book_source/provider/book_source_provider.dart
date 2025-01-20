@@ -40,7 +40,7 @@ class BookSource extends _$BookSource {
     switch (type) {
       case BookSourceFileType.js:
         final data = state.value!;
-        final bks = await AddBookSourceUsecase.js();
+        final bks = await BookSourceNewUsecase.js();
         final testExist = data.where((_bks) => _bks.name == bks.name && _bks.author == bks.author);
         if (testExist.isNotEmpty) {
           return;

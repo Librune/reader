@@ -100,7 +100,7 @@ class BookSourceRuntimeUseCase {
     uuid ??= Uuid().v4();
     return _instances.putIfAbsent(uuid, () {
       var instance = BookSourceRuntimeUseCase._internal(uuid!);
-      BksChannelUsecase.inject(instance.jsRuntime);
+      BookSourceChannelUsecase.inject(instance.jsRuntime);
       instance._initRuntime(file: file, uuid: uuid);
       return instance;
     });
