@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter_js/flutter_js.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -6,7 +9,8 @@ import 'bks_libs_usecase.dart';
 class BookSourceChannelUsecase {
   static void inject(JavascriptRuntime jsRuntime) {
     jsRuntime.onMessage("invokeToast", _invokeToast);
-    jsRuntime.onMessage("invokeRequire", _invokeRequire);
+    jsRuntime.onMessage("invokeRequire", _invokeRequire(jsRuntime));
+    jsRuntime.onMessage("invokeToMd5", _invokeToMd5);
   }
 
   static void _invokeToast(dynamic message) {
@@ -18,9 +22,19 @@ class BookSourceChannelUsecase {
         fontSize: 16.0);
   }
 
-  static void _invokeRequire(dynamic message) {
-    final lib = message['data'];
+  static _invokeRequire(JavascriptRuntime jsRuntime) {
     // _invokeToast(message);
     // BookSourceLibsUsecase.fromBundle(this,name:lib);
+    return (dynamic message) {
+      BookSourceLibsUsecase.fromBundle(jsRuntime, name: message['data']);
+    };
+  }
+
+  static _invokeToMd5(dynamic message) {
+    // _invokeToast(message);
+    // BookSourceLibsUsecase.fromBundle(this,name:lib);
+    // return FlutterMd5().convert(message['data']);
+    var bytes = utf8.encode(message['data']); // data being hashed
+    md5.convert(bytes).toString();
   }
 }

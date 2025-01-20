@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_js/extensions/fetch.dart';
 import 'package:flutter_js/flutter_js.dart';
 import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
@@ -48,19 +49,20 @@ const logObj = {
       ],
     };
 """;
-const REQUIRE = """
-function require(lib){
+const INCLUDE = """
+function include(lib){
   sendMessage('invokeRequire', JSON.stringify({data:lib}));
 }
 """;
+
 const BOOK_SOURCE_SUPER_CLASS = """
 class __BOOK_SOURCE__ {
   export(obj){
     return JSON.stringify(obj)
   }
 
-  action=(act)=>{
-    this[act]();
+  action=async(act)=>{
+    await this[act]();
   }
 
   toast=(message)=>{
@@ -98,6 +100,7 @@ class BookSourceRuntimeUseCase {
   BookSourceRuntimeUseCase._internal(this.uuid) {
     jsRuntime = getJavascriptRuntime(forceJavascriptCoreOnAndroid: false);
     jsRuntime.setInspectable(true);
+    jsRuntime.enableFetch();
   }
 
   // 工厂构造方法
@@ -123,7 +126,7 @@ class BookSourceRuntimeUseCase {
 
   _super(JavascriptRuntime jsRuntime) {
     jsRuntime.evaluate("""
-      $REQUIRE
+      $INCLUDE 
       $PRXOY_JS_OBJ
       $LOG_JS_OBJ
       $BOOK_SOURCE_SUPER_CLASS
@@ -146,10 +149,12 @@ class BookSourceRuntimeUseCase {
   }
 
   // 顶部菜单行为
-  action(String act) {
-    jsRuntime.evaluateAsync("""
+  action(String act) async {
+    jsRuntime.executePendingJob();
+    final res = await jsRuntime.evaluateAsync("""
       bks.action('$act');
     """);
+    JsEvalResult asyncResult = await jsRuntime.handlePromise(res);
   }
 
   // 清除指定实例
