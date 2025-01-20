@@ -1,6 +1,8 @@
 import 'package:flutter_js/flutter_js.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'bks_libs_usecase.dart';
+
 class BookSourceChannelUsecase {
   static void inject(JavascriptRuntime jsRuntime) {
     jsRuntime.onMessage("invokeToast", _invokeToast);
@@ -18,6 +20,7 @@ class BookSourceChannelUsecase {
 
   static void _invokeRequire(dynamic message) {
     final lib = message['data'];
-    _invokeToast(message);
+    // _invokeToast(message);
+    // BookSourceLibsUsecase.fromBundle(this,name:lib);
   }
 }
