@@ -34,6 +34,7 @@ class BookSource extends _$BookSource {
         return [];
       }
     } else {
+      bksManifest.createSync(recursive: true);
       return [];
     }
   }
@@ -80,7 +81,7 @@ class BookSource extends _$BookSource {
       });
     }).toList();
     final json = jsonEncode(arr);
-    File(join(bksPath, "index.json")).writeAsStringSync(json);
+    bksManifest.writeAsStringSync(json);
   }
 
   File get bksManifest => File(join(bksPath, "index.json"));
