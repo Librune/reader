@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
-import 'package:reader/book_source/usecase/add_bks_usecase.dart';
+import 'package:reader/book_source/usecase/bks_new_usecase.dart';
+import 'package:reader/book_source/usecase/bks_runtime_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'book_source_provider.g.dart';
@@ -25,8 +23,7 @@ class BookSource extends _$BookSource {
         final json = jsonDecode(bksManifest.readAsStringSync());
         final List<BookSourceModel> list = [];
         for (var ele in json) {
-          final bks = await BookSourceModel.fromJs(File(join(bksPath, ele["uuid"], "index.js")), uuid: ele["uuid"]);
-          _log.i(bks.js);
+          final bks = await BookSourceRuntimeUseCase(uuid: ele["uuid"]).info();
           list.add(bks);
         }
         return list;
@@ -85,11 +82,4 @@ class BookSource extends _$BookSource {
   }
 
   File get bksManifest => File(join(bksPath, "index.json"));
-  File getEnvsFile(String uuid) {
-    final file = File(join(bksPath, uuid, "envs.json"));
-    if (!file.existsSync()) {
-      file.writeAsStringSync("{}");
-    }
-    return file;
-  }
 }

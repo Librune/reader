@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
+import 'package:reader/book_source/usecase/bks_runtime_usecase.dart';
 
 class AddBookSourceUsecase {
   static final _log = Log('AddBookSourceUsecase');
@@ -38,7 +39,7 @@ class AddBookSourceUsecase {
 
   static Future<BookSourceModel> js() async {
     final file = await _pickFile();
-    final bks = (await BookSourceModel.fromJs(file));
+    final bks = await BookSourceRuntimeUseCase(file: file).info();
     await _copyFile(file, uuid: bks.uuid);
     return bks;
   }

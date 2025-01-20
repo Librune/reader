@@ -9,6 +9,8 @@ import 'package:reader/app/ui/components/preference.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/provider/book_source_provider.dart';
+import 'package:reader/book_source/usecase/bks_envs_usecase.dart';
+import 'package:reader/book_source/usecase/bks_runtime_usecase.dart';
 
 class BookSourcePreference extends HookConsumerWidget {
   const BookSourcePreference({super.key, required this.model});
@@ -21,7 +23,7 @@ class BookSourcePreference extends HookConsumerWidget {
         appBar: AppTopBar(title: model.name, actions: [
           SvgBtn(
             onPressed: () {
-              model.saveEnvs(_formKey);
+              BksEnvsUsecase.save(_formKey, uuid: model.uuid);
             },
             svgName: "ic_action_save",
             size: 22,
@@ -38,7 +40,8 @@ class BookSourcePreference extends HookConsumerWidget {
                   colorFilter: ColorFilter.mode(colorScheme.secondary, BlendMode.srcIn),
                 ),
                 onTap: () {
-                  model.action(action['action']);
+                  // model.action(action['action']);
+                  BookSourceRuntimeUseCase(uuid: model.uuid).action(action['action']);
                 },
               );
             }).toList(),
@@ -51,7 +54,7 @@ class BookSourcePreference extends HookConsumerWidget {
         ]),
         body: FormBuilder(
           key: _formKey,
-          initialValue: model.envs,
+          initialValue: BksEnvsUsecase.read(uuid: model.uuid),
           child: ListView.separated(
               itemBuilder: (context, index) {
                 final formGroup = model.forms[index];

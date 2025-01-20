@@ -37,6 +37,7 @@ class BookSourceDetail extends HookConsumerWidget {
                   context.pop();
                 },
                 style: ButtonStyle(
+                  foregroundColor: WidgetStateProperty.all(colorScheme.error),
                   backgroundColor: WidgetStateProperty.all(colorScheme.errorContainer),
                 ),
                 child: Text("删除"),
