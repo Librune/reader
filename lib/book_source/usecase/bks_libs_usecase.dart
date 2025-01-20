@@ -1,16 +1,16 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_js/flutter_js.dart';
 
-class ImportJsLibUsecase {
+class BookSourceLibsUsecase {
   final JavascriptRuntime runtime;
-  static ImportJsLibUsecase? _instance;
+  static BookSourceLibsUsecase? _instance;
 
   // 私有构造函数
-  ImportJsLibUsecase._internal(this.runtime);
+  BookSourceLibsUsecase._internal(this.runtime);
 
   // 工厂构造函数
-  factory ImportJsLibUsecase(JavascriptRuntime jsRuntime) {
-    _instance ??= ImportJsLibUsecase._internal(jsRuntime);
+  factory BookSourceLibsUsecase(JavascriptRuntime jsRuntime) {
+    _instance ??= BookSourceLibsUsecase._internal(jsRuntime);
     return _instance!;
   }
 
