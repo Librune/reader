@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class BookSourceChannelUsecase {
   static void inject(JavascriptRuntime jsRuntime) {
     jsRuntime.onMessage("invokeToast", _invokeToast);
-    jsRuntime.onMessage("invokeImport", _invokeImport);
+    jsRuntime.onMessage("invokeRequire", _invokeRequire);
   }
 
   static void _invokeToast(dynamic message) {
@@ -16,7 +16,8 @@ class BookSourceChannelUsecase {
         fontSize: 16.0);
   }
 
-  static void _invokeImport(dynamic message) {
+  static void _invokeRequire(dynamic message) {
     final lib = message['data'];
+    _invokeToast(message);
   }
 }

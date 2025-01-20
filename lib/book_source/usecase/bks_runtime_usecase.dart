@@ -48,6 +48,11 @@ const logObj = {
       ],
     };
 """;
+const REQUIRE = """
+function require(lib){
+  sendMessage('invokeRequire', JSON.stringify({data:lib}));
+}
+""";
 const BOOK_SOURCE_SUPER_CLASS = """
 class __BOOK_SOURCE__ {
   export(obj){
@@ -118,6 +123,7 @@ class BookSourceRuntimeUseCase {
 
   _super(JavascriptRuntime jsRuntime) {
     jsRuntime.evaluate("""
+      $REQUIRE
       $PRXOY_JS_OBJ
       $LOG_JS_OBJ
       $BOOK_SOURCE_SUPER_CLASS
