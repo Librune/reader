@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/theme/text.dart';
+import 'package:reader/search/data/model/search_book_item.dart';
 
 class BookSearchItem extends HookConsumerWidget {
-  const BookSearchItem({super.key});
+  const BookSearchItem({super.key, required this.book});
+  final SearchBookItemModel book;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
@@ -29,8 +31,7 @@ class BookSearchItem extends HookConsumerWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: CachedNetworkImage(
-                imageUrl:
-                    "https://s3proxy.cdn-zlib.sk/covers400/collections/userbooks/e16fa36143dbe6a456b3d00bc17a18bb8f85dffa01fba1e4ed4335519049fb78.jpg",
+                imageUrl: book.cover,
                 width: 64,
                 height: 86,
                 fit: BoxFit.cover,
@@ -45,7 +46,7 @@ class BookSearchItem extends HookConsumerWidget {
                     Row(
                       children: [
                         Text(
-                          "杀死一只知更鸟",
+                          book.name,
                           style: textTheme.titleSmall,
                         ),
                         Spacer(),
@@ -60,7 +61,7 @@ class BookSearchItem extends HookConsumerWidget {
                       child: Row(
                         children: [
                           Text(
-                            "Harper Lee",
+                            book.author,
                             style: textTheme.bodyMedium?.copyWith(color: colorScheme.secondary),
                           ),
                         ],
@@ -69,9 +70,10 @@ class BookSearchItem extends HookConsumerWidget {
                     Spacer(),
                     Row(
                       children: [
-                        Text("九九藏书网 · 严肃文学", style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
-                        VerticalDivider(),
-                        Text("共 12 万字", style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary))
+                        // Text("九九藏书网 · 严肃文学", style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
+                        // VerticalDivider(),
+                        Text("共 ${book.chapterNum} 章",
+                            style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary))
                       ],
                     )
                   ],

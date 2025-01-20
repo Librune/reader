@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
+import 'package:reader/search/provider/search_provider.dart';
 
 class SearchScreen extends HookConsumerWidget {
   const SearchScreen({super.key});
@@ -11,6 +13,7 @@ class SearchScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+    final searchController = useTextEditingController();
     return Scaffold(
       appBar: AppTopBar(
           title: Row(
@@ -18,6 +21,7 @@ class SearchScreen extends HookConsumerWidget {
           Expanded(
               child: SearchBar(
             autoFocus: true,
+            controller: searchController,
             elevation: WidgetStatePropertyAll(0),
             constraints: BoxConstraints(minHeight: 38),
             textStyle: WidgetStatePropertyAll(textTheme.bodySmall),
@@ -46,7 +50,9 @@ class SearchScreen extends HookConsumerWidget {
               ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: 36),
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.replace('/book_search_result/${searchController.text}');
+                    },
                     style: ButtonStyle(
                       foregroundColor: WidgetStateProperty.all(colorScheme.onSurface),
                     ),

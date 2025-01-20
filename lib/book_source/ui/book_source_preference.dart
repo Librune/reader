@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
@@ -41,7 +42,7 @@ class BookSourcePreference extends HookConsumerWidget {
                 ),
                 onTap: () {
                   // model.action(action['action']);
-                  BookSourceRuntimeUseCase(uuid: model.uuid).action(action['action']);
+                  context.push("/book_source_test/${model.uuid}");
                 },
               );
             }).toList(),

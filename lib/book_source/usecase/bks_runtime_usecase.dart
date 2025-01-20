@@ -61,8 +61,8 @@ class __BOOK_SOURCE__ {
     return JSON.stringify(obj)
   }
 
-  action=async(act)=>{
-    await this[act]();
+  action=async(act,args)=>{
+    return this[act](args);
   }
 
   toast=(message)=>{
@@ -149,12 +149,13 @@ class BookSourceRuntimeUseCase {
   }
 
   // 顶部菜单行为
-  action(String act) async {
+  action(String act, {List<dynamic>? args}) async {
     jsRuntime.executePendingJob();
     final res = await jsRuntime.evaluateAsync("""
-      bks.action('$act');
+      bks.action('$act',${args != null ? jsonEncode(args) : ''});
     """);
     JsEvalResult asyncResult = await jsRuntime.handlePromise(res);
+    return asyncResult.stringResult;
   }
 
   // 清除指定实例
