@@ -13,7 +13,7 @@ class SearchKeywordUsecase {
     final List<SearchBookItemModel> bookList = [];
     for (var bookSource in bookSourceList) {
       final books = await searchBookFromUuid(keyword, uuid: bookSource.uuid);
-      ref.read(searchBooksProvider(keyword).notifier).pushSearchGroup(books);
+      ref.read(searchBooksProvider(keyword).notifier).pushSearchGroup(bookSource, books);
     }
     return bookList;
   }

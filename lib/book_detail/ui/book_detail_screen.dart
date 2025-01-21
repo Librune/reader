@@ -4,11 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/architecture/hooks/use_brightness.dart';
-import 'package:reader/app/architecture/hooks/use_cover_color.dart';
-import 'package:reader/app/ui/components/app_top_bar.dart';
-import 'package:reader/app/ui/components/svg_btn.dart';
-import 'package:reader/app/ui/theme/text.dart';
 import 'package:reader/book_detail/ui/components/book_tag.dart';
 
 class BookDetailScreen extends HookConsumerWidget {

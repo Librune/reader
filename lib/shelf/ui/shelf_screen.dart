@@ -7,14 +7,12 @@ import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/shelf/ui/components/last_read.dart';
 import 'package:reader/shelf/ui/components/shelf_grid.dart';
-import 'package:reader/shelf/ui/components/shelf_preference.dart';
 
 class ShelfScreen extends HookConsumerWidget {
   const ShelfScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppTopBar(
         title: ClipOval(

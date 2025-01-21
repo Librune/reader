@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/ui/theme/text.dart';
 import 'package:reader/search/data/model/search_book_item.dart';
 
 class BookSearchItem extends HookConsumerWidget {

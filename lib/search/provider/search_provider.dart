@@ -1,9 +1,4 @@
-import 'dart:convert';
-
-import 'package:reader/app/architecture/utils/log.dart';
-import 'package:reader/book_source/provider/book_source_provider.dart';
-import 'package:reader/book_source/usecase/bks_action_usecase.dart';
-import 'package:reader/book_source/usecase/bks_runtime_usecase.dart';
+import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/search/data/model/search_book_item.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,22 +7,15 @@ part 'search_provider.g.dart';
 @riverpod
 class SearchBooks extends _$SearchBooks {
   @override
-  List<SearchBookItemModel> build(String keyword) {
-    // final bksList = await ref.read(bookSourceProvider.future);
-    // final List<SearchBookItemModel> bookList = [];
-    // for (var bks in bksList) {
-    //   final res = await BookSourceRuntimeUseCase(uuid: bks.uuid).action("search", args: [keyword]);
-    //   final json = jsonDecode(res);
-    //   final List<SearchBookItemModel> list = (json as List).map((e) => SearchBookItemModel.fromJson(e)).toList();
-    //   bookList.addAll(list);
-    // }
-    // final bookList = await BookSourceActionUsecase.searchBooksFromAll(keyword);
-    // return bookList;
+  List<Map<String, dynamic>> build(String keyword) {
     return [];
   }
 
-  pushSearchGroup(List<SearchBookItemModel> bookList) {
-    state = [...state, ...bookList];
+  pushSearchGroup(BookSourceModel bookSource, List<SearchBookItemModel> bookList) {
+    state = [
+      ...state,
+      <String, dynamic>{"bks": bookSource, "books": bookList}
+    ];
   }
 
   // _refreshSearch(String keyword) async {

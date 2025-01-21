@@ -5,8 +5,6 @@ import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
-import 'package:reader/book_source/usecase/bks_manage_usecase.dart';
-import 'package:reader/book_source/usecase/bks_runtime_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'book_source_provider.g.dart';

@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/hooks/use_brightness.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/architecture/service/path.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/ui/router.dart';
 import 'package:reader/app/ui/theme/theme.dart';
 import 'package:reader/app/provider/app_provider.dart';

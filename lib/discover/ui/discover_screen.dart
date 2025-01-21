@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
-import 'package:reader/app/ui/components/gradual_label.dart';
 import 'package:reader/discover/ui/components/fake_search_bar.dart';
 import 'package:reader/discover/ui/components/local_card_grid.dart';
-import 'package:reader/discover/ui/components/rank_card.dart';
 import 'package:reader/discover/ui/components/rank_card_grid.dart';
 
 class DiscoverScreen extends HookConsumerWidget {
