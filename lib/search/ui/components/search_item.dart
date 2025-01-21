@@ -45,11 +45,13 @@ class BookSearchItem extends HookConsumerWidget {
                   children: [
                     Row(
                       children: [
-                        Text(
+                        Expanded(
+                            child: Text(
                           book.name,
                           style: textTheme.titleSmall,
-                        ),
-                        Spacer(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        )),
                         Text(
                           "🌟 8.7",
                           style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary),

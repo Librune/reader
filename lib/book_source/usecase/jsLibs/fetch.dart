@@ -11,7 +11,8 @@ Future<Map<String, dynamic>> dioFetch(dynamic args) async {
   late Response response;
   switch (options["method"].toString().toLowerCase()) {
     case "get":
-      response = await Dio().get(uri.toString(), options: Options(headers: headers, contentType: 'application/json'));
+      response =
+          await Dio().get(uri.toString(), options: Options(headers: headers, contentType: options["contentType"]));
       break;
     case "post":
       response = await Dio().post(uri.toString(), data: options["body"], options: Options(headers: headers));
@@ -33,7 +34,7 @@ Future<Map<String, dynamic>> dioFetch(dynamic args) async {
     "headers": response.headers.map.map((key, value) => MapEntry(key, value.toString())),
     "body": response.data,
     "responseURL": response.requestOptions.uri.toString(),
-    "responseText": options["contentType"].toString().contains(Headers.jsonContentType)
+    "responseText": response.headers.value("content-type").toString().contains(Headers.jsonContentType)
         ? jsonEncode(response.data)
         : response.data.toString()
   };
