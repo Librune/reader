@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/search/provider/search_provider.dart';
 import 'package:reader/search/ui/components/search_bar.dart';
@@ -14,7 +15,12 @@ class SearchResultScreen extends HookConsumerWidget {
     final provider = searchProvider(keyword);
     final searchBooks = ref.watch(provider);
     return Scaffold(
-        appBar: BookSearchBar(),
+        appBar: BookSearchBar(
+            autoFocus: false,
+            keyword: keyword,
+            onTap: () {
+              context.replace("/search", extra: keyword);
+            }),
         body: switch (searchBooks) {
           AsyncValue(:final value?) => CustomScrollView(
               slivers: [

@@ -62,7 +62,10 @@ final router = GoRouter(navigatorKey: rootNavigatorKey, initialLocation: "/shelf
       ]),
   GoRoute(
     path: "/search",
-    builder: (context, state) => SearchScreen(),
+    builder: (context, state) {
+      final keyword = state.extra as String?;
+      return SearchScreen(keyword: keyword);
+    },
   ),
   GoRoute(
     path: "/book_search_result/:keyword",

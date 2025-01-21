@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 
 class BookSearchBar extends HookConsumerWidget implements PreferredSizeWidget {
-  const BookSearchBar({super.key});
+  const BookSearchBar({super.key, this.keyword, this.onTap, this.autoFocus = true});
+
+  final bool? autoFocus;
+  final String? keyword;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-
+    final searchController = useTextEditingController(text: keyword);
     return AppTopBar(
         title: Row(
       children: [
         Expanded(
             child: SearchBar(
-          autoFocus: true,
+          autoFocus: autoFocus!,
+          controller: searchController,
           elevation: WidgetStatePropertyAll(0),
           constraints: BoxConstraints(minHeight: 38),
           textStyle: WidgetStatePropertyAll(textTheme.bodySmall),
           padding: WidgetStatePropertyAll(EdgeInsets.only(right: 0, left: 10)),
+          onTap: onTap,
           leading: Padding(
             padding: EdgeInsets.only(left: 4),
             child: SvgPicture.asset("assets/svg/ic_topbar_search.svg",

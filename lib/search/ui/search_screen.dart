@@ -8,12 +8,13 @@ import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/search/provider/search_provider.dart';
 
 class SearchScreen extends HookConsumerWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({super.key, this.keyword});
+  final String? keyword;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    final searchController = useTextEditingController();
+    final searchController = useTextEditingController(text: keyword);
     return Scaffold(
       appBar: AppTopBar(
           title: Row(
