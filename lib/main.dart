@@ -42,7 +42,7 @@ class ReaderApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final preference = ref.watch(appProvider.select((value) => value.preference));
-    useBrightness(context, autoDarkMode: preference.autoDarkMode, isDarkMode: preference.isDarkMode);
+    // useBrightness(context, autoDarkMode: preference.autoDarkMode, isDarkMode: preference.isDarkMode);
     return MaterialApp.router(
       title: '阅读',
       theme: AppTheme.light,

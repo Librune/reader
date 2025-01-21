@@ -34,9 +34,9 @@ class AppTopBar extends HookConsumerWidget implements PreferredSizeWidget {
       centerTitle: false,
       backgroundColor: color ?? colorScheme.surfaceContainer,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent,
-      ),
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness:
+              Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light),
       title: Padding(
         padding: EdgeInsets.only(left: _canPop ? 8 : titleLeftPadding),
         child: _title,
