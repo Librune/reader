@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reader/app/ui/components/bottom_nav.dart';
+import 'package:reader/app/ui/components/keep_alive.dart';
 import 'package:reader/book_detail/ui/book_detail_screen.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/ui/book_source_detail.dart';
@@ -33,6 +34,7 @@ final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final router = GoRouter(navigatorKey: rootNavigatorKey, initialLocation: "/shelf", routes: <RouteBase>[
   StatefulShellRoute.indexedStack(
+      restorationScopeId: "home",
       builder: (context, state, navigationShell) {
         return BottomNav(navigationShell, items: [
           BottomBarItem(svgPath: "assets/svg/ic_bottom_books", label: "书架"),
@@ -41,12 +43,17 @@ final router = GoRouter(navigatorKey: rootNavigatorKey, initialLocation: "/shelf
         ]);
       },
       branches: [
-        StatefulShellBranch(routes: [
-          GoRoute(
-            path: '/shelf',
-            builder: (context, state) => const ShelfScreen(),
-          ),
-        ]),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/shelf',
+              builder: (context, state) => const KeepAlivePage(
+                child: ShelfScreen(),
+              ),
+            ),
+          ],
+          restorationScopeId: 'shelf',
+        ),
         StatefulShellBranch(routes: [
           GoRoute(
             path: '/discover',
