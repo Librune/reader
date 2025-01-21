@@ -21,16 +21,17 @@ class BookSearchBar extends HookConsumerWidget implements PreferredSizeWidget {
         Expanded(
             child: SearchBar(
           autoFocus: autoFocus!,
+          backgroundColor: WidgetStateProperty.all(colorScheme.inverseSurface.withAlpha(20)),
           controller: searchController,
           elevation: WidgetStatePropertyAll(0),
           constraints: BoxConstraints(minHeight: 38),
-          textStyle: WidgetStatePropertyAll(textTheme.bodySmall),
+          textStyle: WidgetStatePropertyAll(textTheme.bodyMedium),
           padding: WidgetStatePropertyAll(EdgeInsets.only(right: 0, left: 10)),
           onTap: onTap,
           leading: Padding(
             padding: EdgeInsets.only(left: 4),
             child: SvgPicture.asset("assets/svg/ic_topbar_search.svg",
-                colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn), width: 16),
+                colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 16),
           ),
           trailing: [
             ConstrainedBox(
