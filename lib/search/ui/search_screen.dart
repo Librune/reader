@@ -71,7 +71,7 @@ class SearchScreen extends HookConsumerWidget {
       body: Column(
         children: [
           Padding(
-              padding: EdgeInsets.only(left: 16, right: 4, top: 0, bottom: MediaQuery.of(context).padding.bottom),
+              padding: EdgeInsets.only(left: 16, right: 4, top: 0),
               child: Row(
                 children: [
                   Text(
