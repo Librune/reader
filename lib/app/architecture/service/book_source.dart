@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_js/flutter_js.dart';
-import 'package:flutter_js/javascript_runtime.dart';
 import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
+import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/usecase/bks_channel_usecase.dart';
 
 class BookSourceService {
   // jsRuntime实例
   late final JavascriptRuntime runtime;
+  final List<BookSourceModel> bookSourceList = [];
   static final BookSourceService _instance = BookSourceService._internal();
   BookSourceService._internal();
   factory BookSourceService() {
@@ -60,13 +61,20 @@ class BookSourceService {
     final isInjected = await runtime.evaluateAsync("""
       __BOOK_SOURCE_MAP__.hasOwnProperty('$uuid')
     """);
-    Log.d("isInjected: ${isInjected.stringResult}");
     if (isInjected.stringResult == "false") {
       await runtime.evaluateAsync(js);
       await runtime.evaluateAsync("""
         __BOOK_SOURCE_MAP__['$uuid'] = new BookSource();
       """);
     }
+    bookSourceList.add(await getBookSourceInfo(uuid));
+  }
+
+  getBookSourceInfo(String uuid) async {
+    final res = await runtime.evaluateAsync("""
+      __BOOK_SOURCE_MAP__['$uuid'].info();
+    """);
+    return BookSourceModel.fromJson({...jsonDecode(res.stringResult), "uuid": uuid});
   }
 
   lsitAll() async {
@@ -76,13 +84,13 @@ class BookSourceService {
     Log.d("listAll: ${res.stringResult}");
   }
 
-  test({required String uuid, required String act}) async {
+  action({required String uuid, required String act, List<dynamic>? args}) async {
     runtime.executePendingJob();
     final res = await runtime.evaluateAsync("""
-       __BOOK_SOURCE_MAP__['$uuid'].action('$act');
+       __BOOK_SOURCE_MAP__['$uuid'].action('$act', ${args != null ? jsonEncode(args) : ''});
     """);
     JsEvalResult asyncResult = await runtime.handlePromise(res);
-    Log.d("test: ${asyncResult.stringResult}");
+    return asyncResult.rawResult;
   }
 
   File get bksManifest => File(PathService().bookSourceManifestPath);
@@ -167,7 +175,4 @@ class __BOOK_SOURCE__ {
     })
    }
 };
-""";
-const INJECT_BOOK_SOURCE = """
-
 """;

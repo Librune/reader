@@ -48,7 +48,7 @@ class ShelfScreen extends HookConsumerWidget {
             onPressed: () {
               // context.push("/preference");
               BookSourceService().lsitAll();
-              BookSourceService().test(uuid: 'bd406921-c0b5-48f0-9462-8e0242d32e3f', act: "test");
+              BookSourceService().action(uuid: 'bd406921-c0b5-48f0-9462-8e0242d32e3f', act: "test");
             },
             icon: SvgPicture.asset(
               "assets/svg/ic_topbar_more.svg",
