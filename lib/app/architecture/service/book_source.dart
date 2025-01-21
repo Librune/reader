@@ -1,66 +1,173 @@
-// import 'dart:convert';
-// import 'dart:io';
+import 'dart:convert';
+import 'dart:io';
 
-// import 'package:flutter_js/flutter_js.dart';
-// import 'package:path/path.dart';
-// import 'package:reader/app/architecture/service/path.dart';
-// import 'package:reader/app/architecture/utils/log.dart';
-// import 'package:reader/book_source/data/model/book_source.dart';
+import 'package:flutter_js/flutter_js.dart';
+import 'package:flutter_js/javascript_runtime.dart';
+import 'package:path/path.dart';
+import 'package:reader/app/architecture/service/path.dart';
+import 'package:reader/app/architecture/utils/log.dart';
+import 'package:reader/book_source/usecase/bks_channel_usecase.dart';
 
-// enum BookSourceFileType { js, ts, wasm, zip, bks }
+class BookSourceService {
+  // jsRuntime实例
+  late final JavascriptRuntime runtime;
+  static final BookSourceService _instance = BookSourceService._internal();
+  BookSourceService._internal();
+  factory BookSourceService() {
+    return _instance;
+  }
 
-// class BookSource {
-//   final _appDirPath = PathService().appPath;
-//   final Log _log = Log("BksObj");
-//   late final BookSourceModel model;
-//   final dynamic bks;
+  init() async {
+    _initJsRuntime();
+  }
 
-//   final JavascriptRuntime javascriptRuntime = getJavascriptRuntime(forceJavascriptCoreOnAndroid: false)
-//     ..setInspectable(true)
-//     ..evaluate("""
-// class __BOOK_SOURCE__ {
-//   export(obj){
-//     return JSON.stringify(obj)
-//   }
+  _initJsRuntime() async {
+    runtime = getJavascriptRuntime(forceJavascriptCoreOnAndroid: false)..setInspectable(true);
+    await _bootstrap();
+    await _initBookSourceObjects();
+  }
 
-//   info(){
-//     return this.export({
-//       name: this.name,
-//       author: this.author
-//     })
-//   }
-// };
-// """);
-//   late String jsStr;
+  _bootstrap() async {
+    await runtime.evaluateAsync("""
+      $INCLUDE 
+      $PRXOY_JS_OBJ
+      $LOG_JS_OBJ
+      $BOOK_SOURCE_SUPER_CLASS
+    """);
+    BookSourceChannelUsecase.inject(runtime);
+  }
 
-//   BookSource(this.bks)
-//       : assert(bks != null && ["String", "_File", "Directory"].contains((bks.runtimeType.toString()))) {
-//     if (bks.runtimeType.toString() == "String") {
-//       try {
-//         jsonDecode(bks as String);
-//         jsStr = bks as String;
-//       } catch (err) {
-//         final file = File(join(_appDirPath, "bks", bks as String, "index.js"));
-//         jsStr = file.readAsStringSync();
-//       }
-//     } else if (bks.runtimeType.toString() == "_File") {
-//       jsStr = (bks as File).readAsStringSync();
-//     } else {
-//       jsStr = File(join((bks as Directory).path, "index.js")).readAsStringSync();
-//     }
-//   }
+  _initBookSourceObjects() async {
+    final bksList = [];
+    try {
+      if (!bksManifest.existsSync()) {
+        bksManifest.createSync(recursive: true);
+      } else {
+        final json = jsonDecode(bksManifest.readAsStringSync()) as List<dynamic>;
+        bksList.addAll(json.where(((bks) => bks["enabled"] == true)));
+      }
+    } catch (e) {
+      bksManifest.writeAsStringSync("[]");
+    }
+    for (var bks in bksList) {
+      await injectBookSource(bks["uuid"]);
+    }
+  }
 
-//   factory BookSource.fromManifest(dynamic manifest) {
-//     return BookSource(manifest["uuid"])..model = BookSourceModel.fromJson(manifest);
-//   }
+  injectBookSource(String uuid) async {
+    final bksFile = File(join(PathService().bookSourcePath, uuid, "index.js"));
+    final js = bksFile.readAsStringSync();
+    final isInjected = await runtime.evaluateAsync("""
+      __BOOK_SOURCE_MAP__.hasOwnProperty('$uuid')
+    """);
+    Log.d("isInjected: ${isInjected.stringResult}");
+    if (isInjected.stringResult == "false") {
+      await runtime.evaluateAsync(js);
+      await runtime.evaluateAsync("""
+        __BOOK_SOURCE_MAP__['$uuid'] = new BookSource();
+      """);
+    }
+  }
 
-//   Future<BookSourceModel> info() async {
-//     JsEvalResult jsResult = await javascriptRuntime.evaluateAsync("""
-// $jsStr
-// const instance = new BookSource();
-// instance.info();
-// """);
-//     model = BookSourceModel.fromJson(jsonDecode(jsResult.stringResult));
-//     return model;
-//   }
-// }
+  lsitAll() async {
+    final res = await runtime.evaluateAsync("""
+      Object.keys(__BOOK_SOURCE_MAP__)
+    """);
+    Log.d("listAll: ${res.stringResult}");
+  }
+
+  test({required String uuid, required String act}) async {
+    runtime.executePendingJob();
+    final res = await runtime.evaluateAsync("""
+       __BOOK_SOURCE_MAP__['$uuid'].action('$act');
+    """);
+    JsEvalResult asyncResult = await runtime.handlePromise(res);
+    Log.d("test: ${asyncResult.stringResult}");
+  }
+
+  File get bksManifest => File(PathService().bookSourceManifestPath);
+}
+
+const INCLUDE = """
+const __INCLUEDED_LIBS__ = [];
+async function include(lib){
+  if(__INCLUEDED_LIBS__.includes(lib)){
+    return;
+  }
+  await sendMessage('invokeRequire', JSON.stringify({data:lib}));
+}
+""";
+const PRXOY_JS_OBJ = """
+const proxyObj = {
+      title: '网络设置',
+      subtitle: '设置代理，如果你需要通过代理访问，请设置代理',
+      form: [
+        {
+          type: 'input',
+          field: 'proxy',
+          title: '代理',
+          placeholder: '设定代理地址',
+        },
+        {
+          type: 'input',
+          field: 'proxy',
+          title: '用户名',
+          placeholder: '设定用户名',
+        },
+        {
+          type: 'input',
+          field: 'proxy',
+          title: '密码',
+          placeholder: '设定密码',
+        },
+      ],
+    };
+""";
+const LOG_JS_OBJ = """
+const logObj = {
+      title: '杂项',
+      subtitle: '一些额外的配置项目',
+      form: [
+        {
+          type: 'toggle',
+          field: 'log',
+          title: '捕获日志',
+          placeholder: '是否捕获并存储请求日志到本地',
+        },
+      ],
+    };
+""";
+const BOOK_SOURCE_SUPER_CLASS = """
+const __BOOK_SOURCE_MAP__ = {};
+class __BOOK_SOURCE__ {
+  export(obj){
+    return JSON.stringify(obj)
+  }
+
+  action=async(act,args)=>{
+    return this[act](args);
+  }
+
+  toast=(message)=>{
+    sendMessage('invokeToast', JSON.stringify({data:message}));
+  }
+
+  info=()=>{
+    if(this.proxyFeature){
+      this.forms.push(proxyObj)
+    }
+    if(this.logFeature){
+      this.forms.push(logObj)
+    }
+    return this.export({
+      name: this.name,
+      author: this.author,       
+      forms: this.forms,
+      actions: this.actions
+    })
+   }
+};
+""";
+const INJECT_BOOK_SOURCE = """
+
+""";

@@ -6,5 +6,8 @@ class BookSourceLibsUsecase {
   static Future<void> fromBundle(JavascriptRuntime runtime, {required String name}) async {
     final js = await rootBundle.loadString('assets/js/$name.js');
     await runtime.evaluateAsync(js);
+    await runtime.evaluateAsync("""
+      __INCLUEDED_LIBS__.push('$name');
+    """);
   }
 }

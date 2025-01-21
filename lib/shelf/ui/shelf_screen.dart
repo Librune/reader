@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/shelf/ui/components/last_read.dart';
 import 'package:reader/shelf/ui/components/shelf_grid.dart';
@@ -45,7 +46,9 @@ class ShelfScreen extends HookConsumerWidget {
           // ),
           IconButton(
             onPressed: () {
-              context.push("/preference");
+              // context.push("/preference");
+              BookSourceService().lsitAll();
+              BookSourceService().test(uuid: 'bd406921-c0b5-48f0-9462-8e0242d32e3f', act: "test");
             },
             icon: SvgPicture.asset(
               "assets/svg/ic_topbar_more.svg",
