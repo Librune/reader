@@ -7,6 +7,7 @@ import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/usecase/bks_channel_usecase.dart';
+import 'package:uuid/uuid.dart';
 
 class BookSourceService {
   // jsRuntime实例
@@ -62,19 +63,42 @@ class BookSourceService {
       __BOOK_SOURCE_MAP__.hasOwnProperty('$uuid')
     """);
     if (isInjected.stringResult == "false") {
-      await runtime.evaluateAsync(js);
       await runtime.evaluateAsync("""
-        __BOOK_SOURCE_MAP__['$uuid'] = new BookSource();
+        __BOOK_SOURCE_MAP__['$uuid'] = (()=>{
+          $js
+          return new BookSource();
+        })()
       """);
     }
     bookSourceList.add(await getBookSourceInfo(uuid));
   }
 
-  getBookSourceInfo(String uuid) async {
+  Future<BookSourceModel> injectBookSourceFromFile(File file) async {
+    final js = file.readAsStringSync();
+    final uuid = Uuid().v4();
+    await runtime.evaluateAsync("""
+        __BOOK_SOURCE_MAP__['$uuid'] = (()=>{
+          $js
+          return new BookSource();
+        })()
+      """);
+    final bookSource = await getBookSourceInfo(uuid);
+    bookSourceList.add(bookSource);
+    return bookSource;
+  }
+
+  Future<BookSourceModel> getBookSourceInfo(String uuid) async {
     final res = await runtime.evaluateAsync("""
       __BOOK_SOURCE_MAP__['$uuid'].info();
     """);
     return BookSourceModel.fromJson({...jsonDecode(res.stringResult), "uuid": uuid});
+  }
+
+  remove(String uuid) async {
+    await runtime.evaluateAsync("""
+      delete __BOOK_SOURCE_MAP__['$uuid']
+    """);
+    bookSourceList.removeWhere((element) => element.uuid == uuid);
   }
 
   lsitAll() async {

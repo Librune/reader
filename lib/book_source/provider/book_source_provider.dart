@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
-import 'package:reader/book_source/usecase/bks_new_usecase.dart';
+import 'package:reader/book_source/usecase/bks_manage_usecase.dart';
 import 'package:reader/book_source/usecase/bks_runtime_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,7 +15,7 @@ part 'book_source_provider.g.dart';
 class BookSource extends _$BookSource {
   final bksPath = join(PathService().appPath, "bks");
   @override
-  Future<List<BookSourceModel>> build() async {
+  List<BookSourceModel> build() {
     listenSelf(onSelfChange);
     // if (bksManifest.existsSync()) {
     //   try {
@@ -36,40 +36,42 @@ class BookSource extends _$BookSource {
     return BookSourceService().bookSourceList;
   }
 
-  pickNew({BookSourceFileType type = BookSourceFileType.js}) async {
-    switch (type) {
-      case BookSourceFileType.js:
-        final data = state.value!;
-        final bks = await BookSourceNewUsecase.js();
-        final testExist = data.where((_bks) => _bks.name == bks.name && _bks.author == bks.author);
-        if (testExist.isNotEmpty) {
-          return;
-        }
-        state = AsyncData([bks, ...data]);
-        return;
-      default:
-        return;
-    }
+  // pickNew({BookSourceFileType type = BookSourceFileType.js}) async {
+  //   switch (type) {
+  //     case BookSourceFileType.js:
+  //       final data = state.value!;
+  //       final bks = await BookSourceNewUsecase.js();
+  //       final testExist = data.where((_bks) => _bks.name == bks.name && _bks.author == bks.author);
+  //       if (testExist.isNotEmpty) {
+  //         return;
+  //       }
+  //       state = AsyncData([bks, ...data]);
+  //       return;
+  //     default:
+  //       return;
+  //   }
+  // }
+
+  // delete(String uuid) {
+  //   final data = state.value!;
+  //   final index = data.indexWhere((element) => element.uuid == uuid);
+  //   if (index != -1) {
+  //     final bks = data[index];
+  //     final dir = Directory(join(bksPath, bks.uuid));
+  //     if (dir.existsSync()) {
+  //       dir.deleteSync(recursive: true);
+  //     }
+  //     data.removeAt(index);
+  //     state = AsyncData(data);
+  //   }
+  // }
+
+  refresh() {
+    state = [...BookSourceService().bookSourceList];
   }
 
-  delete(String uuid) {
-    final data = state.value!;
-    final index = data.indexWhere((element) => element.uuid == uuid);
-    if (index != -1) {
-      final bks = data[index];
-      final dir = Directory(join(bksPath, bks.uuid));
-      if (dir.existsSync()) {
-        dir.deleteSync(recursive: true);
-      }
-      data.removeAt(index);
-      state = AsyncData(data);
-    }
-  }
-
-  onSelfChange(AsyncValue<List<BookSourceModel>>? oldVal, AsyncValue<List<BookSourceModel>> newVal) {
-    final data = newVal.value;
-    if (data == null) return;
-    final arr = data.map((val) {
+  onSelfChange(List<BookSourceModel>? oldVal, List<BookSourceModel> newVal) {
+    final arr = newVal.map((val) {
       return Map<String, dynamic>.from({
         "name": val.name,
         "author": val.author,

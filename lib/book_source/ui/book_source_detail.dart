@@ -14,6 +14,7 @@ import 'package:reader/app/ui/components/preference.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/provider/book_source_provider.dart';
+import 'package:reader/book_source/usecase/bks_manage_usecase.dart';
 
 class BookSourceDetail extends HookConsumerWidget {
   const BookSourceDetail({super.key, required this.model});
@@ -33,7 +34,8 @@ class BookSourceDetail extends HookConsumerWidget {
             sliver: SliverToBoxAdapter(
               child: TextButton(
                 onPressed: () {
-                  ref.read(bookSourceProvider.notifier).delete(model.uuid);
+                  // ref.read(bookSourceProvider.notifier).delete(model.uuid);
+                  BookSourceManageUsecase.remove(ref, uuid: model.uuid);
                   context.pop();
                 },
                 style: ButtonStyle(

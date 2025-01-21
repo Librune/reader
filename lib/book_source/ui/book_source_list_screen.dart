@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/book_source/ui/components/book_source_item.dart';
+import 'package:reader/book_source/usecase/bks_manage_usecase.dart';
 
 import '../provider/book_source_provider.dart';
 
@@ -19,37 +20,34 @@ class BookSourceListScreen extends HookConsumerWidget {
             SvgBtn(
               svgName: "ic_btn_plus",
               onPressed: () {
-                ref.read(bookSourceProvider.notifier).pickNew();
+                // ref.read(bookSourceProvider.notifier).pickNew();
+                BookSourceManageUsecase.pickNew(ref);
               },
             )
           ],
         ),
         body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: switch (booksource) {
-              AsyncValue(:final value?) => ListView.separated(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    final bks = value[index];
-                    return BookSourceItem(
-                      source: bks,
-                      onActionPressed: () {
-                        context.push("/book_source/preference", extra: bks);
-                      },
-                      onPressed: () {
-                        context.push("/book_source/detail", extra: bks);
-                      },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      height: 12,
-                    );
-                  },
-                ),
-              _ => Center(
-                  child: CircularProgressIndicator(),
-                ),
-            }));
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: ListView.separated(
+            itemCount: booksource.length,
+            itemBuilder: (context, index) {
+              final bks = booksource[index];
+              return BookSourceItem(
+                source: bks,
+                onActionPressed: () {
+                  context.push("/book_source/preference", extra: bks);
+                },
+                onPressed: () {
+                  context.push("/book_source/detail", extra: bks);
+                },
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return SizedBox(
+                height: 12,
+              );
+            },
+          ),
+        ));
   }
 }
