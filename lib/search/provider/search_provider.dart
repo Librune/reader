@@ -22,7 +22,6 @@ class Search extends _$Search {
     //   bookList.addAll(list);
     // }
     final bookList = await BookSourceActionUsecase.searchBooksFromAll(keyword);
-    Log.d(bookList);
     return bookList;
   }
 
