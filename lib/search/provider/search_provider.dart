@@ -10,9 +10,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'search_provider.g.dart';
 
 @riverpod
-class Search extends _$Search {
+class SearchBooks extends _$SearchBooks {
   @override
-  Future<List<SearchBookItemModel>> build(String keyword) async {
+  List<SearchBookItemModel> build(String keyword) {
     // final bksList = await ref.read(bookSourceProvider.future);
     // final List<SearchBookItemModel> bookList = [];
     // for (var bks in bksList) {
@@ -21,8 +21,13 @@ class Search extends _$Search {
     //   final List<SearchBookItemModel> list = (json as List).map((e) => SearchBookItemModel.fromJson(e)).toList();
     //   bookList.addAll(list);
     // }
-    final bookList = await BookSourceActionUsecase.searchBooksFromAll(keyword);
-    return bookList;
+    // final bookList = await BookSourceActionUsecase.searchBooksFromAll(keyword);
+    // return bookList;
+    return [];
+  }
+
+  pushSearchGroup(List<SearchBookItemModel> bookList) {
+    state = [...state, ...bookList];
   }
 
   // _refreshSearch(String keyword) async {

@@ -64,6 +64,8 @@ class BookSearchItem extends HookConsumerWidget {
                         children: [
                           Text(
                             book.author,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: textTheme.bodyMedium?.copyWith(color: colorScheme.secondary),
                           ),
                         ],
