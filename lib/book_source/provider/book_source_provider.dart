@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart';
+import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/architecture/service/path.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/usecase/bks_new_usecase.dart';
 import 'package:reader/book_source/usecase/bks_runtime_usecase.dart';
@@ -17,22 +17,23 @@ class BookSource extends _$BookSource {
   @override
   Future<List<BookSourceModel>> build() async {
     listenSelf(onSelfChange);
-    if (bksManifest.existsSync()) {
-      try {
-        final json = jsonDecode(bksManifest.readAsStringSync());
-        final List<BookSourceModel> list = [];
-        for (var ele in json) {
-          final bks = await BookSourceRuntimeUseCase(uuid: ele["uuid"]).info();
-          list.add(bks);
-        }
-        return list;
-      } catch (e) {
-        return [];
-      }
-    } else {
-      bksManifest.createSync(recursive: true);
-      return [];
-    }
+    // if (bksManifest.existsSync()) {
+    //   try {
+    //     final json = jsonDecode(bksManifest.readAsStringSync());
+    //     final List<BookSourceModel> list = [];
+    //     for (var ele in json) {
+    //       final bks = await BookSourceRuntimeUseCase(uuid: ele["uuid"]).info();
+    //       list.add(bks);
+    //     }
+    //     return list;
+    //   } catch (e) {
+    //     return [];
+    //   }
+    // } else {
+    //   bksManifest.createSync(recursive: true);
+    //   return [];
+    // }
+    return BookSourceService().bookSourceList;
   }
 
   pickNew({BookSourceFileType type = BookSourceFileType.js}) async {
