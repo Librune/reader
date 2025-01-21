@@ -13,7 +13,6 @@ part 'book_source_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class BookSource extends _$BookSource {
-  final _log = Log('bksProvider');
   final bksPath = join(PathService().appPath, "bks");
   @override
   Future<List<BookSourceModel>> build() async {

@@ -100,7 +100,7 @@ class BookSourceRuntimeUseCase {
   BookSourceRuntimeUseCase._internal(this.uuid) {
     jsRuntime = getJavascriptRuntime(forceJavascriptCoreOnAndroid: false);
     jsRuntime.setInspectable(true);
-    jsRuntime.enableFetch();
+    // jsRuntime.enableFetch();
   }
 
   // 工厂构造方法

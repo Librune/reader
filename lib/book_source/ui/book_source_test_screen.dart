@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,10 +12,14 @@ class BookSourceTestScreen extends HookConsumerWidget {
   final String uuid;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _log = Log("BookSourceTestScreen");
     final data = useFuture(useMemoized<dynamic>(() async {
-      final res = await BookSourceRuntimeUseCase(uuid: uuid).action('test');
-      return res;
+      try {
+        final res = await BookSourceRuntimeUseCase(uuid: uuid).action('test');
+        return jsonDecode(res);
+      } catch (e) {
+        Log.e(e);
+        return null;
+      }
     }));
     return Scaffold(
         appBar: AppTopBar(title: "测试书源"),

@@ -4,12 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/usecase/bks_runtime_usecase.dart';
 
 class BookSourceNewUsecase {
-  static final _log = Log('AddBookSourceUsecase');
   static final bksDir = join(PathService().appPath, 'bks');
   static Future<File> _pickFile() async {
     FilePickerResult? result = await FilePicker.platform

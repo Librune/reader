@@ -10,7 +10,6 @@ part 'search_provider.g.dart';
 
 @riverpod
 class Search extends _$Search {
-  final _log = Log("Search");
   @override
   Future<List<SearchBookItemModel>> build(String keyword) async {
     final bksList = await ref.read(bookSourceProvider.future);

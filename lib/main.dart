@@ -9,7 +9,6 @@ import 'package:reader/app/provider/app_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Log.init();
   await PathService().init();
   runApp(const ProviderScope(child: ReaderApp()));
 }
