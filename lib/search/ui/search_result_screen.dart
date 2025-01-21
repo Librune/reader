@@ -44,6 +44,11 @@ class SearchResultScreen extends HookConsumerWidget {
                   addAutomaticKeepAlives: true,
                   addRepaintBoundaries: true,
                   addSemanticIndexes: true,
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).padding.bottom,
+                  ),
                 )
               ],
             ),
