@@ -9,9 +9,13 @@ class SearchBookItemModel with _$SearchBookItemModel {
     required String name,
     required String author,
     required String cover,
-    required String description,
     required String bookId,
-    required String chapterNum,
+    String? chapterNum,
+    String? wordNum,
+    String? description,
+    // 状态，0：已完结，1：连载中
+    String? creationStatus,
+    String? tag,
   }) = _SearchBookItemModel;
   factory SearchBookItemModel.fromJson(Map<String, dynamic> json) => _$SearchBookItemModelFromJson(json);
   const SearchBookItemModel._();
