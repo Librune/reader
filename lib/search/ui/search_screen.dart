@@ -33,11 +33,16 @@ class SearchScreen extends HookConsumerWidget {
               child: SvgPicture.asset("assets/svg/ic_topbar_search.svg",
                   colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 16),
             ),
+            onSubmitted: (value) {
+              context.replace('/book_search_result/$value');
+            },
             trailing: [
               ConstrainedBox(
                   constraints: BoxConstraints(maxHeight: 36),
                   child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        searchController.clear();
+                      },
                       icon: SvgPicture.asset(
                         "assets/svg/ic_btn_close.svg",
                         width: 16,
