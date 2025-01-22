@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pull_down_button/pull_down_button.dart';
+import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/app/ui/components/preference.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
@@ -27,22 +28,37 @@ class BookSourcePreference extends HookConsumerWidget {
             size: 22,
           ),
           PullDownButton(
-            itemBuilder: (context) => model.actions.map<PullDownMenuItem>((action) {
-              return PullDownMenuItem(
-                title: action['label'],
+            itemBuilder: (context) => [
+              ...model.actions.map<PullDownMenuItem>((action) {
+                return PullDownMenuItem(
+                  title: action['label'],
+                  itemTheme: PullDownMenuItemTheme(
+                    textStyle: TextStyle(color: colorScheme.onSurface, fontSize: 15),
+                  ),
+                  iconWidget: SvgPicture.asset(
+                    "assets/svg/${action['icon']}.svg",
+                    colorFilter: ColorFilter.mode(colorScheme.secondary, BlendMode.srcIn),
+                  ),
+                  onTap: () {
+                    BookSourceService().action(uuid: model.uuid, act: action['action']);
+                  },
+                );
+              }),
+              PullDownMenuItem(
+                title: "测试",
                 itemTheme: PullDownMenuItemTheme(
                   textStyle: TextStyle(color: colorScheme.onSurface, fontSize: 15),
                 ),
                 iconWidget: SvgPicture.asset(
-                  "assets/svg/${action['icon']}.svg",
+                  "assets/svg/ic_btn_satellite.svg",
                   colorFilter: ColorFilter.mode(colorScheme.secondary, BlendMode.srcIn),
                 ),
                 onTap: () {
                   // model.action(action['action']);
                   context.push("/book_source_test/${model.uuid}");
                 },
-              );
-            }).toList(),
+              )
+            ],
             buttonBuilder: (context, showMenu) => SvgBtn(
               onPressed: showMenu,
               svgName: "ic_topbar_more",

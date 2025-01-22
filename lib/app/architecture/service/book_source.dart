@@ -63,10 +63,12 @@ class BookSourceService {
       __BOOK_SOURCE_MAP__.hasOwnProperty('$uuid')
     """);
     if (isInjected.stringResult == "false") {
+      final bookSourceEnvs = PathService().getEnvFile(uuid);
+      final envs = bookSourceEnvs.readAsStringSync();
       await runtime.evaluateAsync("""
         __BOOK_SOURCE_MAP__['$uuid'] = (()=>{
           $js
-          return new BookSource();
+          return new BookSource('$uuid','$envs');
         })()
       """);
     }
@@ -82,6 +84,9 @@ class BookSourceService {
           return new BookSource();
         })()
       """);
+    await runtime.evaluateAsync("""
+      __BOOK_SOURCE_MAP__['$uuid'].uuid = '$uuid'
+    """);
     final bookSource = await getBookSourceInfo(uuid);
     bookSourceList.add(bookSource);
     return bookSource;
@@ -172,6 +177,14 @@ const logObj = {
 const BOOK_SOURCE_SUPER_CLASS = """
 const __BOOK_SOURCE_MAP__ = {};
 class __BOOK_SOURCE__ {
+  uuid = '';
+  __envs__ = {};
+
+  constructor(uuid,envs) {
+    this.uuid = uuid;
+    this.__envs__ = JSON.parse(envs??'{}');
+  }
+
   export(obj){
     return JSON.stringify(obj)
   }
@@ -182,6 +195,14 @@ class __BOOK_SOURCE__ {
 
   toast=(message)=>{
     sendMessage('invokeToast', JSON.stringify({data:message}));
+  }
+
+  setLocalStorage=(key,value)=>{
+    sendMessage('invokeLocalStorageSet', JSON.stringify({key,value,uuid:this.uuid}));
+  }
+
+  getLocalStorage=(key)=>{
+    return sendMessage('invokeLocalStorageGet', JSON.stringify({key,uuid:this.uuid}));
   }
 
   info=()=>{

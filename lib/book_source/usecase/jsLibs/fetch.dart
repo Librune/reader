@@ -14,13 +14,16 @@ Future<Map<String, dynamic>> dioFetch(dynamic args) async {
           await Dio().get(uri.toString(), options: Options(headers: headers, contentType: options["contentType"]));
       break;
     case "post":
-      response = await Dio().post(uri.toString(), data: options["body"], options: Options(headers: headers));
+      response = await Dio().post(uri.toString(),
+          data: options["data"], options: Options(headers: headers, contentType: options["contentType"]));
       break;
     case "put":
-      response = await Dio().put(uri.toString(), data: options["body"], options: Options(headers: headers));
+      response = await Dio().put(uri.toString(),
+          data: options["data"], options: Options(headers: headers, contentType: options["contentType"]));
       break;
     case "delete":
-      response = await Dio().delete(uri.toString(), options: Options(headers: headers));
+      response =
+          await Dio().delete(uri.toString(), options: Options(headers: headers, contentType: options["contentType"]));
       break;
     default:
       throw Exception("Unsupported method: ${options["method"]}");

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -23,5 +25,13 @@ class PathService {
     appPath = (await getApplicationSupportDirectory()).path;
     bookSourcePath = join(appPath, 'bks');
     bookSourceManifestPath = join(bookSourcePath, 'index.json');
+  }
+
+  File getEnvFile(String uuid) {
+    final file = File(join(bookSourcePath, uuid, "envs.json"));
+    if (!file.existsSync()) {
+      file.writeAsStringSync("{}");
+    }
+    return file;
   }
 }
