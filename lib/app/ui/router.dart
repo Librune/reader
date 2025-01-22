@@ -11,6 +11,7 @@ import 'package:reader/book_source/ui/book_source_test_screen.dart';
 import 'package:reader/discover/ui/discover_screen.dart';
 
 import 'package:reader/preference/ui/preference_screen.dart';
+import 'package:reader/search/data/model/search_book_item.dart';
 import 'package:reader/search/ui/search_result_screen.dart';
 import 'package:reader/search/ui/search_screen.dart';
 import 'package:reader/shelf/ui/shelf_screen.dart';
@@ -82,11 +83,12 @@ final router = GoRouter(navigatorKey: rootNavigatorKey, initialLocation: "/shelf
     },
   ),
   GoRoute(
-    path: "/book_detail/:bks/:id",
+    path: "/book_detail/:uuid/:bid",
     builder: (context, state) {
-      final bks = state.pathParameters['bks']!;
-      final id = state.pathParameters['id']!;
-      return BookDetailScreen();
+      final uuid = state.pathParameters['uuid']!;
+      final bid = state.pathParameters['bid']!;
+      final SearchBookItemModel? book = state.extra as SearchBookItemModel?;
+      return BookDetailScreen(uuid: uuid, bid: bid, book: book);
     },
   ),
   GoRoute(

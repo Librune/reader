@@ -32,7 +32,10 @@ class SearchGroup extends HookConsumerWidget {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            return BookSearchItem(book: bookList[index]);
+            return BookSearchItem(
+              book: bookList[index],
+              uuid: bookSource.uuid,
+            );
           },
           separatorBuilder: (context, index) {
             return Divider(

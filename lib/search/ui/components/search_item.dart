@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nil/nil.dart';
 import 'package:reader/app/architecture/utils/enum.dart';
@@ -7,8 +8,9 @@ import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/search/data/model/search_book_item.dart';
 
 class BookSearchItem extends HookConsumerWidget {
-  const BookSearchItem({super.key, required this.book});
+  const BookSearchItem({super.key, required this.book, required this.uuid});
   final SearchBookItemModel book;
+  final String uuid;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
@@ -132,6 +134,7 @@ class BookSearchItem extends HookConsumerWidget {
       ),
       onTap: () {
         Log.d(book);
+        context.push("/book_detail/$uuid/${book.bookId}", extra: book);
       },
     );
   }

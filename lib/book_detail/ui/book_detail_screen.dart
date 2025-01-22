@@ -4,14 +4,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/book_detail/ui/components/book_tag.dart';
+import 'package:reader/search/data/model/search_book_item.dart';
 
 class BookDetailScreen extends HookConsumerWidget {
-  const BookDetailScreen({super.key});
+  const BookDetailScreen({super.key, this.book, required this.uuid, required this.bid});
+  final String uuid;
+  final String bid;
+  final SearchBookItemModel? book;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final coverUrl =
-        'https://p3-reading-sign.fqnovelpic.com/novel-pic/c947e7567fa8646dace2755ec6f436b1~tplv-resize:225:0.image?lk3s=5b7047ff&x-expires=1737620073&x-signature=h8Pu5vTa4AFgz5lk8PfYXKrNV7g%3D';
+    final coverUrl = book!.cover;
+    final bookSource = BookSourceService().bookSourceList.firstWhere((element) => element.uuid == uuid);
     // final coverScheme = useCoverColor(context, coverUrl: coverUrl);
     final colorScheme = Theme.of(context).colorScheme;
     return Material(
@@ -37,10 +42,11 @@ class BookDetailScreen extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "北派盗墓笔记",
+                      book!.name,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    Text("云峰", style: TextStyle(fontSize: 16, color: colorScheme.secondary.withAlpha(180), height: 2)),
+                    Text(book!.author,
+                        style: TextStyle(fontSize: 16, color: colorScheme.secondary.withAlpha(180), height: 2)),
                   ],
                 ),
                 Spacer(),
@@ -60,7 +66,7 @@ class BookDetailScreen extends HookConsumerWidget {
                   flex: 1,
                   child: Center(
                     child: BookTag(
-                      value: "番茄小说",
+                      value: bookSource.name,
                       label: "来源",
                     ),
                   ),
@@ -69,7 +75,7 @@ class BookDetailScreen extends HookConsumerWidget {
                     flex: 1,
                     child: Center(
                       child: BookTag(
-                        value: "共728章",
+                        value: "共${book!.chapterNum}章",
                         label: "篇幅",
                       ),
                     )),
@@ -94,8 +100,7 @@ class BookDetailScreen extends HookConsumerWidget {
                 minWidth: MediaQuery.of(context).size.width,
               ),
               padding: EdgeInsets.only(left: 24, right: 24, top: 20),
-              child: Text(
-                  "【已实体出版，线上平台有售】【盗墓+悬疑+鉴宝】我是一个东北山村的穷小子，二十世一纪初，为了出人头地，我加入了一个北方派盗墓团伙。从南到北，江湖百态，三教九流，这么多年从少年混到了中年，酒量见长，岁月蹉跎，我曾接触过许许多多的奇人异事，各位如有兴趣，不妨搬来小板凳，听一听，一位盗墓贼的江湖见闻。",
+              child: Text(book!.description!,
                   style: TextStyle(color: colorScheme.onSurface.withAlpha(180), fontSize: 14))),
           Spacer(),
           Row(
