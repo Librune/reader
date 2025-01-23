@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
-// import xxx as ui
 import 'dart:ui' as ui;
+
+import 'package:reader/app/architecture/utils/log.dart';
 
 class ShaderBackground extends StatelessWidget {
   const ShaderBackground({
@@ -20,13 +21,35 @@ class ShaderBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShaderBuilder(
       assetKey: 'shaders/cover_bg.frag',
-      (context, shader, child) {
-        return CustomPaint(
-          painter: ShaderPainter(
-            shader: shader,
-            image: cover,
-            blurAmount: blurAmount,
-          ),
+      (BuildContext context, FragmentShader? shader, Widget? child) {
+        // 1. 处理shader加载失败的情况
+        if (shader == null) {
+          return Container(
+            color: Colors.grey[200],
+            child: const Center(
+              child: Text('无法加载着色器'),
+            ),
+          );
+        }
+
+        // 2. 添加尺寸约束
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            // 确保有最小尺寸
+            if (constraints.maxWidth == 0 || constraints.maxHeight == 0) {
+              return const SizedBox.shrink();
+            }
+
+            // 3. 使用CustomPaint
+            return CustomPaint(
+              size: Size(constraints.maxWidth, constraints.maxHeight),
+              painter: ShaderPainter(
+                shader: shader,
+                image: cover,
+                blurAmount: blurAmount,
+              ),
+            );
+          },
         );
       },
     );
@@ -59,9 +82,10 @@ class ShaderPainter extends CustomPainter {
         _image = info.image;
         completer.complete();
         imageStream.removeListener(listener!);
+        Log.d('Image loaded: $image');
       },
       onError: (exception, stackTrace) {
-        print('Error loading image: $exception');
+        Log.e('Error loading image: $exception');
         completer.completeError(exception);
         imageStream.removeListener(listener!);
       },
@@ -71,7 +95,7 @@ class ShaderPainter extends CustomPainter {
     try {
       await completer.future;
     } catch (e) {
-      print('Failed to load image: $e');
+      Log.e('Failed to load image: $e');
     }
   }
 
