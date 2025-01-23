@@ -30,6 +30,7 @@ class PathService {
   File getEnvFile(String uuid) {
     final file = File(join(bookSourcePath, uuid, "envs.json"));
     if (!file.existsSync()) {
+      file.createSync(recursive: true);
       file.writeAsStringSync("{}");
     }
     return file;

@@ -78,16 +78,16 @@ class BookSourceService {
   Future<BookSourceModel> injectBookSourceFromFile(File file) async {
     final js = file.readAsStringSync();
     final uuid = Uuid().v4();
-    await runtime.evaluateAsync("""
-        __BOOK_SOURCE_MAP__['$uuid'] = (()=>{
+    final realUuid = await runtime.evaluateAsync("""
+        const obj = (()=>{
           $js
           return new BookSource();
         })()
+        const realUuid = obj.uuid || '$uuid';
+        __BOOK_SOURCE_MAP__[realUuid] = obj;
+        realUuid
       """);
-    await runtime.evaluateAsync("""
-      __BOOK_SOURCE_MAP__['$uuid'].uuid = '$uuid'
-    """);
-    final bookSource = await getBookSourceInfo(uuid);
+    final bookSource = await getBookSourceInfo(realUuid.stringResult);
     bookSourceList.add(bookSource);
     return bookSource;
   }

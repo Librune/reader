@@ -34,6 +34,9 @@ class BookSourceManageUsecase {
       Directory(dirPath).createSync(recursive: true);
     }
     final target = join(PathService().bookSourcePath, uuid, name);
+    if (await File(target).exists()) {
+      await File(target).delete();
+    }
     return await file.copy(target);
   }
 
