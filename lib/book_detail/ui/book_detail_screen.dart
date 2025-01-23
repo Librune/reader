@@ -26,10 +26,7 @@ class BookDetailScreen extends HookConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final coverColorScheme = useCoverColor(context, coverUrl: coverUrl);
     return Material(
-        color: Color.alphaBlend(
-          colorScheme.surfaceContainerLow.withAlpha(160),
-          colorScheme.surfaceContainerLowest,
-        ),
+        color: Color.alphaBlend(coverColorScheme.data!.primary.withAlpha(50), Colors.black),
         child: LayoutBuilder(
           builder: (context, constraints) {
             final maxWidth = constraints.maxWidth;
