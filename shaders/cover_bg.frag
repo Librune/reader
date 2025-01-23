@@ -33,8 +33,8 @@ vec4 overlayEffect(vec2 uv) {
     // 添加细微纹理
     float noise = noisePattern(uv * 2.0) * 0.02;
     
-    // 创建从上到下渐变的暗色遮罩
-    float gradientAlpha = mix(0.2, 0.4, uv.y); // 上方0.2透明度，下方0.4透明度
+    // 增强下方暗色的渐变遮罩
+    float gradientAlpha = mix(0.4, 1, uv.y); // 上方0.2透明度，下方增加到0.6透明度
     vec4 overlay = vec4(0.0, 0.0, 0.0, gradientAlpha);
     
     // 混合原始颜色和遮罩

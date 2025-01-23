@@ -55,8 +55,8 @@ class BookDetailScreen extends HookConsumerWidget {
                     children: [
                       Text(book!.name,
                           style: TextStyle(
-                              fontSize: 17, color: colorScheme.primary, fontWeight: FontWeight.bold, height: 1.4)),
-                      Text(book!.author, style: TextStyle(fontSize: 14, color: colorScheme.secondary, height: 1.8)),
+                              fontSize: 17, color: colorScheme.onPrimary, fontWeight: FontWeight.bold, height: 1.4)),
+                      Text(book!.author, style: TextStyle(fontSize: 14, color: colorScheme.onSecondary, height: 1.8)),
                     ],
                   ),
                   // Spacer(),
@@ -75,7 +75,7 @@ class BookDetailScreen extends HookConsumerWidget {
                           padding: EdgeInsets.only(bottom: 3),
                           child: Text(
                             "简介",
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: colorScheme.onPrimary),
                           ),
                         ),
                         Expanded(
@@ -139,7 +139,7 @@ class BookDetailScreen extends HookConsumerWidget {
                         maxLines: 4,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.justify,
-                        style: TextStyle(color: colorScheme.onSurface.withAlpha(180), fontSize: 14))),
+                        style: TextStyle(color: colorScheme.onPrimary.withAlpha(180), fontSize: 14))),
                 Padding(
                   padding: EdgeInsets.only(top: 16),
                   child: ListTile(
