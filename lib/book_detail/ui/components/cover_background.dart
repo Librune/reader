@@ -1,36 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
-// import xxx as ui
 import 'dart:ui' as ui;
-
-class ShaderBackground extends StatelessWidget {
-  const ShaderBackground({
-    super.key,
-    required this.cover,
-    this.blurAmount = 3.0,
-  });
-
-  final String cover;
-  final double blurAmount;
-
-  @override
-  Widget build(BuildContext context) {
-    return ShaderBuilder(
-      assetKey: 'shaders/cover_bg.frag',
-      (context, shader, child) {
-        return CustomPaint(
-          painter: ShaderPainter(
-            shader: shader,
-            image: cover,
-            blurAmount: blurAmount,
-          ),
-        );
-      },
-    );
-  }
-}
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ShaderPainter extends CustomPainter {
   final FragmentShader shader;
@@ -47,8 +19,8 @@ class ShaderPainter extends CustomPainter {
   }
 
   Future<void> _loadImage() async {
-    // 加载图片
-    final imageProvider = NetworkImage(image);
+    // 使用 CachedNetworkImageProvider
+    final imageProvider = CachedNetworkImageProvider(image);
     final imageStream = imageProvider.resolve(ImageConfiguration.empty);
     final completer = Completer<void>();
 
@@ -60,23 +32,36 @@ class ShaderPainter extends CustomPainter {
         imageStream.removeListener(listener!);
       },
       onError: (exception, stackTrace) {
+        print('Error loading image: $exception');
         completer.completeError(exception);
         imageStream.removeListener(listener!);
       },
     );
+
     imageStream.addListener(listener);
-    await completer.future;
+    try {
+      await completer.future;
+    } catch (e) {
+      print('Failed to load image: $e');
+    }
   }
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (_image == null) return;
+    if (_image == null) {
+      // 如果图片未加载，绘制占位颜色
+      canvas.drawRect(
+        Rect.fromLTWH(0, 0, size.width, size.height),
+        Paint()..color = Colors.grey,
+      );
+      return;
+    }
 
     shader
       ..setFloat(0, size.width)
       ..setFloat(1, size.height)
       ..setFloat(2, blurAmount)
-      ..setImageSampler(0, _image!); // 设置图像采样器
+      ..setImageSampler(0, _image!);
 
     canvas.drawRect(
       Rect.fromLTWH(0, 0, size.width, size.height),
@@ -86,6 +71,9 @@ class ShaderPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant ShaderPainter oldDelegate) {
-    return oldDelegate.shader != shader || oldDelegate.image != image || oldDelegate.blurAmount != blurAmount;
+    return oldDelegate.shader != shader ||
+        oldDelegate.image != image ||
+        oldDelegate.blurAmount != blurAmount ||
+        oldDelegate._image != _image; // 添加图片变化的判断
   }
 }

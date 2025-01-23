@@ -35,15 +35,18 @@ class BookDetailScreen extends HookConsumerWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ShaderBackground(
-                  cover: coverUrl,
+                Container(
+                  height: 240,
+                  child: ShaderBackground(
+                    cover: coverUrl,
+                  ),
                 ),
-                CachedNetworkImage(
-                  imageUrl: coverUrl,
-                  width: maxWidth,
-                  height: maxHeight / 3,
-                  fit: BoxFit.cover,
-                ),
+                // CachedNetworkImage(
+                //   imageUrl: coverUrl,
+                //   width: maxWidth,
+                //   height: maxHeight / 3,
+                //   fit: BoxFit.cover,
+                // ),
                 Padding(
                   padding: EdgeInsets.only(top: 24, left: 24, right: 14),
                   child: Column(
