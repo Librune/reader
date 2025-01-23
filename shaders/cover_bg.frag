@@ -8,6 +8,7 @@ uniform float scaleX;
 uniform float scaleY;
 uniform float offsetX;
 uniform float offsetY;
+uniform vec4 overlayColor;
 uniform sampler2D iImage;
 
 out vec4 fragColor;
