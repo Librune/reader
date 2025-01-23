@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
+// import xxx as ui
+import 'dart:ui' as ui;
 
 class ShaderBackground extends StatelessWidget {
   const ShaderBackground({
@@ -32,24 +36,51 @@ class ShaderPainter extends CustomPainter {
   final FragmentShader shader;
   final String image;
   final double blurAmount;
+  ui.Image? _image;
 
   ShaderPainter({
     required this.shader,
     required this.image,
     required this.blurAmount,
-  });
+  }) {
+    _loadImage();
+  }
+
+  Future<void> _loadImage() async {
+    // 加载图片
+    final imageProvider = NetworkImage(image);
+    final imageStream = imageProvider.resolve(ImageConfiguration.empty);
+    final completer = Completer<void>();
+
+    ImageStreamListener? listener;
+    listener = ImageStreamListener(
+      (ImageInfo info, bool _) {
+        _image = info.image;
+        completer.complete();
+        imageStream.removeListener(listener!);
+      },
+      onError: (exception, stackTrace) {
+        completer.completeError(exception);
+        imageStream.removeListener(listener!);
+      },
+    );
+    imageStream.addListener(listener);
+    await completer.future;
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
-    shader.setFloat(0, size.width);
-    shader.setFloat(1, size.height);
-    shader.setFloat(2, blurAmount);
+    if (_image == null) return;
 
-    // 绘制着色器
-    final paint = Paint()..shader = shader;
+    shader
+      ..setFloat(0, size.width)
+      ..setFloat(1, size.height)
+      ..setFloat(2, blurAmount)
+      ..setImageSampler(0, _image!); // 设置图像采样器
+
     canvas.drawRect(
       Rect.fromLTWH(0, 0, size.width, size.height),
-      paint,
+      Paint()..shader = shader,
     );
   }
 
