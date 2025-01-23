@@ -91,39 +91,36 @@ class BookSearchItem extends HookConsumerWidget {
                       Row(
                         spacing: 6,
                         children: [
-                          book.wordNum != null
-                              ? Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color: colorScheme.secondary.withAlpha(20),
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  child: Text(formatReadableNumber(book.wordNum!, "字"),
-                                      style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
-                                )
-                              : nil,
-                          book.creationStatus != null
-                              ? Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color: colorScheme.secondary.withAlpha(20),
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  child: Text(getBookCreationStatus(book.creationStatus!),
-                                      style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
-                                )
-                              : nil,
-                          book.tag != null
-                              ? Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color: colorScheme.secondary.withAlpha(20),
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  child: Text(book.tag!,
-                                      style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
-                                )
-                              : nil,
+                          if (book.wordNum != null)
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: colorScheme.secondary.withAlpha(20),
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                              child: Text(formatReadableNumber(book.wordNum!, "字"),
+                                  style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
+                            ),
+                          if (book.creationStatus != null)
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: colorScheme.secondary.withAlpha(20),
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                              child: Text(getBookCreationStatus(book.creationStatus!),
+                                  style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
+                            ),
+                          if (book.tag != null)
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: colorScheme.secondary.withAlpha(20),
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                              child:
+                                  Text(book.tag!, style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
+                            )
                         ],
                       )
                     ],
