@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:reader/app/architecture/utils/log.dart';
 
 Future<Map<String, dynamic>> dioFetch(dynamic args) async {
   Uri uri = Uri.parse(args['url']);

@@ -88,7 +88,9 @@ class BookSourceService {
         realUuid
       """);
     final bookSource = await getBookSourceInfo(realUuid.stringResult);
-    bookSourceList.add(bookSource);
+    if (!bookSourceList.any((element) => element.uuid == bookSource.uuid)) {
+      bookSourceList.add(bookSource);
+    }
     return bookSource;
   }
 
@@ -198,6 +200,7 @@ class __BOOK_SOURCE__ {
   }
 
   setLocalStorage=(key,value)=>{
+    this.__envs__[key] = value;
     sendMessage('invokeLocalStorageSet', JSON.stringify({key,value,uuid:this.uuid}));
   }
 

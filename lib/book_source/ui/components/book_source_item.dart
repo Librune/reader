@@ -72,7 +72,7 @@ class BookSourceItem extends ConsumerWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "JS 书源",
+                            source.uuid,
                             style: textTheme.bodySmall,
                           )
                         ],
@@ -87,7 +87,7 @@ class BookSourceItem extends ConsumerWidget {
                         color: colorScheme.secondary,
                       );
                     },
-                    itemCount: 3),
+                    itemCount: 1),
               )
             ],
           ),
