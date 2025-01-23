@@ -37,6 +37,7 @@ class BookDetailScreen extends HookConsumerWidget {
               children: [
                 Container(
                   height: 240,
+                  width: maxWidth,
                   child: ShaderBackground(
                     cover: coverUrl,
                   ),

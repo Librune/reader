@@ -102,7 +102,6 @@ class ShaderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (_image == null) {
-      // 如果图片未加载，绘制占位颜色
       canvas.drawRect(
         Rect.fromLTWH(0, 0, size.width, size.height),
         Paint()..color = Colors.grey,
@@ -110,14 +109,25 @@ class ShaderPainter extends CustomPainter {
       return;
     }
 
+    // 1. 计算真实绘制尺寸
+    double targetWidth = size.width;
+    double scale = targetWidth / _image!.width;
+    double targetHeight = _image!.height * scale;
+
+    // 2. 设置着色器参数 - 保持1:1的缩放比
     shader
       ..setFloat(0, size.width)
-      ..setFloat(1, size.height)
+      ..setFloat(1, targetHeight) // 使用计算出的实际高度
       ..setFloat(2, blurAmount)
+      ..setFloat(3, 1.0) // 水平缩放为1
+      ..setFloat(4, 1.0) // 垂直缩放为1
+      ..setFloat(5, 0.0) // 无水平偏移
+      ..setFloat(6, 0.0) // 无垂直偏移
       ..setImageSampler(0, _image!);
 
+    // 3. 绘制矩形，高度使用实际计算值
     canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width, size.height),
+      Rect.fromLTWH(0, 0, size.width, targetHeight),
       Paint()..shader = shader,
     );
   }
