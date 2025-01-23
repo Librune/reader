@@ -36,7 +36,7 @@ vec4 overlayEffect(vec2 uv) {
     
     // 增强下方暗色的渐变遮罩
     float gradientAlpha = mix(0.4, 1, uv.y); // 上方0.2透明度，下方增加到0.6透明度
-    vec4 overlay = vec4(0.0, 0.0, 0.0, gradientAlpha);
+    vec4 overlay = vec4(overlayColor.rgb, gradientAlpha);
     
     // 混合原始颜色和遮罩
     color = mix(color, overlay, overlay.a);

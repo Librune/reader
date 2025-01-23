@@ -125,10 +125,10 @@ class ShaderPainter extends CustomPainter {
       ..setFloat(4, 1.0) // 垂直缩放为1
       ..setFloat(5, 0.0) // 无水平偏移
       ..setFloat(6, 0.0) // 无垂直偏移
-      ..setFloat(7, overlayColor.r / 255.0)
-      ..setFloat(8, overlayColor.g / 255.0)
-      ..setFloat(9, overlayColor.b / 255.0)
-      ..setFloat(10, overlayColor.a / 255.0)
+      ..setFloat(7, overlayColor.r)
+      ..setFloat(8, overlayColor.g)
+      ..setFloat(9, overlayColor.b)
+      ..setFloat(10, overlayColor.a)
       ..setImageSampler(0, _image!);
 
     // 3. 绘制矩形，高度使用实际计算值
