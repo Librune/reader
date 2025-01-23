@@ -9,6 +9,8 @@ import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/book_detail/ui/components/book_tag.dart';
 import 'package:reader/search/data/model/search_book_item.dart';
 
+import 'components/cover_background.dart';
+
 class BookDetailScreen extends HookConsumerWidget {
   const BookDetailScreen({super.key, this.book, required this.uuid, required this.bid});
   final String uuid;
@@ -33,6 +35,9 @@ class BookDetailScreen extends HookConsumerWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                ShaderBackground(
+                  cover: coverUrl,
+                ),
                 CachedNetworkImage(
                   imageUrl: coverUrl,
                   width: maxWidth,
