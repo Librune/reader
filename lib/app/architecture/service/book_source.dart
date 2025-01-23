@@ -101,6 +101,12 @@ class BookSourceService {
     return BookSourceModel.fromJson({...jsonDecode(res.stringResult), "uuid": uuid});
   }
 
+  updateEnvs(String uuid, Map<String, dynamic> envs) async {
+    await runtime.evaluateAsync("""
+      __BOOK_SOURCE_MAP__['$uuid'].__envs__ = JSON.parse('${jsonEncode(envs)}');
+    """);
+  }
+
   remove(String uuid) async {
     await runtime.evaluateAsync("""
       delete __BOOK_SOURCE_MAP__['$uuid']
