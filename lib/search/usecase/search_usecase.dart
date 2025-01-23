@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
@@ -20,7 +21,7 @@ class SearchKeywordUsecase {
 
   static Future<List<SearchBookItemModel>> searchBookFromUuid(String keyword, {required String uuid}) async {
     final res = await BookSourceService().action(uuid: uuid, act: "search", args: [keyword]);
-    final jsonList = jsonDecode(jsonDecode(res));
+    final jsonList = Platform.isAndroid ? jsonDecode(res) : jsonDecode(jsonDecode(res));
     return (jsonList).map<SearchBookItemModel>((r) {
       return SearchBookItemModel.fromJson(r);
     }).toList();
