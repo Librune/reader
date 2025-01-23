@@ -12,37 +12,41 @@ uniform sampler2D iImage;
 
 out vec4 fragColor;
 
-vec4 glassEffect(vec2 uv, float blur) {
-    // 应用缩放和偏移
+float noisePattern(vec2 uv) {
+    return fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453123);
+}
+
+vec4 overlayEffect(vec2 uv) {
     vec2 adjustedUV = vec2(
         (uv.x - offsetX/iResolution.x) / scaleX,
         (uv.y - offsetY/iResolution.y) / scaleY
     );
     
-    // 检查UV是否在有效范围内
     if (adjustedUV.x < 0.0 || adjustedUV.x > 1.0 || 
         adjustedUV.y < 0.0 || adjustedUV.y > 1.0) {
         return vec4(0.0);
     }
 
-    vec2 pixelSize = 1.0 / iResolution;
-    vec4 color = vec4(0.0);
-    float total = 0.0;
+    // 获取原始颜色
+    vec4 color = texture(iImage, adjustedUV);
     
-    // 高斯模糊
-    for(float x = -3.0; x <= 3.0; x++) {
-        for(float y = -3.0; y <= 3.0; y++) {
-            vec2 offset = vec2(x, y) * pixelSize * blur;
-            float weight = exp(-(x*x + y*y) / (2.0 * 3.0 * 3.0));
-            color += texture(iImage, adjustedUV + offset) * weight;
-            total += weight;
-        }
-    }
+    // 添加细微纹理
+    float noise = noisePattern(uv * 2.0) * 0.02;
     
-    return color / total;
+    // 创建从上到下渐变的暗色遮罩
+    float gradientAlpha = mix(0.2, 0.4, uv.y); // 上方0.2透明度，下方0.4透明度
+    vec4 overlay = vec4(0.0, 0.0, 0.0, gradientAlpha);
+    
+    // 混合原始颜色和遮罩
+    color = mix(color, overlay, overlay.a);
+    
+    // 添加细微纹理
+    color.rgb += noise;
+    
+    return color;
 }
 
 void main() {
     vec2 uv = FlutterFragCoord().xy / iResolution.xy;
-    fragColor = glassEffect(uv, iBlur);
+    fragColor = overlayEffect(uv);
 }
