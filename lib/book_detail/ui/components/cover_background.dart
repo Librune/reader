@@ -19,6 +19,7 @@ class ShaderBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return ShaderBuilder(
       assetKey: 'shaders/cover_bg.frag',
       (BuildContext context, FragmentShader? shader, Widget? child) {
@@ -47,6 +48,7 @@ class ShaderBackground extends StatelessWidget {
                 shader: shader,
                 image: cover,
                 blurAmount: blurAmount,
+                context: context,
               ),
             );
           },
@@ -60,12 +62,14 @@ class ShaderPainter extends CustomPainter {
   final FragmentShader shader;
   final String image;
   final double blurAmount;
+  final BuildContext context;
   ui.Image? _image;
 
   ShaderPainter({
     required this.shader,
     required this.image,
     required this.blurAmount,
+    required this.context,
   }) {
     _loadImage();
   }
@@ -75,6 +79,9 @@ class ShaderPainter extends CustomPainter {
     final imageProvider = CachedNetworkImageProvider(image);
     final imageStream = imageProvider.resolve(ImageConfiguration.empty);
     final completer = Completer<void>();
+
+    ColorScheme.fromImageProvider(provider: imageProvider, brightness: Theme.of(context).brightness);
+    final colorSchemaCompleter = Completer<ColorScheme>();
 
     ImageStreamListener? listener;
     listener = ImageStreamListener(
@@ -114,7 +121,7 @@ class ShaderPainter extends CustomPainter {
     double scale = targetWidth / _image!.width;
     double targetHeight = _image!.height * scale;
 
-    final overlayColor = Colors.red;
+    final overlayColor = Colors.black;
 
     // 2. 设置着色器参数 - 保持1:1的缩放比
     shader
