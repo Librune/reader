@@ -1,8 +1,37 @@
 import 'dart:async';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
+// import xxx as ui
 import 'dart:ui' as ui;
-import 'package:cached_network_image/cached_network_image.dart';
+
+class ShaderBackground extends StatelessWidget {
+  const ShaderBackground({
+    super.key,
+    required this.cover,
+    this.blurAmount = 3.0,
+  });
+
+  final String cover;
+  final double blurAmount;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShaderBuilder(
+      assetKey: 'shaders/cover_bg.frag',
+      (context, shader, child) {
+        return CustomPaint(
+          painter: ShaderPainter(
+            shader: shader,
+            image: cover,
+            blurAmount: blurAmount,
+          ),
+        );
+      },
+    );
+  }
+}
 
 class ShaderPainter extends CustomPainter {
   final FragmentShader shader;
