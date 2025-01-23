@@ -12,14 +12,15 @@ class ShaderBackground extends StatelessWidget {
     super.key,
     required this.cover,
     this.blurAmount = 3.0,
+    required this.colorScheme,
   });
 
   final String cover;
   final double blurAmount;
+  final ColorScheme colorScheme;
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     return ShaderBuilder(
       assetKey: 'shaders/cover_bg.frag',
       (BuildContext context, FragmentShader? shader, Widget? child) {
@@ -48,7 +49,7 @@ class ShaderBackground extends StatelessWidget {
                 shader: shader,
                 image: cover,
                 blurAmount: blurAmount,
-                context: context,
+                colorScheme: colorScheme,
               ),
             );
           },
@@ -62,15 +63,10 @@ class ShaderPainter extends CustomPainter {
   final FragmentShader shader;
   final String image;
   final double blurAmount;
-  final BuildContext context;
   ui.Image? _image;
+  final ColorScheme colorScheme;
 
-  ShaderPainter({
-    required this.shader,
-    required this.image,
-    required this.blurAmount,
-    required this.context,
-  }) {
+  ShaderPainter({required this.shader, required this.image, required this.blurAmount, required this.colorScheme}) {
     _loadImage();
   }
 
@@ -79,9 +75,6 @@ class ShaderPainter extends CustomPainter {
     final imageProvider = CachedNetworkImageProvider(image);
     final imageStream = imageProvider.resolve(ImageConfiguration.empty);
     final completer = Completer<void>();
-
-    ColorScheme.fromImageProvider(provider: imageProvider, brightness: Theme.of(context).brightness);
-    final colorSchemaCompleter = Completer<ColorScheme>();
 
     ImageStreamListener? listener;
     listener = ImageStreamListener(
@@ -99,6 +92,7 @@ class ShaderPainter extends CustomPainter {
     );
 
     imageStream.addListener(listener);
+
     try {
       await completer.future;
     } catch (e) {
@@ -121,7 +115,7 @@ class ShaderPainter extends CustomPainter {
     double scale = targetWidth / _image!.width;
     double targetHeight = _image!.height * scale;
 
-    final overlayColor = Colors.black;
+    final Color overlayColor = Color.alphaBlend(colorScheme.primary.withAlpha(50), Colors.black);
 
     // 2. 设置着色器参数 - 保持1:1的缩放比
     shader
@@ -150,6 +144,7 @@ class ShaderPainter extends CustomPainter {
     return oldDelegate.shader != shader ||
         oldDelegate.image != image ||
         oldDelegate.blurAmount != blurAmount ||
-        oldDelegate._image != _image; // 添加图片变化的判断
+        oldDelegate._image != _image || // 添加图片变化的判断
+        oldDelegate.colorScheme != colorScheme; // 添加颜色变化的判断
   }
 }
