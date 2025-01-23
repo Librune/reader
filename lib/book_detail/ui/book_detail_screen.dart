@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,20 @@ class BookDetailScreen extends HookConsumerWidget {
                 ShaderBackground(
                   cover: coverUrl,
                   colorScheme: coverColorScheme.data!,
+                ),
+                // 毛玻璃效果
+                Positioned(
+                  top: maxHeight / 2,
+                  left: 0,
+                  right: 0, // 确保覆盖整个宽度
+                  bottom: 0, // 确保延伸到底部
+                  child: ClipRect(
+                    // 添加 ClipRect 来限制模糊范围
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+                      child: Container(color: Colors.black.withAlpha(10)),
+                    ),
+                  ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
