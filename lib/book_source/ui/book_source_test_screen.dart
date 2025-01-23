@@ -13,7 +13,6 @@ class BookSourceTestScreen extends HookConsumerWidget {
   final String uuid;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Log.d("BookSourceTestScreen: $uuid" + PathService().bookSourcePath);
     final data = useFuture(useMemoized<dynamic>(() async {
       try {
         final res = await BookSourceService().action(uuid: uuid, act: "test");

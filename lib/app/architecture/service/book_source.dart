@@ -127,7 +127,7 @@ class BookSourceService {
        __BOOK_SOURCE_MAP__['$uuid'].action('$act', ${args != null ? jsonEncode(args) : ''});
     """);
     JsEvalResult asyncResult = await runtime.handlePromise(res);
-    return asyncResult.rawResult;
+    return asyncResult.stringResult;
   }
 
   File get bksManifest => File(PathService().bookSourceManifestPath);
