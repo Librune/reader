@@ -111,7 +111,7 @@ class BookSearchItem extends HookConsumerWidget {
                               child: Text(getBookCreationStatus(book.creationStatus!),
                                   style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
                             ),
-                          if (book.tags != null && book.tags!.isNotEmpty)
+                          if (book.tags != null && book.tags!.isNotEmpty && book.tags!.first != null)
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                               decoration: BoxDecoration(

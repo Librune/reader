@@ -87,7 +87,7 @@ final router = GoRouter(navigatorKey: rootNavigatorKey, initialLocation: "/shelf
     builder: (context, state) {
       final uuid = state.pathParameters['uuid']!;
       final bid = state.pathParameters['bid']!;
-      final BookModel? book = state.extra as BookModel?;
+      final BookModel book = state.extra as BookModel;
       return BookDetailScreen(uuid: uuid, bid: bid, book: book);
     },
   ),

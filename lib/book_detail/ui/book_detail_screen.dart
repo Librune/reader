@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nil/nil.dart';
 import 'package:reader/app/architecture/hooks/use_cover_color.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/data/model/book.dart';
@@ -14,10 +15,10 @@ import 'package:reader/book_detail/ui/components/book_tag.dart';
 import 'components/cover_background.dart';
 
 class BookDetailScreen extends HookConsumerWidget {
-  const BookDetailScreen({super.key, this.book, required this.uuid, required this.bid});
+  const BookDetailScreen({super.key, required this.book, required this.uuid, required this.bid});
   final String uuid;
   final String bid;
-  final BookModel? book;
+  final BookModel book;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
@@ -143,15 +144,17 @@ class BookDetailScreen extends HookConsumerWidget {
                           margin: EdgeInsets.only(top: 24, bottom: 16),
                           child: Wrap(
                             spacing: 14,
-                            children: ["免费", "连载中", "热门"].map((e) {
-                              return Container(
-                                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: colorScheme.onSecondary.withAlpha(20),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Text(e, style: TextStyle(color: colorScheme.onSecondary.withAlpha(200))),
-                              );
+                            children: (book.tags ?? []).map((e) {
+                              return e != null
+                                  ? Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: colorScheme.onSecondary.withAlpha(20),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Text(e, style: TextStyle(color: colorScheme.onSecondary.withAlpha(200))),
+                                    )
+                                  : SizedBox.shrink();
                             }).toList(),
                           ),
                         ),
