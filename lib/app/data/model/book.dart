@@ -19,7 +19,7 @@ class BookModel with _$BookModel {
     String? wordNum,
     String? description,
     String? creationStatus,
-    List<String?>? tags,
+    List<String>? tags,
     String? lastReadChapterId,
   }) = _BookModel;
   factory BookModel.fromJson(Map<String, dynamic> json) => _$BookModelFromJson(json);

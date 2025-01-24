@@ -144,17 +144,16 @@ class BookDetailScreen extends HookConsumerWidget {
                           margin: EdgeInsets.only(top: 24, bottom: 16),
                           child: Wrap(
                             spacing: 14,
+                            runSpacing: 14,
                             children: (book.tags ?? []).map((e) {
-                              return e != null
-                                  ? Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                                      decoration: BoxDecoration(
-                                        color: colorScheme.onSecondary.withAlpha(20),
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Text(e, style: TextStyle(color: colorScheme.onSecondary.withAlpha(200))),
-                                    )
-                                  : SizedBox.shrink();
+                              return Container(
+                                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.onSecondary.withAlpha(20),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(e, style: TextStyle(color: colorScheme.onSecondary.withAlpha(200))),
+                              );
                             }).toList(),
                           ),
                         ),
