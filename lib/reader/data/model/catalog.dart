@@ -36,7 +36,7 @@ class VolumeModel with _$VolumeModel {
   const factory VolumeModel({
     @Default("") String vid,
     @Default("") String title,
-    @Default([]) List<ChapterModel> catalogs,
+    @Default([]) List<ChapterModel> chapters,
   }) = _VolumeModel;
   factory VolumeModel.fromJson(Map<String, dynamic> json) => _$VolumeModelFromJson(json);
   const VolumeModel._();
