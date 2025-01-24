@@ -73,7 +73,7 @@ class ShelfGrid extends HookConsumerWidget {
                     ],
                   ),
                   onTap: () {
-                    context.push("/book_detail/qidian/10086");
+                    context.push("/reader", extra: books[index]);
                   },
                 );
               },
