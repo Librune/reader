@@ -64,18 +64,52 @@ class BookDetailScreen extends HookConsumerWidget {
                         Spacer(
                           flex: 8,
                         ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 4),
+                              padding: EdgeInsets.symmetric(vertical: 3),
+                              child: Text(
+                                "连载中",
+                                style: TextStyle(color: colorScheme.secondaryContainer),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 14,
+                              child: VerticalDivider(
+                                color: colorScheme.secondaryContainer,
+                                width: 24,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 4),
+                              padding: EdgeInsets.symmetric(vertical: 3),
+                              child: Text(
+                                "56.2万字",
+                                style: TextStyle(color: colorScheme.secondaryContainer),
+                              ),
+                            ),
+                          ],
+                        ),
                         Text(book!.name,
                             style: TextStyle(
                                 fontSize: 22, color: colorScheme.onPrimary, fontWeight: FontWeight.bold, height: 1.4)),
-                        Text(book!.author, style: TextStyle(fontSize: 16, color: colorScheme.onSecondary, height: 2.4)),
+                        Padding(
+                          padding: EdgeInsets.only(top: 8),
+                          child: Text("作者：${book!.author}",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: colorScheme.onSecondary.withAlpha(200),
+                              )),
+                        ),
                         Container(
-                          margin: EdgeInsets.only(top: 24, bottom: 24),
+                          margin: EdgeInsets.only(top: 16, bottom: 12),
                           child: Row(
                             children: [
                               TextButton(
                                   style: ButtonStyle(
-                                    backgroundColor: WidgetStateProperty.all(colorScheme.onSecondary.withAlpha(50)),
-                                    foregroundColor: WidgetStateProperty.all(colorScheme.onSecondary),
+                                    backgroundColor: WidgetStateProperty.all(colorScheme.primaryContainer),
+                                    foregroundColor: WidgetStateProperty.all(colorScheme.onPrimaryContainer),
                                     padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 42, vertical: 8)),
                                     shape: WidgetStateProperty.all(
                                         RoundedRectangleBorder(borderRadius: BorderRadius.circular(32))),
