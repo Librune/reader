@@ -14,7 +14,19 @@ class BookProvider extends _$BookProvider {
     return isarBookModels.where().findAll();
   }
 
-  add() {}
+  add(BookModel book) async {
+    await isar.writeTxn(() async {
+      await isar.bookModels.put(book);
+    });
+    state = AsyncData([...state.value!, book]);
+  }
+
+  remove(BookModel book) async {
+    await isar.writeTxn(() async {
+      await isar.bookModels.delete(book.id!);
+    });
+    state = AsyncData(state.value!.where((element) => element.id != book.id).toList());
+  }
 
   IsarCollection<BookModel> get isarBookModels => isar.bookModels;
 }

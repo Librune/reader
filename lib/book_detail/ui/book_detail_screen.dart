@@ -10,7 +10,9 @@ import 'package:reader/app/architecture/hooks/use_cover_color.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
+import 'package:reader/book_detail/provider/book_detail.dart';
 import 'package:reader/book_detail/ui/components/book_tag.dart';
+import 'package:reader/book_detail/usecase/book_toggle_shelf_usecase.dart';
 
 import 'components/cover_background.dart';
 
@@ -28,6 +30,7 @@ class BookDetailScreen extends HookConsumerWidget {
     // final coverScheme = useCoverColor(context, coverUrl: coverUrl);
     final colorScheme = Theme.of(context).colorScheme;
     final coverColorScheme = useCoverColor(context, coverUrl: coverUrl, time: 300);
+    final isInShelf = ref.watch(bookInShelfProvider(book));
     return Material(
         color: Color.alphaBlend(coverColorScheme.data!.primary.withAlpha(50), Colors.black),
         child: LayoutBuilder(
@@ -120,10 +123,12 @@ class BookDetailScreen extends HookConsumerWidget {
                               Padding(
                                 padding: EdgeInsets.only(left: 16),
                                 child: SvgBtn(
-                                  svgName: "ic_btn_heart",
+                                  svgName: (isInShelf.value ?? false) ? "ic_btn_heart_fill" : "ic_btn_heart",
                                   size: 22,
                                   color: colorScheme.onPrimary,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    bookToggleShelfUsecase(ref, book);
+                                  },
                                 ),
                               )
                             ],

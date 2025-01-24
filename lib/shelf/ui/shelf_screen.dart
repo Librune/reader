@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
+import 'package:reader/shelf/provider/book_provider.dart';
 import 'package:reader/shelf/ui/components/last_read.dart';
 import 'package:reader/shelf/ui/components/shelf_grid.dart';
 
@@ -13,6 +14,7 @@ class ShelfScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+    final books = ref.watch(bookProviderProvider);
     return Scaffold(
       appBar: AppTopBar(
         title: ClipOval(
@@ -66,7 +68,12 @@ class ShelfScreen extends HookConsumerWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: ShelfGrid(),
+            child: switch (books) {
+              AsyncValue(:final value?) => ShelfGrid(
+                  books: value,
+                ),
+              _ => ShelfGrid(books: [])
+            },
             // child: ShelfSwitcher(),
           ),
         ],
