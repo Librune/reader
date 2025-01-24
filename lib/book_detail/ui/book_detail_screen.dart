@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/hooks/use_cover_color.dart';
+import 'package:reader/app/architecture/utils/enum.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/book_detail/provider/book_detail.dart';
@@ -79,7 +80,7 @@ class BookDetailScreen extends HookConsumerWidget {
                               margin: EdgeInsets.only(bottom: 4),
                               padding: EdgeInsets.symmetric(vertical: 3),
                               child: Text(
-                                "56.2万字",
+                                formatReadableNumber(book.wordNum, "字"),
                                 style: TextStyle(color: colorScheme.secondaryContainer),
                               ),
                             ),
