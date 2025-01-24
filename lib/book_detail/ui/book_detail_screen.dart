@@ -1,17 +1,11 @@
-import 'dart:math';
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nil/nil.dart';
 import 'package:reader/app/architecture/hooks/use_cover_color.dart';
-import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/book_detail/provider/book_detail.dart';
-import 'package:reader/book_detail/ui/components/book_tag.dart';
 import 'package:reader/book_detail/usecase/book_toggle_shelf_usecase.dart';
 
 import 'components/cover_background.dart';
@@ -23,19 +17,15 @@ class BookDetailScreen extends HookConsumerWidget {
   final BookModel book;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final textTheme = Theme.of(context).textTheme;
-    final coverUrl = book!.cover;
-    final darkColorScheme = Theme.of(context).colorScheme.copyWith(brightness: Brightness.dark);
-    final bookSource = BookSourceService().bookSourceList.firstWhere((element) => element.uuid == uuid);
-    // final coverScheme = useCoverColor(context, coverUrl: coverUrl);
+    final coverUrl = book.cover;
     final colorScheme = Theme.of(context).colorScheme;
     final coverColorScheme = useCoverColor(context, coverUrl: coverUrl, time: 300);
     final isInShelf = ref.watch(bookInShelfProvider(book));
+    final _book = book.copyWith(bookSourceId: uuid);
     return Material(
         color: Color.alphaBlend(coverColorScheme.data!.primary.withAlpha(50), Colors.black),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final maxWidth = constraints.maxWidth;
             final maxHeight = constraints.maxHeight;
             return Stack(
               children: [
@@ -95,12 +85,12 @@ class BookDetailScreen extends HookConsumerWidget {
                             ),
                           ],
                         ),
-                        Text(book!.name,
+                        Text(_book.name,
                             style: TextStyle(
                                 fontSize: 22, color: colorScheme.onPrimary, fontWeight: FontWeight.bold, height: 1.4)),
                         Padding(
                           padding: EdgeInsets.only(top: 8),
-                          child: Text("作者：${book!.author}",
+                          child: Text("作者：${_book.author}",
                               style: TextStyle(
                                 fontSize: 15,
                                 color: colorScheme.onSecondary.withAlpha(200),
@@ -127,7 +117,7 @@ class BookDetailScreen extends HookConsumerWidget {
                                   size: 22,
                                   color: colorScheme.onPrimary,
                                   onPressed: () {
-                                    bookToggleShelfUsecase(ref, book);
+                                    bookToggleShelfUsecase(ref, _book);
                                   },
                                 ),
                               )
@@ -139,7 +129,7 @@ class BookDetailScreen extends HookConsumerWidget {
                               minWidth: MediaQuery.of(context).size.width,
                             ),
                             padding: EdgeInsets.only(top: 8),
-                            child: Text(book!.description!,
+                            child: Text(_book.description!,
                                 maxLines: 6,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.justify,
@@ -150,7 +140,7 @@ class BookDetailScreen extends HookConsumerWidget {
                           child: Wrap(
                             spacing: 14,
                             runSpacing: 14,
-                            children: (book.tags ?? []).map((e) {
+                            children: (_book.tags ?? []).map((e) {
                               return Container(
                                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                                 decoration: BoxDecoration(

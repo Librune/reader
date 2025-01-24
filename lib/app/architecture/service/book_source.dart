@@ -121,7 +121,7 @@ class BookSourceService {
     Log.d("listAll: ${res.stringResult}");
   }
 
-  action({required String uuid, required String act, List<dynamic>? args}) async {
+  action({required String uuid, required String act, Map<String, dynamic>? args}) async {
     runtime.executePendingJob();
     final res = await runtime.evaluateAsync("""
        __BOOK_SOURCE_MAP__['$uuid'].action('$act', ${args != null ? jsonEncode(args) : ''});
