@@ -5,11 +5,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nil/nil.dart';
 import 'package:reader/app/architecture/utils/enum.dart';
 import 'package:reader/app/architecture/utils/log.dart';
-import 'package:reader/search/data/model/search_book_item.dart';
+import 'package:reader/app/data/model/book.dart';
 
 class BookSearchItem extends HookConsumerWidget {
   const BookSearchItem({super.key, required this.book, required this.uuid});
-  final SearchBookItemModel book;
+  final BookModel book;
   final String uuid;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -111,15 +111,15 @@ class BookSearchItem extends HookConsumerWidget {
                               child: Text(getBookCreationStatus(book.creationStatus!),
                                   style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
                             ),
-                          if (book.tag != null)
+                          if (book.tags != null && book.tags!.isNotEmpty)
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                               decoration: BoxDecoration(
                                 color: colorScheme.secondary.withAlpha(20),
                                 borderRadius: BorderRadius.circular(2),
                               ),
-                              child:
-                                  Text(book.tag!, style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
+                              child: Text(book.tags!.first!,
+                                  style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
                             )
                         ],
                       )

@@ -7,9 +7,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/hooks/use_cover_color.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
+import 'package:reader/app/data/model/book.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/book_detail/ui/components/book_tag.dart';
-import 'package:reader/search/data/model/search_book_item.dart';
 
 import 'components/cover_background.dart';
 
@@ -17,7 +17,7 @@ class BookDetailScreen extends HookConsumerWidget {
   const BookDetailScreen({super.key, this.book, required this.uuid, required this.bid});
   final String uuid;
   final String bid;
-  final SearchBookItemModel? book;
+  final BookModel? book;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;

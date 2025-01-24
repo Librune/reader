@@ -1,5 +1,6 @@
+import 'package:reader/app/data/model/book.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
-import 'package:reader/search/data/model/search_book_item.dart';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'search_provider.g.dart';
@@ -11,7 +12,7 @@ class SearchBooks extends _$SearchBooks {
     return [];
   }
 
-  pushSearchGroup(BookSourceModel bookSource, List<SearchBookItemModel> bookList) {
+  pushSearchGroup(BookSourceModel bookSource, List<BookModel> bookList) {
     state = [
       ...state,
       <String, dynamic>{"bks": bookSource, "books": bookList}

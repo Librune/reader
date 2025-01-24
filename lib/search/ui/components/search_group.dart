@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/data/model/book.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
-import 'package:reader/search/data/model/search_book_item.dart';
 
 import 'search_item.dart';
 
@@ -12,7 +12,7 @@ class SearchGroup extends HookConsumerWidget {
     required this.bookList,
   });
   final BookSourceModel bookSource;
-  final List<SearchBookItemModel> bookList;
+  final List<BookModel> bookList;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
