@@ -62,7 +62,7 @@ class BookDetailScreen extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Spacer(
-                          flex: 8,
+                          flex: 6,
                         ),
                         Row(
                           children: [
@@ -98,7 +98,7 @@ class BookDetailScreen extends HookConsumerWidget {
                           padding: EdgeInsets.only(top: 8),
                           child: Text("作者：${book!.author}",
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 15,
                                 color: colorScheme.onSecondary.withAlpha(200),
                               )),
                         ),
@@ -115,7 +115,16 @@ class BookDetailScreen extends HookConsumerWidget {
                                         RoundedRectangleBorder(borderRadius: BorderRadius.circular(32))),
                                   ),
                                   onPressed: () {},
-                                  child: Text("开始阅读"))
+                                  child: Text("开始阅读")),
+                              Padding(
+                                padding: EdgeInsets.only(left: 16),
+                                child: SvgBtn(
+                                  svgName: "ic_btn_heart",
+                                  size: 22,
+                                  color: colorScheme.onPrimary,
+                                  onPressed: () {},
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -125,10 +134,11 @@ class BookDetailScreen extends HookConsumerWidget {
                             ),
                             padding: EdgeInsets.only(top: 8),
                             child: Text(book!.description!,
-                                maxLines: 8,
+                                maxLines: 6,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.justify,
-                                style: TextStyle(color: colorScheme.onSecondary.withAlpha(200), fontSize: 14))),
+                                style: TextStyle(
+                                    color: colorScheme.onSecondary.withAlpha(200), height: 1.7, fontSize: 14))),
                         Container(
                           margin: EdgeInsets.only(top: 24, bottom: 16),
                           child: Wrap(
