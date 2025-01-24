@@ -121,13 +121,26 @@ class BookSourceService {
     Log.d("listAll: ${res.stringResult}");
   }
 
-  action({required String uuid, required String act, Map<String, dynamic>? args}) async {
+  /// @param uuid 书源uuid
+  /// @param act 书源方法
+  /// @param args 书源方法参数
+  /// @return 书源方法返回值 —— 你应该知道自己需要的是什么类型，如果是可序列化的对象，那么会自动处理，否则请自行判断
+  Future<dynamic> action({required String uuid, required String act, Map<String, dynamic>? args}) async {
     runtime.executePendingJob();
     final res = await runtime.evaluateAsync("""
        __BOOK_SOURCE_MAP__['$uuid'].action('$act', ${args != null ? jsonEncode(args) : ''});
     """);
     JsEvalResult asyncResult = await runtime.handlePromise(res);
-    return asyncResult.stringResult;
+    try {
+      var dynamicRes = jsonDecode(asyncResult.stringResult);
+      if (dynamicRes is String) {
+        return jsonDecode(dynamicRes);
+      } else {
+        return dynamicRes;
+      }
+    } catch (e) {
+      return asyncResult.stringResult;
+    }
   }
 
   File get bksManifest => File(PathService().bookSourceManifestPath);

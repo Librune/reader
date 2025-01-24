@@ -75,6 +75,10 @@ dependencies:
   isar_flutter_libs: # contains Isar Core
     version: ^3.1.8
     hosted: https://pub.isar-community.dev/
+  jiffy: ^6.3.2
+  filesize: ^2.0.1
+  modal_bottom_sheet: ^3.0.0
+  wolt_modal_sheet: ^0.10.0
 
 dependency_overrides:
   json_serializable: ^6.9.2

@@ -22,8 +22,7 @@ class SearchKeywordUsecase {
 
   static Future<List<BookModel>> searchBookFromUuid(String keyword, {required String uuid}) async {
     final res = await BookSourceService().action(uuid: uuid, act: "search", args: {"key": keyword});
-    final jsonList = Platform.isAndroid ? jsonDecode(res) : jsonDecode(jsonDecode(res));
-    return (jsonList).map<BookModel>((r) {
+    return (res).map<BookModel>((r) {
       return BookModel.fromJson(r);
     }).toList();
   }

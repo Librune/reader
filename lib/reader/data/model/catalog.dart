@@ -16,7 +16,8 @@ class CatalogModel with _$CatalogModel {
     required String bookId,
     required String bookSourceId,
     required String name,
-    required String lastChapterId,
+    required List<VolumeModel> volumes,
+    String? lastChapterId,
   }) = _CatalogModel;
   factory CatalogModel.fromJson(Map<String, dynamic> json) => _$CatalogModelFromJson(json);
   const CatalogModel._();
@@ -24,6 +25,8 @@ class CatalogModel with _$CatalogModel {
   @override
   // ignore: recursive_getters
   Id get id => id;
+
+  List<ChapterModel> get flatChapterList => volumes.expand((v) => v.chapters).toList();
 }
 
 @Embedded(ignore: {

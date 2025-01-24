@@ -21,8 +21,8 @@ class BookDetailScreen extends HookConsumerWidget {
     final coverUrl = book.cover;
     final colorScheme = Theme.of(context).colorScheme;
     final coverColorScheme = useCoverColor(context, coverUrl: coverUrl, time: 300);
-    final isInShelf = ref.watch(bookInShelfProvider(book));
     final _book = book.copyWith(bookSourceId: uuid);
+    final isInShelf = ref.watch(bookInShelfProvider(_book));
     return Material(
         color: Color.alphaBlend(coverColorScheme.data!.primary.withAlpha(50), Colors.black),
         child: LayoutBuilder(

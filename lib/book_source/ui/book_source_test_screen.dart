@@ -15,8 +15,7 @@ class BookSourceTestScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = useFuture(useMemoized<dynamic>(() async {
       try {
-        final res = await BookSourceService().action(uuid: uuid, act: "test");
-        return jsonDecode(res);
+        return await BookSourceService().action(uuid: uuid, act: "test");
       } catch (e) {
         Log.e(e);
         return null;
