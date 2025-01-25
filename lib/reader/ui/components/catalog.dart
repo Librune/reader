@@ -4,18 +4,21 @@ import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/discover/ui/components/fake_search_bar.dart';
+import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/catalog.dart';
+import 'package:reader/reader/provider/menu.dart';
+import 'package:reader/reader/ui/components/bottom_bar.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class CatalogSheet extends HookConsumerWidget {
-  const CatalogSheet({super.key, required this.book, required this.currentIndex});
+  const CatalogSheet({super.key, required this.book});
   final BookModel book;
-  final ValueNotifier<int?> currentIndex;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final catalog = ref.watch(catalogProvider(book)).asData!.value;
+    final subType = ref.watch(menuProvider.select((value) => value.subType));
     final colorScheme = Theme.of(context).colorScheme;
     return Expanded(
       flex: 1,
@@ -23,9 +26,8 @@ class CatalogSheet extends HookConsumerWidget {
         child: SvgBtn(
           svgName: 'ic_bottom_slider',
           size: 26,
-          color: currentIndex.value == 0 ? colorScheme.primary : null,
+          color: ReaderBottomSheet.catalog == subType ? colorScheme.primary : null,
           onPressed: () {
-            currentIndex.value = 0;
             MenuSheetUsecase().toggle(
                 CustomScrollView(
                   slivers: [
@@ -76,7 +78,7 @@ class CatalogSheet extends HookConsumerWidget {
                     )
                   ],
                 ),
-                id: "catalog",
+                type: ReaderBottomSheet.catalog,
                 ref: ref);
             // WoltModalSheet.show(
             //   modalBarrierColor: Colors.transparent,

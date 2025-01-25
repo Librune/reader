@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/menu.dart';
 
 class MenuSheetUsecase {
@@ -9,8 +10,6 @@ class MenuSheetUsecase {
   MenuSheetUsecase._internal();
 
   final sheetCtx = GlobalKey<ScaffoldState>();
-
-  String _id = "";
 
   PersistentBottomSheetController? controller;
 
@@ -28,24 +27,23 @@ class MenuSheetUsecase {
 
   void _clear(WidgetRef ref) {
     ref.read(menuProvider.notifier).closeSub();
-    _id = "";
   }
 
-  void toggle(Widget child, {required String id, required WidgetRef ref}) {
-    final subVisible = ref.read(menuProvider.select((value) => value.sub));
+  void toggle(Widget child, {required ReaderBottomSheet type, required WidgetRef ref}) {
+    final menu = ref.read(menuProvider);
+    final subVisible = menu.sub;
+    final _type = menu.subType;
     if (subVisible) {
-      if (id == _id) {
+      if (type == _type) {
         sheetCtx.currentContext?.pop();
         _clear(ref);
         return;
       } else {
         _clear(ref);
-        _id = id;
         controller = _show(child);
       }
     } else {
-      _id = id;
-      ref.read(menuProvider.notifier).openSub();
+      ref.read(menuProvider.notifier).openSub(type);
       controller = _show(child);
     }
     controller?.closed.then((value) {

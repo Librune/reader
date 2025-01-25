@@ -17,13 +17,6 @@ class BottomBar extends HookConsumerWidget {
     final height = MediaQuery.of(context).padding.bottom + 68;
     final visible = ref.watch(menuProvider.select((value) => value.bottom));
     final subVisible = ref.watch(menuProvider.select((value) => value.sub));
-    final currentIndex = useState<int?>(null);
-    useEffect(() {
-      if (!visible) {
-        currentIndex.value = null;
-      }
-      return null;
-    }, [visible]);
     return AnimatedPositioned(
       duration: Duration(milliseconds: 200),
       bottom: visible ? 0 : -height - 24,
@@ -58,64 +51,63 @@ class BottomBar extends HookConsumerWidget {
         child: Row(
           children: [
             CatalogSheet(
-              currentIndex: currentIndex,
               book: book,
             ),
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: SvgBtn(
-                  svgName: 'ic_bottom_font',
-                  size: 26,
-                  color: currentIndex.value == 1 ? colorScheme.primary : null,
-                  onPressed: () {
-                    currentIndex.value = 1;
-                    // sheetKey 触发 bottomSheet
-                    // MenuSheetUsecase().sheetCtx.currentState!.showBottomSheet(
-                    //       (context) => Container(
-                    //         color: colorScheme.surfaceContainerLow,
-                    //         child: Column(
-                    //           children: [
-                    //             ListTile(
-                    //               title: Text('字体设置'),
-                    //             ),
-                    //             ListTile(
-                    //               title: Text('亮度调节'),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     );
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: SvgBtn(
-                  svgName: 'ic_bottom_sun',
-                  size: 26,
-                  color: currentIndex.value == 2 ? colorScheme.primary : null,
-                  onPressed: () {
-                    currentIndex.value = 2;
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: SvgBtn(
-                  svgName: 'ic_bottom_settings',
-                  size: 26,
-                  color: currentIndex.value == 3 ? colorScheme.primary : null,
-                  onPressed: () {
-                    currentIndex.value = 3;
-                  },
-                ),
-              ),
-            )
+            // Expanded(
+            //   flex: 1,
+            //   child: Center(
+            //     child: SvgBtn(
+            //       svgName: 'ic_bottom_font',
+            //       size: 26,
+            //       color: currentIndex.value == 1 ? colorScheme.primary : null,
+            //       onPressed: () {
+            //         currentIndex.value = 1;
+            //         // sheetKey 触发 bottomSheet
+            //         // MenuSheetUsecase().sheetCtx.currentState!.showBottomSheet(
+            //         //       (context) => Container(
+            //         //         color: colorScheme.surfaceContainerLow,
+            //         //         child: Column(
+            //         //           children: [
+            //         //             ListTile(
+            //         //               title: Text('字体设置'),
+            //         //             ),
+            //         //             ListTile(
+            //         //               title: Text('亮度调节'),
+            //         //             ),
+            //         //           ],
+            //         //         ),
+            //         //       ),
+            //         //     );
+            //       },
+            //     ),
+            //   ),
+            // ),
+            // Expanded(
+            //   flex: 1,
+            //   child: Center(
+            //     child: SvgBtn(
+            //       svgName: 'ic_bottom_sun',
+            //       size: 26,
+            //       color: currentIndex.value == 2 ? colorScheme.primary : null,
+            //       onPressed: () {
+            //         currentIndex.value = 2;
+            //       },
+            //     ),
+            //   ),
+            // ),
+            // Expanded(
+            //   flex: 1,
+            //   child: Center(
+            //     child: SvgBtn(
+            //       svgName: 'ic_bottom_settings',
+            //       size: 26,
+            //       color: currentIndex.value == 3 ? colorScheme.primary : null,
+            //       onPressed: () {
+            //         currentIndex.value = 3;
+            //       },
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),
