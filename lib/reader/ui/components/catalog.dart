@@ -2,73 +2,104 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
+import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/discover/ui/components/fake_search_bar.dart';
 import 'package:reader/reader/provider/catalog.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class CatalogSheet extends HookConsumerWidget {
-  const CatalogSheet({super.key, required this.book});
+  const CatalogSheet({super.key, required this.book, required this.currentIndex});
   final BookModel book;
+  final ValueNotifier<int?> currentIndex;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final catalog = ref.watch(catalogProvider(book)).asData!.value;
     final colorScheme = Theme.of(context).colorScheme;
-    return Column(
-      children: [
-        // Padding(
-        //   padding: EdgeInsets.only(top: 48, left: 4, right: 20, bottom: 12),
-        //   child: Row(
-        //     children: [Expanded(child: FakeSearchBar()), Text("↓去当前")],
-        //   ),
-        // ),
-        Expanded(
-          child: CustomScrollView(
-            slivers: [
-              for (var volume in catalog.volumes)
-                SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0, right: 20, top: 20),
-                        child: Text(volume.title,
-                            style: TextStyle(color: colorScheme.primary, fontSize: 14, fontWeight: FontWeight.bold)),
-                      ),
-                      ...volume.chapters.map((chapter) => Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ListTile(
-                                dense: true,
-                                contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                                title: Text(
-                                  chapter.title,
-                                  style: TextStyle(color: colorScheme.onSurface, fontSize: 14),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                subtitle: Text(
-                                  chapter.updateTime ?? "",
-                                  style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 12),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                onTap: () {},
-                              ),
-                              Divider(
-                                indent: 20,
-                                endIndent: 20,
-                                height: 1,
-                                thickness: .6,
-                              ),
-                            ],
-                          ))
-                    ],
-                  ),
-                ),
-            ],
-          ),
+    return Expanded(
+      flex: 1,
+      child: Center(
+        child: SvgBtn(
+          svgName: 'ic_bottom_slider',
+          size: 26,
+          color: currentIndex.value == 0 ? colorScheme.primary : null,
+          onPressed: () {
+            currentIndex.value = 0;
+            WoltModalSheet.show(
+              modalBarrierColor: Colors.transparent,
+              useRootNavigator: false,
+              context: context,
+              modalDecorator: (p0) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 72),
+                  child: p0,
+                );
+              },
+              pageListBuilder: (bottomSheetContext) => [
+                SliverWoltModalSheetPage(
+                  hasTopBarLayer: false,
+                  // topBarTitle: Row(
+                  //   children: [
+                  //     Text("目录",
+                  //         style: TextStyle(color: colorScheme.primary, fontSize: 16, fontWeight: FontWeight.bold)),
+                  //   ],
+                  // ),
+                  isTopBarLayerAlwaysVisible: false,
+                  backgroundColor: colorScheme.surfaceContainerLow,
+                  surfaceTintColor: Colors.transparent,
+                  mainContentSliversBuilder: (context) => [
+                    SliverList.builder(
+                      itemBuilder: (context, index) {
+                        final volume = catalog.volumes[index];
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 20),
+                              child: Text(volume.title,
+                                  style:
+                                      TextStyle(color: colorScheme.primary, fontSize: 14, fontWeight: FontWeight.bold)),
+                            ),
+                            ...volume.chapters.map((chapter) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ListTile(
+                                      dense: true,
+                                      contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                                      title: Text(
+                                        chapter.title,
+                                        style: TextStyle(color: colorScheme.onSurface, fontSize: 14),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      subtitle: Text(
+                                        chapter.updateTime ?? "",
+                                        style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 12),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      onTap: () {},
+                                    ),
+                                    Divider(
+                                      indent: 20,
+                                      endIndent: 20,
+                                      height: 1,
+                                      thickness: .6,
+                                    ),
+                                  ],
+                                ))
+                          ],
+                        );
+                      },
+                      itemCount: catalog.volumes.length,
+                    ),
+                  ],
+                )
+              ],
+            );
+          },
         ),
-      ],
+      ),
     );
   }
 }

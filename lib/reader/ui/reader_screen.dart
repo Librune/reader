@@ -37,7 +37,7 @@ class ReaderScreen extends HookConsumerWidget {
                         color: colorScheme.surfaceContainerHigh,
                       )),
                     ),
-                    BottomBar()
+                    BottomBar(book: book)
                   ],
                 ),
               _ => Center(
