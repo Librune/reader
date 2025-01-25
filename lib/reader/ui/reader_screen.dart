@@ -6,6 +6,7 @@ import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/reader/data/model/catalog.dart';
+import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/provider/reader.dart';
 import 'package:reader/reader/ui/components/bottom_bar.dart';
 import 'package:reader/reader/ui/components/catalog.dart';
@@ -38,8 +39,17 @@ class ReaderScreen extends HookConsumerWidget {
                         color: colorScheme.surfaceContainerHigh,
                       )),
                     ),
-                    Navigator(
-                      key: MenuSheetUsecase().sheetCtx, // 全局 Key 用于获取子导航器上下文
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final subVisible = ref.watch(menuProvider.select((value) => value.sub));
+                        return IgnorePointer(
+                          ignoring: !subVisible,
+                          child: Scaffold(
+                            backgroundColor: Colors.transparent,
+                            key: MenuSheetUsecase().sheetCtx,
+                          ),
+                        );
+                      },
                     ),
                     BottomBar(book: book),
                   ],

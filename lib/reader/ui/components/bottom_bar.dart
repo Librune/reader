@@ -16,6 +16,7 @@ class BottomBar extends HookConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final height = MediaQuery.of(context).padding.bottom + 68;
     final visible = ref.watch(menuProvider.select((value) => value.bottom));
+    final subVisible = ref.watch(menuProvider.select((value) => value.sub));
     final currentIndex = useState<int?>(null);
     useEffect(() {
       if (!visible) {
@@ -32,24 +33,26 @@ class BottomBar extends HookConsumerWidget {
         height: height,
         decoration: BoxDecoration(
           color: colorScheme.surfaceContainerLow,
-          boxShadow: [
-            BoxShadow(
-              color: colorScheme.shadow.withAlpha(15), // 原 20 → 15
-              blurRadius: 20,
-              spreadRadius: -2,
-              offset: Offset(0, -6),
-            ),
-            BoxShadow(
-              color: colorScheme.shadow.withAlpha(25), // 原 31 → 25
-              blurRadius: 12,
-              offset: Offset(0, -3),
-            ),
-            BoxShadow(
-              color: colorScheme.shadow.withAlpha(8), // 原 10 → 8
-              blurRadius: 4,
-              offset: Offset(0, -1),
-            ),
-          ],
+          boxShadow: subVisible
+              ? null
+              : [
+                  BoxShadow(
+                    color: colorScheme.shadow.withAlpha(15), // 原 20 → 15
+                    blurRadius: 20,
+                    spreadRadius: -2,
+                    offset: Offset(0, -6),
+                  ),
+                  BoxShadow(
+                    color: colorScheme.shadow.withAlpha(25), // 原 31 → 25
+                    blurRadius: 12,
+                    offset: Offset(0, -3),
+                  ),
+                  BoxShadow(
+                    color: colorScheme.shadow.withAlpha(8), // 原 10 → 8
+                    blurRadius: 4,
+                    offset: Offset(0, -1),
+                  ),
+                ],
         ),
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
         child: Row(
