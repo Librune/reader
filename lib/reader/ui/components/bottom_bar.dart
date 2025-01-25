@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/data/model/book.dart';
-import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/ui/components/sheets/config.dart';
-import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
+import 'package:reader/reader/ui/components/sheets/font.dart';
+import 'package:reader/reader/ui/components/sheets/theme.dart';
 
 import 'sheets/catalog.dart';
 
@@ -50,67 +49,7 @@ class BottomBar extends HookConsumerWidget {
         ),
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
         child: Row(
-          children: [
-            CatalogSheet(
-              book: book,
-            ),
-            ConfigSheet()
-            // Expanded(
-            //   flex: 1,
-            //   child: Center(
-            //     child: SvgBtn(
-            //       svgName: 'ic_bottom_font',
-            //       size: 26,
-            //       color: currentIndex.value == 1 ? colorScheme.primary : null,
-            //       onPressed: () {
-            //         currentIndex.value = 1;
-            //         // sheetKey 触发 bottomSheet
-            //         // MenuSheetUsecase().sheetCtx.currentState!.showBottomSheet(
-            //         //       (context) => Container(
-            //         //         color: colorScheme.surfaceContainerLow,
-            //         //         child: Column(
-            //         //           children: [
-            //         //             ListTile(
-            //         //               title: Text('字体设置'),
-            //         //             ),
-            //         //             ListTile(
-            //         //               title: Text('亮度调节'),
-            //         //             ),
-            //         //           ],
-            //         //         ),
-            //         //       ),
-            //         //     );
-            //       },
-            //     ),
-            //   ),
-            // ),
-            // Expanded(
-            //   flex: 1,
-            //   child: Center(
-            //     child: SvgBtn(
-            //       svgName: 'ic_bottom_sun',
-            //       size: 26,
-            //       color: currentIndex.value == 2 ? colorScheme.primary : null,
-            //       onPressed: () {
-            //         currentIndex.value = 2;
-            //       },
-            //     ),
-            //   ),
-            // ),
-            // Expanded(
-            //   flex: 1,
-            //   child: Center(
-            //     child: SvgBtn(
-            //       svgName: 'ic_bottom_settings',
-            //       size: 26,
-            //       color: currentIndex.value == 3 ? colorScheme.primary : null,
-            //       onPressed: () {
-            //         currentIndex.value = 3;
-            //       },
-            //     ),
-            //   ),
-            // )
-          ],
+          children: [CatalogSheet(book: book), FontSheet(), ThemeSheet(), ConfigSheet()],
         ),
       ),
     );
