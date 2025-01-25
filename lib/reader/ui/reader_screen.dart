@@ -47,6 +47,11 @@ class ReaderScreen extends HookConsumerWidget {
                           child: Scaffold(
                             backgroundColor: Colors.transparent,
                             key: MenuSheetUsecase().sheetCtx,
+                            body: GestureDetector(
+                              onTap: () {
+                                MenuSheetUsecase().close();
+                              },
+                            ),
                           ),
                         );
                       },

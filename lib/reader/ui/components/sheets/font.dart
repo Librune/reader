@@ -34,7 +34,8 @@ class FontSheet extends HookConsumerWidget {
                   ],
                 ),
                 type: ReaderBottomSheet.font,
-                ref: ref);
+                ref: ref,
+                maxHeight: 300);
           },
         ),
       ),
