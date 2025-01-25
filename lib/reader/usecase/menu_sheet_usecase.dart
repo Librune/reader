@@ -17,7 +17,10 @@ class MenuSheetUsecase {
   PersistentBottomSheetController? _show(Widget child) {
     return sheetCtx.currentState?.showBottomSheet(
       (BuildContext context) {
-        return child;
+        return Padding(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 84),
+          child: child,
+        );
       },
       showDragHandle: true,
     );
