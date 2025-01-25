@@ -10,6 +10,7 @@ import 'package:reader/reader/provider/reader.dart';
 import 'package:reader/reader/ui/components/bottom_bar.dart';
 import 'package:reader/reader/ui/components/catalog.dart';
 import 'package:reader/reader/ui/components/gesture_wrapper.dart';
+import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
 class ReaderScreen extends HookConsumerWidget {
   const ReaderScreen({super.key, required this.book});
@@ -37,7 +38,10 @@ class ReaderScreen extends HookConsumerWidget {
                         color: colorScheme.surfaceContainerHigh,
                       )),
                     ),
-                    BottomBar(book: book)
+                    Navigator(
+                      key: MenuSheetUsecase().sheetCtx, // 全局 Key 用于获取子导航器上下文
+                    ),
+                    BottomBar(book: book),
                   ],
                 ),
               _ => Center(

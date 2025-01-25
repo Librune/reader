@@ -5,6 +5,7 @@ import 'package:reader/app/data/model/book.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/discover/ui/components/fake_search_bar.dart';
 import 'package:reader/reader/provider/catalog.dart';
+import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class CatalogSheet extends HookConsumerWidget {
@@ -28,16 +29,17 @@ class CatalogSheet extends HookConsumerWidget {
             WoltModalSheet.show(
               modalBarrierColor: Colors.transparent,
               useRootNavigator: false,
-              context: context,
-              modalDecorator: (p0) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 72),
-                  child: p0,
-                );
-              },
+              context: MenuSheetUsecase().sheetCtx.currentContext!,
+              // modalDecorator: (p0) {
+              //   return Padding(
+              //     padding: EdgeInsets.only(bottom: 72),
+              //     child: p0,
+              //   );
+              // },
               pageListBuilder: (bottomSheetContext) => [
                 SliverWoltModalSheetPage(
                   hasTopBarLayer: false,
+
                   // topBarTitle: Row(
                   //   children: [
                   //     Text("目录",
