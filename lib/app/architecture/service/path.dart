@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:reader/app/data/model/book.dart';
 
 class PathService {
   static final PathService _instance = PathService._internal();
@@ -34,5 +35,13 @@ class PathService {
       file.writeAsStringSync("{}");
     }
     return file;
+  }
+
+  Directory getBookCacheDir(BookModel book) {
+    final dir = Directory(join(cachePath, 'books', "${book.bookSourceId!}-${book.bookId}"));
+    if (!dir.existsSync()) {
+      dir.createSync(recursive: true);
+    }
+    return dir;
   }
 }
