@@ -8,15 +8,17 @@ import 'package:reader/reader/provider/config.dart';
 import 'package:reader/reader/ui/components/render.dart';
 
 class TextRenderUsecase {
-  static TextRenderUsecase? _instance;
+  // static TextRenderUsecase? _instance;
   final BuildContext context;
   final BookModel book;
 
-  TextRenderUsecase._internal(this.context, this.book);
-  factory TextRenderUsecase(BuildContext context, {required BookModel book}) {
-    _instance ??= TextRenderUsecase._internal(context, book);
-    return _instance!;
-  }
+  TextRenderUsecase(this.context, {required this.book});
+
+  // TextRenderUsecase._internal(this.context, this.book);
+  // factory TextRenderUsecase(BuildContext context, {required BookModel book}) {
+  //   _instance ??= TextRenderUsecase._internal(context, book);
+  //   return _instance!;
+  // }
 
   late TextRender render;
 
