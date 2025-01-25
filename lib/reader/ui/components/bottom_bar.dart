@@ -4,9 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/reader/provider/menu.dart';
+import 'package:reader/reader/ui/components/sheets/config.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
-import 'catalog.dart';
+import 'sheets/catalog.dart';
 
 class BottomBar extends HookConsumerWidget {
   const BottomBar({super.key, required this.book});
@@ -53,6 +54,7 @@ class BottomBar extends HookConsumerWidget {
             CatalogSheet(
               book: book,
             ),
+            ConfigSheet()
             // Expanded(
             //   flex: 1,
             //   child: Center(

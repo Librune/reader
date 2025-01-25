@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
-import 'package:reader/discover/ui/components/fake_search_bar.dart';
 import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/catalog.dart';
 import 'package:reader/reader/provider/menu.dart';
-import 'package:reader/reader/ui/components/bottom_bar.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class CatalogSheet extends HookConsumerWidget {
   const CatalogSheet({super.key, required this.book});

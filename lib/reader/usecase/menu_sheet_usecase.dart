@@ -40,6 +40,7 @@ class MenuSheetUsecase {
         return;
       } else {
         _clear(ref);
+        ref.read(menuProvider.notifier).openSub(type);
         controller = _show(child);
       }
     } else {

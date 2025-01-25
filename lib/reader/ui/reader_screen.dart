@@ -9,7 +9,7 @@ import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/provider/reader.dart';
 import 'package:reader/reader/ui/components/bottom_bar.dart';
-import 'package:reader/reader/ui/components/catalog.dart';
+import 'package:reader/reader/ui/components/sheets/catalog.dart';
 import 'package:reader/reader/ui/components/gesture_wrapper.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
