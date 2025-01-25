@@ -9,6 +9,8 @@ import 'package:reader/reader/ui/components/bottom_bar.dart';
 import 'package:reader/reader/ui/components/gesture_wrapper.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
+import 'components/render.dart';
+
 class ReaderScreen extends HookConsumerWidget {
   const ReaderScreen({super.key, required this.book});
   final BookModel book;
@@ -33,6 +35,19 @@ class ReaderScreen extends HookConsumerWidget {
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height,
                         color: colorScheme.surfaceContainerHigh,
+                        child: PageView.builder(
+                          pageSnapping: true,
+                          // physics: HorizontalBlockedScrollPhysics(controller: horizontalBlockedController),
+                          allowImplicitScrolling: true,
+                          // controller: readerPageController,
+                          itemBuilder: (context, index) =>
+                              // DecoratedBox(
+                              //   decoration: BoxDecoration(color: rdt.colorScheme.surfaceContainer),
+                              //   child:
+                              ReaderPage(pagePainter: value[index], context: context),
+                          // ),
+                          itemCount: value.length,
+                        ),
                       )),
                     ),
                     Consumer(

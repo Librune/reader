@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/provider/catalog.dart';
@@ -16,6 +17,8 @@ class Reader extends _$Reader {
 
   late CatalogModel catalog;
 
+  late final TextRenderUsecase textRenderUsecase;
+
   @override
   Future<List<PagePainter>> build(
     BookModel book, {
@@ -25,7 +28,9 @@ class Reader extends _$Reader {
     screenHeight = MediaQuery.of(context).size.height;
     catalog = await ref.read(catalogProvider(book).future);
     // ignore: use_build_context_synchronously
-    TextRenderUsecase(context).init(ref, book: book);
-    return [];
+    textRenderUsecase = TextRenderUsecase(context, book: book).init(ref, book: book);
+    final res = await textRenderUsecase.getPagePainters(0, 0, ref: ref);
+    Log.e(res, "Reader build");
+    return res;
   }
 }
