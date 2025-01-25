@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  battery_plus
   dynamic_color
   flutter_js
   isar_flutter_libs
