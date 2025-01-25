@@ -2,14 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/architecture/service/book_source.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
-import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/provider/reader.dart';
 import 'package:reader/reader/ui/components/bottom_bar.dart';
-import 'package:reader/reader/ui/components/sheets/catalog.dart';
 import 'package:reader/reader/ui/components/gesture_wrapper.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
@@ -18,7 +14,7 @@ class ReaderScreen extends HookConsumerWidget {
   final BookModel book;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reader = ref.watch(readerProvider(book));
+    final reader = ref.watch(readerProvider(book, context: context));
     final colorScheme = ColorScheme.fromSeed(seedColor: Color(0xFFFFDE3F));
     return Theme(
         data: ThemeData(colorScheme: colorScheme),

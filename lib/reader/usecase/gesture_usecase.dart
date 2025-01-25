@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/reader/provider/menu.dart';
 
 class GestureUsecase {
