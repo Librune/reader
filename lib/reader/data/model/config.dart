@@ -26,6 +26,26 @@ class ReaderConfigModel with _$ReaderConfigModel {
     @Default(48) double titlePaddingBottom,
     @Default(0) int transition,
   }) = _ReaderConfigModel;
+
+  factory ReaderConfigModel.defaultAndroid({EdgeInsets systemPadding = EdgeInsets.zero}) => ReaderConfigModel(
+        fontFamily: "System",
+        bodyTextFontSize: 20.0,
+        bodyTextLineHeight: 1.7,
+        edgePaddingDelta: 10.0,
+        edgePaddingTop: systemPadding.top + 18,
+        edgePaddingRight: 10,
+        edgePaddingBottom: systemPadding.bottom + 18,
+        edgePaddingLeft: 10,
+        topInfoPaddingTop: systemPadding.top,
+        topInfoPaddingRight: 20,
+        topInfoPaddingLeft: 20,
+        bottomInfoPaddingBottom: systemPadding.bottom,
+        bottomInfoPaddingRight: 20,
+        bottomInfoPaddingLeft: 20,
+        titlePaddingTop: 124,
+        titlePaddingBottom: 48,
+        transition: 0,
+      );
   const ReaderConfigModel._();
   factory ReaderConfigModel.fromJson(Map<String, dynamic> json) => _$ReaderConfigModelFromJson(json);
 

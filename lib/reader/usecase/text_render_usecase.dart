@@ -24,7 +24,7 @@ class TextRenderUsecase {
 
   // ignore: deprecated_member_use
   TextRenderUsecase init(AutoDisposeAsyncNotifierProviderRef<List<PagePainter>> ref, {required BookModel book}) {
-    final readerConfig = ref.read(readerConfigProvider);
+    final readerConfig = ref.read(readerConfigProvider(context));
     render = TextRender(
         bookName: book.name,
         titlePaddingTop: readerConfig.titlePaddingTop,
