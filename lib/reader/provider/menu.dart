@@ -27,10 +27,10 @@ class Menu extends _$Menu {
   }
 
   openSub(ReaderBottomSheet type) {
-    state = state.copyWith(sub: true, subType: type);
+    state = state.copyWith(sub: true, subType: type, top: false);
   }
 
   closeSub() {
-    state = state.copyWith(sub: false, subType: null);
+    state = state.copyWith(sub: false, subType: null, top: true);
   }
 }
