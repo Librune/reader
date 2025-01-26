@@ -7,6 +7,7 @@ import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/provider/reader.dart';
 import 'package:reader/reader/ui/components/bottom_bar.dart';
 import 'package:reader/reader/ui/components/gesture_wrapper.dart';
+import 'package:reader/reader/ui/components/top_bar.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
 import 'components/render.dart';
@@ -74,6 +75,7 @@ class ReaderScreen extends HookConsumerWidget {
                           );
                         },
                       ),
+                      TopBar(book: book),
                       BottomBar(book: book),
                     ],
                   ),
