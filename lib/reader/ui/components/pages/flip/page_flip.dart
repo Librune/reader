@@ -1,4 +1,3 @@
-// page_flip.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
@@ -12,29 +11,46 @@ class PageFlip extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dragProgress = useState(0.0);
-    final dragPosition = useState<Offset>(Offset.zero);
     final startPosition = useState<Offset>(Offset.zero);
+    final edgePosition = useState(0.0);
+    final initialEdgePosition = useState(0.0);
 
     final handleDragStart = useCallback((DragStartDetails details) {
       startPosition.value = details.localPosition;
-      dragPosition.value = details.localPosition;
+      initialEdgePosition.value = edgePosition.value; // 记录初始边缘位置
     }, []);
 
     final handleDragUpdate = useCallback((DragUpdateDetails details) {
-      dragPosition.value = details.localPosition;
-      final delta = details.primaryDelta ?? 0;
-      dragProgress.value = (dragProgress.value - delta / context.size!.width).clamp(-1, 1);
+      final currentX = details.localPosition.dx;
+      final startX = startPosition.value.dx;
+      final screenWidth = context.size!.width;
+
+      // 计算相对移动距离（考虑双向拖动）
+      final delta = currentX - startX;
+
+      // 更新边缘位置（保持与手指移动 1:1 比例）
+      edgePosition.value = (initialEdgePosition.value + delta).clamp(0.0, screenWidth);
+
+      // 计算标准化进度（-1 到 1 范围）
+      dragProgress.value = (delta / screenWidth).clamp(-1.0, 1.0);
     }, []);
 
     final handleDragEnd = useCallback((DragEndDetails details) {
       final velocity = details.primaryVelocity ?? 0;
+      final screenWidth = context.size!.width;
+
+      // 根据最终进度决定是否完成翻页
       if (velocity.abs() > 500) {
-        dragProgress.value = velocity > 0 ? 1.0 : -1.0;
+        edgePosition.value = velocity > 0 ? screenWidth : 0.0;
       } else {
-        dragProgress.value = dragProgress.value.abs() > 0.3 ? dragProgress.value.sign * 1.0 : 0.0;
+        if (dragProgress.value.abs() > 0.3) {
+          edgePosition.value = dragProgress.value > 0 ? screenWidth : 0.0;
+        } else {
+          edgePosition.value = initialEdgePosition.value;
+        }
       }
-      // 重置拖动位置
-      dragPosition.value = Offset.zero;
+
+      dragProgress.value = 0.0;
       startPosition.value = Offset.zero;
     }, []);
 
@@ -47,20 +63,18 @@ class PageFlip extends HookConsumerWidget {
           (context, shader, _) {
             return AnimatedSampler(
               (image, size, canvas) {
+                // 向着色器传递标准化参数
                 shader
                   ..setFloat(0, size.width)
                   ..setFloat(1, size.height)
-                  ..setFloat(2, dragPosition.value.dx)
-                  ..setFloat(3, dragPosition.value.dy)
-                  ..setFloat(4, startPosition.value.dx)
-                  ..setFloat(5, startPosition.value.dy)
+                  ..setFloat(2, edgePosition.value)
+                  ..setFloat(3, dragProgress.value) // 使用标准化进度
                   ..setImageSampler(0, image);
 
                 ShaderHelper.drawShaderRect(shader, size, canvas);
               },
-              child: Stack(
-                children: [Positioned.fill(child: child), Positioned.fill(child: child)],
-              ),
+              // 保持子组件位置不变
+              child: child,
             );
           },
           assetKey: 'shaders/page_flip.frag',
