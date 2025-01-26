@@ -10,6 +10,7 @@ import 'package:reader/reader/ui/components/gesture_wrapper.dart';
 import 'package:reader/reader/ui/components/top_bar.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
+import 'components/pages/flip/page_flip.dart';
 import 'components/render.dart';
 
 class ReaderScreen extends HookConsumerWidget {
@@ -49,11 +50,10 @@ class ReaderScreen extends HookConsumerWidget {
                             allowImplicitScrolling: true,
                             // controller: readerPageController,
                             itemBuilder: (context, index) =>
-                                // DecoratedBox(
-                                //   decoration: BoxDecoration(color: rdt.colorScheme.surfaceContainer),
-                                //   child:
-                                ReaderPage(pagePainter: value[index], context: context),
-                            // ),
+                                // ReaderPage(pagePainter: value[index], context: context),
+                                PageFlip(
+                              child: ReaderPage(pagePainter: value[0], context: context),
+                            ),
                             itemCount: value.length,
                           ),
                         )),

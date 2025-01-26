@@ -130,6 +130,7 @@ flutter:
 
   shaders:
     - shaders/cover_bg.frag
+    - shaders/page_flip.frag
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
