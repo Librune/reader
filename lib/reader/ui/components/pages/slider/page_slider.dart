@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/architecture/utils/log.dart';
 
 class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
   const PageSlider({
@@ -20,12 +21,14 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
     final scrollController = useScrollController();
     // 用于记录拖动开始时的滚动位置
     final startDragOffset = useState<double?>(null);
+    // 新增：记录当前页
+    final currentPage = useRef(0);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     // 拖动开始时调用
     void handleDragStart(DragStartDetails details) {
       // 记录拖动开始时的滚动位置
       startDragOffset.value = scrollController.offset;
-      // 如果需要，可以在此取消之前的滚动动画（animateTo 返回的 Future 无法直接取消，但新的动画会中断前一个动画）
     }
 
     // 拖动更新时调用
@@ -38,8 +41,6 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
     // 拖动结束时调用
     void handleDragEnd(DragEndDetails details) {
       const threshold = 8.0; // 定义拖动距离的阈值
-      final viewportWidth = MediaQuery.of(context).size.width;
-
       // 当前的滚动位置
       final currentOffset = scrollController.offset;
       // 拖动开始时的滚动位置（如果没有记录则默认为当前偏移）
@@ -47,29 +48,23 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
       // 计算拖动的相对距离
       final dragDistance = currentOffset - initialOffset;
 
-      // 根据初始偏移计算当前页
-      int currentPage = (initialOffset / viewportWidth).round();
-      int targetPage = currentPage;
+      // 以当前页为基础
+      int targetPage = currentPage.value;
 
-      // 判断拖动距离是否超过阈值
+      // 如果拖动距离超过阈值，则根据方向修改目标页
       if (dragDistance.abs() > threshold) {
-        // 如果拖动向左（当前偏移比初始值大），则移动到下一页
         if (dragDistance > 0) {
-          targetPage = currentPage + 1;
+          targetPage = currentPage.value + 1;
         } else {
-          targetPage = currentPage - 1;
+          targetPage = currentPage.value - 1;
         }
-        // 限制页码范围
+        // 限制目标页范围
         targetPage = targetPage.clamp(0, itemCount - 1);
-      } else {
-        // 拖动不足阈值，则回到当前页
-        targetPage = currentPage;
       }
-
       // 计算目标滚动偏移
-      final targetOffset = targetPage * viewportWidth;
+      final targetOffset = targetPage * screenWidth;
 
-      // 使用 animateTo 平滑滚动到目标位置，duration 和 curve 可根据需要调整
+      // 平滑滚动到目标位置
       scrollController
           .animateTo(
         targetOffset,
@@ -77,16 +72,59 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
         curve: Curves.easeOut,
       )
           .then((_) {
-        // 动画完成后调用翻页回调
+        // 动画完成后更新当前页状态及回调
+        currentPage.value = targetPage;
         if (onPageChanged != null) {
           onPageChanged!(targetPage);
         }
       });
     }
 
+    // 点击事件处理
+    void handleTapUp(TapUpDetails details) {
+      // 判断点击位置：屏幕左侧和右侧各占 1/3
+      if (details.localPosition.dx < screenWidth / 3) {
+        // 点击左侧，翻到上一页
+        final targetPage = (currentPage.value - 1).clamp(0, itemCount - 1);
+        if (targetPage != currentPage.value) {
+          scrollController
+              .animateTo(
+            targetPage * screenWidth,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          )
+              .then((_) {
+            currentPage.value = targetPage;
+            if (onPageChanged != null) {
+              onPageChanged!(targetPage);
+            }
+          });
+        }
+      } else if (details.localPosition.dx > screenWidth * 2 / 3) {
+        // 点击右侧，翻到下一页
+        final targetPage = (currentPage.value + 1).clamp(0, itemCount - 1);
+        if (targetPage != currentPage.value) {
+          scrollController
+              .animateTo(
+            targetPage * screenWidth,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          )
+              .then((_) {
+            currentPage.value = targetPage;
+            if (onPageChanged != null) {
+              onPageChanged!(targetPage);
+            }
+          });
+        }
+      }
+    }
+
     return RawGestureDetector(
-      behavior: HitTestBehavior.opaque,
+      behavior: HitTestBehavior.translucent,
       gestures: {
+        TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
+            () => TapGestureRecognizer(), (instance) => instance..onTapUp = handleTapUp),
         HorizontalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<HorizontalDragGestureRecognizer>(
           () => HorizontalDragGestureRecognizer(),
           (instance) => instance
