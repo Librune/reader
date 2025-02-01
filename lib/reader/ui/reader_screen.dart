@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/provider/reader.dart';
 import 'package:reader/reader/ui/components/bottom_bar.dart';
 import 'package:reader/reader/ui/components/gesture_wrapper.dart';
+import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/top_bar.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
@@ -39,24 +41,23 @@ class ReaderScreen extends HookConsumerWidget {
                         left: 0,
                         right: 0,
                         top: 0,
-                        child: GestureWrapper(
-                            child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height,
-                          color: colorScheme.surfaceContainerHigh,
-                          child: PageView.builder(
-                            pageSnapping: true,
-                            // physics: HorizontalBlockedScrollPhysics(controller: horizontalBlockedController),
-                            allowImplicitScrolling: true,
-                            // controller: readerPageController,
-                            itemBuilder: (context, index) =>
-                                // ReaderPage(pagePainter: value[index], context: context),
-                                PageFlip(
-                              child: ReaderPage(pagePainter: value[0], context: context),
-                            ),
-                            itemCount: value.length,
-                          ),
-                        )),
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            Log.f('constraints: $constraints');
+                            return GestureWrapper(
+                                child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height,
+                              color: colorScheme.surfaceContainerHigh,
+                              child: PageSlider(
+                                itemBuilder: (context, index) {
+                                  return ReaderPage(pagePainter: value[index], context: context);
+                                },
+                                itemCount: value.length,
+                              ),
+                            ));
+                          },
+                        ),
                       ),
                       Consumer(
                         builder: (context, ref, child) {

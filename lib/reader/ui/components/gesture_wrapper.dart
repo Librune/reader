@@ -10,9 +10,9 @@ class GestureWrapper extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final gestureUsecase = GestureUsecase(ref);
     return GestureDetector(
-      onHorizontalDragStart: (details) {},
-      onHorizontalDragUpdate: (details) {},
-      onTapDown: gestureUsecase.handleTapDown,
+      // onHorizontalDragStart: (details) {},
+      // onHorizontalDragUpdate: (details) {},
+      // onTapDown: gestureUsecase.handleTapDown,
       child: Listener(
         onPointerDown: (event) {},
         onPointerMove: (event) {},
