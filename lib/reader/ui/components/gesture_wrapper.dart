@@ -11,7 +11,7 @@ class GestureWrapper extends HookConsumerWidget {
     return GestureDetector(
       // onHorizontalDragStart: (details) {},
       // onHorizontalDragUpdate: (details) {},
-      onTap: gestureUsecase.handleTapDown,
+      // onTap: gestureUsecase.handleTapDown,
       child: Listener(
         onPointerDown: (event) {},
         onPointerMove: (event) {},

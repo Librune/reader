@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/data/model/book.dart';
+import 'package:reader/app/ui/components/delayed_sliver_list.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
+import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/catalog.dart';
 import 'package:reader/reader/provider/menu.dart';
+import 'package:reader/reader/provider/reader.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
 class CatalogSheet extends HookConsumerWidget {
-  const CatalogSheet({super.key, required this.book});
+  const CatalogSheet({super.key, required this.book, required this.onChapterTap});
   final BookModel book;
+  final void Function(ChapterModel chapter) onChapterTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,7 +32,8 @@ class CatalogSheet extends HookConsumerWidget {
             MenuSheetUsecase().toggle(
               CustomScrollView(
                 slivers: [
-                  SliverList.builder(
+                  DelayedSliverList(
+                    delay: const Duration(milliseconds: 250),
                     itemBuilder: (context, index) {
                       final volume = catalog.volumes[index];
                       return Column(
@@ -57,7 +63,10 @@ class CatalogSheet extends HookConsumerWidget {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    onTap: () {},
+                                    onTap: () {
+                                      // ref.read(ReaderProvider(book, context: context).notifier).jumpToChapter(chapter);
+                                      onChapterTap(chapter);
+                                    },
                                   ),
                                   Divider(
                                     indent: 20,

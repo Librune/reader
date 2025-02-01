@@ -10,6 +10,7 @@ import 'package:reader/reader/ui/components/bottom_bar.dart';
 import 'package:reader/reader/ui/components/gesture_wrapper.dart';
 import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/top_bar.dart';
+import 'package:reader/reader/usecase/gesture_usecase.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
 import 'components/pages/flip/page_flip.dart';
@@ -45,21 +46,23 @@ class ReaderScreen extends HookConsumerWidget {
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             Log.f('constraints: $constraints');
-                            return GestureWrapper(
-                                child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height,
-                              color: colorScheme.surfaceContainerHigh,
-                              child: PageSlider(
-                                itemBuilder: (context, index) {
-                                  return ReaderPage(pagePainter: value[index], context: context);
-                                },
-                                itemCount: value.length,
-                                onPageChanged: (page) {
-                                  ref.read(provider.notifier).onPageChange(page);
-                                },
-                              ),
-                            ));
+                            return Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                color: colorScheme.surfaceContainerHigh,
+                                child: PageSlider(
+                                  itemBuilder: (context, index) {
+                                    return ReaderPage(pagePainter: value[index], context: context);
+                                  },
+                                  controller: ref.read(provider.notifier).pageSliderController,
+                                  itemCount: value.length,
+                                  onPageChanged: (page) {
+                                    ref.read(provider.notifier).onPageChange(page);
+                                  },
+                                  callMenu: () {
+                                    GestureUsecase(ref).callMenu();
+                                  },
+                                ));
                           },
                         ),
                       ),
@@ -81,7 +84,11 @@ class ReaderScreen extends HookConsumerWidget {
                         },
                       ),
                       TopBar(book: book),
-                      BottomBar(book: book),
+                      BottomBar(
+                          book: book,
+                          onChapterTap: (chapter) {
+                            ref.read(provider.notifier).jumpToChapter(chapter);
+                          }),
                     ],
                   ),
                 _ => Center(

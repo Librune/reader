@@ -4,6 +4,7 @@ import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/provider/catalog.dart';
+import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/render.dart';
 import 'package:reader/reader/usecase/text_render_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,6 +23,8 @@ class Reader extends _$Reader {
   bool isLoadingNextChapter = false;
   bool isLoadingPrevChapter = false;
 
+  late final PageSliderController pageSliderController;
+
   @override
   Future<List<PagePainter>> build(
     BookModel book, {
@@ -29,6 +32,7 @@ class Reader extends _$Reader {
   }) async {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
+    pageSliderController = PageSliderController();
     catalog = await ref.read(catalogProvider(book).future);
     // ignore: use_build_context_synchronously
     textRenderUsecase = TextRenderUsecase(context, book: book).init(ref, book: book);
@@ -66,11 +70,19 @@ class Reader extends _$Reader {
     }
   }
 
+  jumpToChapter(ChapterModel chapter) async {
+    final pagePainters = await textRenderUsecase.getPagePainters(cid: chapter.cid, ref: ref);
+    state = AsyncValue.data(pagePainters);
+    pageSliderController.reset();
+  }
+
   appendPages(List<PagePainter> pages) {
     state = AsyncValue.data([...state.value!, ...pages]);
   }
 
   prependPages(List<PagePainter> pages) {
+    final preNum = state.value!.length;
     state = AsyncValue.data([...pages, ...state.value!]);
+    pageSliderController.jumpToPage(preNum);
   }
 }

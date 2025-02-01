@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/data/model/book.dart';
+import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/ui/components/sheets/config.dart';
 import 'package:reader/reader/ui/components/sheets/font.dart';
@@ -9,8 +10,9 @@ import 'package:reader/reader/ui/components/sheets/theme.dart';
 import 'sheets/catalog.dart';
 
 class BottomBar extends HookConsumerWidget {
-  const BottomBar({super.key, required this.book});
+  const BottomBar({super.key, required this.book, required this.onChapterTap});
   final BookModel book;
+  final void Function(ChapterModel chapter) onChapterTap;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -49,7 +51,17 @@ class BottomBar extends HookConsumerWidget {
         ),
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
         child: Row(
-          children: [CatalogSheet(book: book), FontSheet(), ThemeSheet(), ConfigSheet()],
+          children: [
+            CatalogSheet(
+              book: book,
+              onChapterTap: (chapter) {
+                onChapterTap(chapter);
+              },
+            ),
+            FontSheet(),
+            ThemeSheet(),
+            ConfigSheet()
+          ],
         ),
       ),
     );

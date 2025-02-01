@@ -19,12 +19,14 @@ class MenuSheetUsecase {
   }) {
     return sheetCtx.currentState?.showBottomSheet(
       (BuildContext context) {
-        return ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: maxHeight ?? MediaQuery.of(context).size.height), // 设置最大高度约束
-            child: Padding(
-              padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 84),
-              child: child,
-            ));
+        return RepaintBoundary(
+          child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: maxHeight ?? MediaQuery.of(context).size.height), // 设置最大高度约束
+              child: Padding(
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 84),
+                child: child,
+              )),
+        );
       },
       showDragHandle: true,
       enableDrag: true,
