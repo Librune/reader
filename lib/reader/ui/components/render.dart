@@ -24,6 +24,10 @@ class ReaderPage extends HookConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final infoTextStyle = pagePainter.infoTextStyle.copyWith(color: colorScheme.onSurface.withOpacity(.5));
     return Stack(
+      key: ObjectKey({
+        "cIndex": pagePainter.chapterIndex,
+        "vIndex": pagePainter.volumeIndex,
+      }),
       children: [
         ...pagePainter.painters.mapIndexed((index, painter) {
           double posY = painter.posY;
@@ -119,6 +123,7 @@ class PagePainter {
   final double height;
   final bool withBookMark;
   int totalPages;
+  int? flatIndex;
 
   PagePainter(
       {required this.chapterId,
@@ -135,6 +140,7 @@ class PagePainter {
       required this.extraParaPadding,
       required this.width,
       required this.height,
+      this.flatIndex,
       this.totalPages = 0,
       this.withBookMark = false});
 
@@ -146,7 +152,7 @@ class PagePainter {
 
   @override
   toString() {
-    return "PagePainter: $chapterId,pageIndex:$pageIndex,bookName:$bookName,chapterName:$chapterName,volumeName:$volumeName,volumeIndex:$volumeIndex,chapterIndex:$chapterIndex";
+    return "PagePainter: $chapterId,pageIndex:$pageIndex,bookName:$bookName,chapterName:$chapterName,volumeName:$volumeName,volumeIndex:$volumeIndex,chapterIndex:$chapterIndex,flatIndex:$flatIndex";
   }
 
   PagePainter copyWith({
@@ -161,6 +167,7 @@ class PagePainter {
     int? volumeIndex,
     int? chapterIndex,
     int? pageIndex,
+    int? flatIndex,
     double? extraParaPadding,
     double? width,
     double? height,
@@ -178,6 +185,7 @@ class PagePainter {
         volumeName: volumeName ?? this.volumeName,
         volumeIndex: volumeIndex ?? this.volumeIndex,
         chapterIndex: chapterIndex ?? this.chapterIndex,
+        flatIndex: flatIndex ?? this.flatIndex,
         pageIndex: pageIndex ?? this.pageIndex,
         extraParaPadding: extraParaPadding ?? this.extraParaPadding,
         width: width ?? this.width,
@@ -321,6 +329,7 @@ class TextRender {
     required int volumeIndex,
     required int chapterIndex,
     required String chapterId,
+    int? flatIndex,
     String? volumeName,
     String? text,
     List<String>? textArr,
@@ -476,7 +485,11 @@ class TextRender {
       pageSpanBuffer.clear();
     }
 
-    return pages.map((page) => page..totalPages = pages.length).toList();
+    return pages
+        .map((page) => page
+          ..totalPages = pages.length
+          ..flatIndex = flatIndex)
+        .toList();
   }
 
   /// 绘制卷名

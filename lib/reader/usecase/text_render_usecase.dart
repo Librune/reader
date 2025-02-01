@@ -23,7 +23,7 @@ class TextRenderUsecase {
   late TextRender render;
 
   // ignore: deprecated_member_use
-  TextRenderUsecase init(AutoDisposeAsyncNotifierProviderRef<List<PagePainter>> ref, {required BookModel book}) {
+  TextRenderUsecase init(AsyncNotifierProviderRef<List<PagePainter>> ref, {required BookModel book}) {
     final readerConfig = ref.read(readerConfigProvider(context));
     render = TextRender(
         bookName: book.name,
@@ -49,33 +49,43 @@ class TextRenderUsecase {
     return BookSourceService().action(uuid: book.bookSourceId!, act: "chapter", args: {"chapter_id": chapter.cid});
   }
 
-  Future<List<PagePainter>> _getPagePainters(
-    int vIndex,
-    int cIndex, {
+  Future<List<PagePainter>> _getPagePainters({
     // ignore: deprecated_member_use
-    required AutoDisposeAsyncNotifierProviderRef<List<PagePainter>> ref,
+    required AsyncNotifierProviderRef<List<PagePainter>> ref,
     String? cid,
+    int? fIndex,
+    // int? vIndex,
+    // int? cIndex,
     bool useCache = true,
   }) async {
-    final catalog = ref.read(catalogProvider(book)).asData!.value;
-    final chapter = cid == null
-        ? catalog.volumes[vIndex].chapters[cIndex]
-        : catalog.flatChapterList.firstWhere((element) => element.cid == cid);
+    final flatCatalog = ref.read(catalogProvider(book)).asData!.value.flatChapterList;
+    late ChapterModel chapter;
+    if (cid != null) {
+      chapter = flatCatalog.firstWhere((element) => element.cid == cid);
+      fIndex = flatCatalog.indexOf(chapter);
+    } else {
+      chapter = flatCatalog[fIndex!];
+    }
     final txt = await _getContent(chapter);
     return render.measure(
         text: txt['content'],
         chapterName: chapter.title,
-        volumeIndex: vIndex,
-        chapterIndex: cIndex,
+        volumeIndex: chapter.volumeIndex!,
+        chapterIndex: chapter.chapterIndex!,
         chapterId: chapter.cid,
-        volumeName: catalog.volumes[vIndex].title);
+        flatIndex: fIndex,
+        volumeName: chapter.volumeName!);
   }
 
   // ignore: deprecated_member_use
-  Future<List<PagePainter>> getPagePainters(int vIndex, int cIndex,
-      {String? cid, int delay = 300, required AutoDisposeAsyncNotifierProviderRef<List<PagePainter>> ref}) async {
+  Future<List<PagePainter>> getPagePainters(
+      // ignore: deprecated_member_use
+      {String? cid,
+      int? fIndex,
+      int delay = 300,
+      required AsyncNotifierProviderRef<List<PagePainter>> ref}) async {
     return (await Future.wait(
-            [_getPagePainters(vIndex, cIndex, ref: ref), Future.delayed(Duration(milliseconds: delay))]))
+            [_getPagePainters(cid: cid, fIndex: fIndex, ref: ref), Future.delayed(Duration(milliseconds: delay))]))
         .first as List<PagePainter>;
   }
 

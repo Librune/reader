@@ -20,7 +20,8 @@ class ReaderScreen extends HookConsumerWidget {
   final BookModel book;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reader = ref.watch(readerProvider(book, context: context));
+    final provider = readerProvider(book, context: context);
+    final reader = ref.watch(provider);
     final colorScheme = ColorScheme.fromSeed(seedColor: Color(0xFFFFDE3F));
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
@@ -54,6 +55,9 @@ class ReaderScreen extends HookConsumerWidget {
                                   return ReaderPage(pagePainter: value[index], context: context);
                                 },
                                 itemCount: value.length,
+                                onPageChanged: (page) {
+                                  ref.read(provider.notifier).onPageChange(page);
+                                },
                               ),
                             ));
                           },

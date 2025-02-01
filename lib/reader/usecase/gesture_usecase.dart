@@ -6,7 +6,7 @@ class GestureUsecase {
   final WidgetRef ref;
   GestureUsecase(this.ref);
 
-  handleTapDown(TapDownDetails details) {
+  handleTapDown() {
     final menuVisible = ref.read(menuProvider);
     if (menuVisible.none) {
       ref.read(menuProvider.notifier).openTop();

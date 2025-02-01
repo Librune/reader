@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 
@@ -26,7 +27,16 @@ class CatalogModel with _$CatalogModel {
   // ignore: recursive_getters
   Id get id => id;
 
-  List<ChapterModel> get flatChapterList => volumes.expand((v) => v.chapters).toList();
+  List<ChapterModel> get flatChapterList => volumes
+      .expandIndexed((vi, v) => v.chapters.mapIndexed(
+            (ci, c) => c.copyWith(
+              vid: v.vid,
+              volumeIndex: vi,
+              chapterIndex: ci,
+              volumeName: v.title,
+            ),
+          ))
+      .toList();
 }
 
 @Embedded(ignore: {
@@ -55,10 +65,14 @@ class ChapterModel with _$ChapterModel {
   const factory ChapterModel({
     @Default("") String cid,
     @Default("") String title,
+    String? vid,
     String? updateTime,
     String? wordNum,
     @Default(false) bool isVip,
     @Default(false) bool hasAccess,
+    int? volumeIndex,
+    int? chapterIndex,
+    String? volumeName,
   }) = _ChapterModel;
   factory ChapterModel.fromJson(Map<String, dynamic> json) => _$ChapterModelFromJson(json);
   const ChapterModel._();

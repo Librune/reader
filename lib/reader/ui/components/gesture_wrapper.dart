@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/reader/usecase/gesture_usecase.dart';
 
 class GestureWrapper extends HookConsumerWidget {
@@ -12,7 +11,7 @@ class GestureWrapper extends HookConsumerWidget {
     return GestureDetector(
       // onHorizontalDragStart: (details) {},
       // onHorizontalDragUpdate: (details) {},
-      // onTapDown: gestureUsecase.handleTapDown,
+      onTap: gestureUsecase.handleTapDown,
       child: Listener(
         onPointerDown: (event) {},
         onPointerMove: (event) {},

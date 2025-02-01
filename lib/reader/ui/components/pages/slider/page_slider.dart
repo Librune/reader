@@ -8,10 +8,12 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
     super.key,
     required this.itemCount,
     required this.itemBuilder,
+    this.onPageChanged,
   });
 
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
+  final void Function(int page)? onPageChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +37,7 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
 
     // 拖动结束时调用
     void handleDragEnd(DragEndDetails details) {
-      const threshold = 24.0; // 定义拖动距离的阈值
+      const threshold = 8.0; // 定义拖动距离的阈值
       final viewportWidth = MediaQuery.of(context).size.width;
 
       // 当前的滚动位置
@@ -68,11 +70,18 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
       final targetOffset = targetPage * viewportWidth;
 
       // 使用 animateTo 平滑滚动到目标位置，duration 和 curve 可根据需要调整
-      scrollController.animateTo(
+      scrollController
+          .animateTo(
         targetOffset,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
-      );
+      )
+          .then((_) {
+        // 动画完成后调用翻页回调
+        if (onPageChanged != null) {
+          onPageChanged!(targetPage);
+        }
+      });
     }
 
     return RawGestureDetector(
