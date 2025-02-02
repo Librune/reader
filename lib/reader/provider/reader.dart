@@ -81,8 +81,7 @@ class Reader extends _$Reader {
   }
 
   prependPages(List<PagePainter> pages) {
-    final preNum = state.value!.length;
     state = AsyncValue.data([...pages, ...state.value!]);
-    pageSliderController.jumpToPage(preNum);
+    pageSliderController.jumpToPage(pages.length);
   }
 }

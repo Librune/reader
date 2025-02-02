@@ -43,18 +43,14 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
       controller._jumpToPage = (int page) {
         // 限制 page 范围
         final targetPage = page.clamp(0, itemCount - 1);
-        scrollController
-            .animateTo(
+        scrollController.jumpTo(
           targetPage * screenWidth,
-          duration: const Duration(milliseconds: 0),
-          curve: Curves.easeOut,
-        )
-            .then((_) {
-          currentPage.value = targetPage;
-          if (onPageChanged != null) {
-            onPageChanged!(targetPage);
-          }
-        });
+        );
+
+        currentPage.value = targetPage;
+        if (onPageChanged != null) {
+          onPageChanged!(targetPage);
+        }
       };
       // 清理时将 _reset 和 _jumpToPage 置空
       return () {

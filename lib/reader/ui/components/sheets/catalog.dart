@@ -11,14 +11,19 @@ import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/provider/reader.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
-class CatalogSheet extends HookConsumerWidget {
+class CatalogSheet extends StatefulHookConsumerWidget {
   const CatalogSheet({super.key, required this.book, required this.onChapterTap});
   final BookModel book;
   final void Function(ChapterModel chapter) onChapterTap;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final catalog = ref.watch(catalogProvider(book)).asData!.value;
+  ConsumerState<ConsumerStatefulWidget> createState() => _CatalogSheetState();
+}
+
+class _CatalogSheetState extends ConsumerState<CatalogSheet> {
+  @override
+  Widget build(BuildContext context) {
+    final catalog = ref.watch(catalogProvider(widget.book)).asData!.value;
     final subType = ref.watch(menuProvider.select((value) => value.subType));
     final colorScheme = Theme.of(context).colorScheme;
     return Expanded(
@@ -65,7 +70,7 @@ class CatalogSheet extends HookConsumerWidget {
                                     ),
                                     onTap: () {
                                       // ref.read(ReaderProvider(book, context: context).notifier).jumpToChapter(chapter);
-                                      onChapterTap(chapter);
+                                      widget.onChapterTap(chapter);
                                     },
                                   ),
                                   Divider(
