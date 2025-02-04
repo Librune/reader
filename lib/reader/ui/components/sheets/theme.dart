@@ -30,7 +30,7 @@ class ThemeSheet extends ConsumerWidget {
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       sliver: SliverGrid.extent(
                         maxCrossAxisExtent: 220,
-                        childAspectRatio: 1.3,
+                        childAspectRatio: 1.6,
                         crossAxisSpacing: 16,
                         mainAxisSpacing: 16,
                         children: [
