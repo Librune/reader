@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/reader/provider/catalog.dart';
+import 'package:reader/reader/provider/config.dart';
+import 'package:reader/reader/provider/reader.dart';
 
 class ProviderUsecase {
   static ProviderUsecase? _instance;
-  final BookModel book;
-  final BuildContext context;
+  // final BookModel book;
+  // final BuildContext context;
 
-  ProviderUsecase._internal({required this.book, required this.context});
+  ProviderUsecase._internal();
 
-  factory ProviderUsecase({required BookModel book, required BuildContext context}) {
-    return _instance ??= ProviderUsecase._internal(book: book, context: context);
+  factory ProviderUsecase() {
+    return _instance ??= ProviderUsecase._internal();
   }
 
-  late final CatalogProvider catalog;
+  late CatalogProvider catalog;
+  late ReaderProvider reader;
+  late ReaderConfigProvider config;
 
-  void init() {
+  void init({
+    required BookModel book,
+    required BuildContext context,
+  }) {
     catalog = catalogProvider(book);
+    reader = readerProvider(book, context: context);
+    config = readerConfigProvider(context);
   }
+
+  void dispose() {}
 }

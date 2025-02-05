@@ -20,12 +20,15 @@ class PathService {
   late final String bookSourcePath;
   late final String bookSourceManifestPath;
 
+  late final String readerConfigPath;
+
   init() async {
     docPath = (await getApplicationDocumentsDirectory()).path;
     cachePath = (await getApplicationCacheDirectory()).path;
     appPath = (await getApplicationSupportDirectory()).path;
     bookSourcePath = join(appPath, 'bks');
     bookSourceManifestPath = join(bookSourcePath, 'index.json');
+    readerConfigPath = join(appPath, 'config.json');
   }
 
   File getEnvFile(String uuid) {

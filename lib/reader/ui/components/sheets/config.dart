@@ -76,14 +76,14 @@ class ConfigButton extends HookConsumerWidget {
       children: [
         IconButton(
           style: ButtonStyle(
-            padding: WidgetStateProperty.all(EdgeInsets.all(14)),
+            padding: WidgetStateProperty.all(EdgeInsets.all(13)),
             backgroundColor:
                 WidgetStateProperty.all(isSelected ? colorScheme.secondaryContainer : colorScheme.surfaceContainerHigh),
           ),
           onPressed: () {},
           icon: SvgPicture.asset("assets/svg/$iconPath.svg",
-              width: 28,
-              height: 28,
+              width: 25,
+              height: 25,
               colorFilter: ColorFilter.mode(
                 isSelected ? colorScheme.primary : colorScheme.secondary.withAlpha(180),
                 BlendMode.srcIn,
@@ -92,7 +92,7 @@ class ConfigButton extends HookConsumerWidget {
         Text(label,
             style: TextStyle(
                 color: isSelected ? colorScheme.primary : colorScheme.secondary,
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: isSelected ? FontWeight.normal : null))
       ],
     );

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
@@ -12,17 +13,28 @@ import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/top_bar.dart';
 import 'package:reader/reader/usecase/gesture_usecase.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
+import 'package:reader/reader/usecase/provider_usecase.dart';
 
 import 'components/pages/flip/page_flip.dart';
 import 'components/render.dart';
 
-class ReaderScreen extends HookConsumerWidget {
+class ReaderScreen extends StatefulHookConsumerWidget {
   const ReaderScreen({super.key, required this.book});
   final BookModel book;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final provider = readerProvider(book, context: context);
-    final reader = ref.watch(provider);
+  ConsumerState<ConsumerStatefulWidget> createState() => _ReaderScreenState();
+}
+
+class _ReaderScreenState extends ConsumerState<ReaderScreen> {
+  @override
+  Widget build(BuildContext context) {
+    useEffect(() {
+      ProviderUsecase().init(book: widget.book, context: context);
+      return null;
+    }, []);
+    // final provider = readerProvider(book, context: context);
+    final reader = ref.watch(ProviderUsecase().reader);
     final colorScheme = ColorScheme.fromSeed(seedColor: Color(0xFFFFDE3F));
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
@@ -54,10 +66,10 @@ class ReaderScreen extends HookConsumerWidget {
                                   itemBuilder: (context, index) {
                                     return ReaderPage(pagePainter: value[index], context: context);
                                   },
-                                  controller: ref.read(provider.notifier).pageSliderController,
+                                  controller: ref.read(ProviderUsecase().reader.notifier).pageSliderController,
                                   itemCount: value.length,
                                   onPageChanged: (page) {
-                                    ref.read(provider.notifier).onPageChange(page);
+                                    ref.read(ProviderUsecase().reader.notifier).onPageChange(page);
                                   },
                                   callMenu: () {
                                     GestureUsecase(ref).callMenu();
@@ -83,11 +95,11 @@ class ReaderScreen extends HookConsumerWidget {
                           );
                         },
                       ),
-                      TopBar(book: book),
+                      TopBar(book: widget.book),
                       BottomBar(
-                          book: book,
+                          book: widget.book,
                           onChapterTap: (chapter) {
-                            ref.read(provider.notifier).jumpToChapter(chapter);
+                            ref.read(ProviderUsecase().reader.notifier).jumpToChapter(chapter);
                           }),
                     ],
                   ),

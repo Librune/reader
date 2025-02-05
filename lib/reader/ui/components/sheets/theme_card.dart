@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -96,34 +95,35 @@ class _ThemeCardPainter extends CustomPainter {
       canvas.drawRect(rect, Paint()..color = colorScheme.surfaceVariant);
     }
 
-    // 绘制前景遮罩，使用 colorScheme.surfaceContainer，单一颜色和固定透明度
+    // 绘制前景遮罩，不影响背景图片展示
     final maskPaint = Paint()..color = colorScheme.surfaceContainer.withOpacity(0.15);
     canvas.drawRect(rect, maskPaint);
 
-    // 裁剪绘图区域，确保超出卡片范围的装饰不被绘制
-    canvas.save();
-    canvas.clipRect(rect);
+    // 计算圆角矩形，用以裁切圆形，让圆形颜色不溢出圆角外
+    final RRect rrect = RRect.fromRectAndRadius(rect, const Radius.circular(8.0));
 
-    // 绘制多个同心圆环作为装饰，以左上角为圆心
-    const int ringCount = 6;
-    // 计算左上角到卡片对角线末端的最远距离作为最大半径
-    final double maxRadius = sqrt(size.width * size.width + size.height * size.height);
-    final double radiusStep = maxRadius / ringCount;
-    final Paint ringPaint = Paint()
-      ..color = colorScheme.onSurface.withOpacity(0.1)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-    for (int i = 1; i <= ringCount; i++) {
-      canvas.drawCircle(const Offset(0, 0), i * radiusStep, ringPaint);
-    }
+    // 绘制三个嵌套圆（圆环效果），圆心设置在左上角，
+    // 使用 clipRRect 裁切溢出部分
+    canvas.save();
+    canvas.clipRRect(rrect);
+    final Offset circleCenter = const Offset(0, 0);
+    final double outerRadius = size.height;
+    final double midRadius = outerRadius * 0.66;
+    final double innerRadius = outerRadius * 0.33;
+    final Paint outerPaint = Paint()..color = colorScheme.secondaryContainer.withOpacity(0.3);
+    final Paint midPaint = Paint()..color = colorScheme.primaryContainer.withOpacity(0.3);
+    final Paint innerPaint = Paint()..color = colorScheme.primary.withOpacity(0.3);
+    canvas.drawCircle(circleCenter, outerRadius, outerPaint);
+    canvas.drawCircle(circleCenter, midRadius, midPaint);
+    canvas.drawCircle(circleCenter, innerRadius, innerPaint);
     canvas.restore();
 
-    // 绘制卡片边框，用以提高区分边界
+    // 重新设计边框：使用圆角矩形和较柔和的颜色，让边框存在但不过分割裂整体感
     final Paint borderPaint = Paint()
-      ..color = colorScheme.outline.withAlpha(100)
+      ..color = colorScheme.outline.withOpacity(0.5)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
-    canvas.drawRect(rect, borderPaint);
+    canvas.drawRRect(rrect, borderPaint);
 
     // 绘制标题与作者文字 (底部左侧) 并附加内边距
     final TextStyle nameStyle = TextStyle(
@@ -154,17 +154,23 @@ class _ThemeCardPainter extends CustomPainter {
     namePainter.paint(canvas, Offset(padding, textY));
     authorPainter.paint(canvas, Offset(padding, textY + namePainter.height + 4));
 
-    // 绘制 radio 按钮 (右上角)
-    const double radioRadius = 10.0;
-    final Offset radioCenter = Offset(size.width - radioRadius - padding, radioRadius + padding);
-    final Paint radioOutline = Paint()
-      ..color = colorScheme.onSurface
+    // 重新设计 radio 样式，使其颜色和尺寸更加和谐精致
+    const double radioOuterRadius = 8.0;
+    const double radioInnerRadius = 4.0;
+    final Offset radioCenter = Offset(
+      size.width - radioOuterRadius - padding,
+      radioOuterRadius + padding,
+    );
+    final Paint radioOuterPaint = Paint()
+      ..color = colorScheme.onSurface.withOpacity(0.7)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-    canvas.drawCircle(radioCenter, radioRadius, radioOutline);
+      ..strokeWidth = 1.5;
+    canvas.drawCircle(radioCenter, radioOuterRadius, radioOuterPaint);
     if (isSelected) {
-      final Paint fillPaint = Paint()..color = colorScheme.primary;
-      canvas.drawCircle(radioCenter, radioRadius - 3, fillPaint);
+      final Paint radioFillPaint = Paint()
+        ..color = colorScheme.primary
+        ..style = PaintingStyle.fill;
+      canvas.drawCircle(radioCenter, radioInnerRadius, radioFillPaint);
     }
   }
 
