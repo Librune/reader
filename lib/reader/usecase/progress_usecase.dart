@@ -13,13 +13,12 @@ class ProgressUsecase {
     return _instance ??= ProgressUsecase._internal();
   }
 
-  late final Isar isar;
+  final Isar isar = Isar.getInstance()!;
   late ProgressModel progress;
-  late final CatalogModel catalog;
+  late CatalogModel catalog;
   init(CatalogModel catalog) async {
     Log.e('ProgressUsecase init');
     this.catalog = catalog;
-    isar = await Isar.open([ProgressModelSchema], directory: PathService().docPath, name: "progress");
     final _progress = (await isar.progressModels.where().filter().bookIdEqualTo(catalog.bookId).findFirst());
     if (_progress == null) {
       progress = ProgressModel(
