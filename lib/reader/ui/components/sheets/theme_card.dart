@@ -11,7 +11,7 @@ class ThemeSheetCard extends StatefulHookConsumerWidget {
   final String author;
   final String id;
   final bool isSelected;
-  final ValueChanged<bool> onSelect;
+  final ValueChanged<String> onSelect;
 
   const ThemeSheetCard({
     super.key,
@@ -50,7 +50,7 @@ class _ThemeSheetCardState extends ConsumerState<ThemeSheetCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.onSelect(!widget.isSelected);
+        widget.onSelect(widget.id);
       },
       child: CustomPaint(
         painter: _ThemeCardPainter(
@@ -86,7 +86,11 @@ class _ThemeCardPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Rect rect = Offset.zero & size;
     const double padding = 12.0;
+    final RRect rrect = RRect.fromRectAndRadius(rect, const Radius.circular(8.0));
 
+    // 使用圆角裁剪背景内容
+    canvas.save();
+    canvas.clipRRect(rrect);
     // 绘制背景图（自动剪裁填充），若图片未加载则使用占位色
     if (backgroundImage != null) {
       paintImage(
@@ -98,13 +102,11 @@ class _ThemeCardPainter extends CustomPainter {
     } else {
       canvas.drawRect(rect, Paint()..color = colorScheme.surfaceVariant);
     }
+    canvas.restore();
 
     // 绘制前景遮罩，不影响背景图片展示
     final maskPaint = Paint()..color = colorScheme.surfaceContainer.withOpacity(0.15);
     canvas.drawRect(rect, maskPaint);
-
-    // 计算圆角矩形，用以裁切圆形，让圆形颜色不溢出圆角外
-    final RRect rrect = RRect.fromRectAndRadius(rect, const Radius.circular(8.0));
 
     // 绘制三个嵌套圆（圆环效果），圆心设置在左上角，
     // 使用 clipRRect 裁切溢出部分
@@ -114,9 +116,9 @@ class _ThemeCardPainter extends CustomPainter {
     final double outerRadius = size.height;
     final double midRadius = outerRadius * 0.66;
     final double innerRadius = outerRadius * 0.33;
-    final Paint outerPaint = Paint()..color = colorScheme.secondaryContainer.withOpacity(0.3);
-    final Paint midPaint = Paint()..color = colorScheme.primaryContainer.withOpacity(0.3);
-    final Paint innerPaint = Paint()..color = colorScheme.primary.withOpacity(0.3);
+    final Paint outerPaint = Paint()..color = colorScheme.secondaryContainer.withOpacity(0.1);
+    final Paint midPaint = Paint()..color = colorScheme.primaryContainer.withOpacity(0.1);
+    final Paint innerPaint = Paint()..color = colorScheme.primary.withOpacity(0.1);
     canvas.drawCircle(circleCenter, outerRadius, outerPaint);
     canvas.drawCircle(circleCenter, midRadius, midPaint);
     canvas.drawCircle(circleCenter, innerRadius, innerPaint);

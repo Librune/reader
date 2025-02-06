@@ -1,9 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:path/path.dart';
+import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
+import 'package:reader/reader/data/model/theme.dart';
 import 'package:reader/reader/ui/components/bottom_bar.dart';
 import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/top_bar.dart';
@@ -31,7 +37,13 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
     }, []);
     // final provider = readerProvider(book, context: context);
     final reader = ref.watch(ProviderUsecase().reader);
-    final colorScheme = ColorScheme.fromSeed(seedColor: Color(0xFFFFDE3F));
+    // final colorScheme = ColorScheme.fromSeed(seedColor: Color(0xFFFFDE3F));
+    final themeId = ref.watch(ProviderUsecase().config.select((value) => value.theme));
+    final themeModel = ReaderThemeModel.fromJson(
+        jsonDecode(File(join(PathService().readerThemesPath, themeId, 'index.json')).readAsStringSync()));
+    final colorScheme =
+        Theme.of(context).brightness == Brightness.dark ? themeModel.darkColorScheme : themeModel.colorScheme;
+    final backgroundPngFile = File(join(PathService().readerThemesPath, themeId, 'image.png'));
     return PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, result) {
@@ -61,9 +73,17 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                         return reader.when(
                           data: (value) {
                             return Container(
+                                decoration: BoxDecoration(
+                                  image: backgroundPngFile.existsSync()
+                                      ? DecorationImage(
+                                          image: FileImage(backgroundPngFile),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : null,
+                                  color: colorScheme.surfaceContainer.withAlpha(180),
+                                ),
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.height,
-                                color: colorScheme.surfaceContainerHigh,
                                 child: PageSlider(
                                   itemBuilder: (context, index) {
                                     return ReaderPage(pagePainter: value[index], context: context);

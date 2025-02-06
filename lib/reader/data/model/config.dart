@@ -25,6 +25,7 @@ class ReaderConfigModel with _$ReaderConfigModel {
     @Default(124) double titlePaddingTop,
     @Default(48) double titlePaddingBottom,
     @Default(0) int transition,
+    @Default("landscape") String theme,
   }) = _ReaderConfigModel;
 
   factory ReaderConfigModel.defaultAndroid({EdgeInsets systemPadding = EdgeInsets.zero}) => ReaderConfigModel(

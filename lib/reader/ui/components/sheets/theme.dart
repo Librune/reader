@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/menu.dart';
@@ -43,15 +41,15 @@ class ThemeSheetContent extends StatefulHookConsumerWidget {
 class _ThemeSheetContentState extends ConsumerState<ThemeSheetContent> {
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final currentTheme = ref.watch(ProviderUsecase().config.select((value) => value.theme));
     final themes = ref.watch(ProviderUsecase().theme).value ?? [];
     return CustomScrollView(
       slivers: [
         SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
           sliver: SliverGrid.extent(
             maxCrossAxisExtent: 220,
-            childAspectRatio: .8,
+            childAspectRatio: 1,
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
             children: [
@@ -60,9 +58,9 @@ class _ThemeSheetContentState extends ConsumerState<ThemeSheetContent> {
                     id: theme.id,
                     name: theme.name,
                     author: theme.author,
-                    isSelected: true,
-                    onSelect: (value) {
-                      Log.f("select: $value");
+                    isSelected: currentTheme == theme.id,
+                    onSelect: (id) {
+                      ref.read(ProviderUsecase().config.notifier).updateTheme(id);
                     },
                   )),
             ],

@@ -42,6 +42,10 @@ class ReaderConfig extends _$ReaderConfig {
     state = state.copyWith(edgePaddingDelta: delta);
   }
 
+  updateTheme(String theme) {
+    state = state.copyWith(theme: theme);
+  }
+
   _onSelfChange(ReaderConfigModel? oldValue, ReaderConfigModel newValue) {
     configFile.writeAsString(jsonEncode(newValue.toJson()));
   }
