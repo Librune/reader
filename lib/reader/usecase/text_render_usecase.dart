@@ -84,7 +84,7 @@ class TextRenderUsecase {
     // int? cIndex,
     bool useCache = false,
   }) async {
-    final flatCatalog = ref.read(catalogProvider(book)).asData!.value.flatChapterList;
+    final flatCatalog = ref.read(ProviderUsecase().catalog).asData!.value.flatChapterList;
     late ChapterModel chapter;
     if (cid != null) {
       chapter = flatCatalog.firstWhere((element) => element.cid == cid);

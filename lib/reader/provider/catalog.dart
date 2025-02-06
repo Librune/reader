@@ -11,7 +11,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'catalog.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Catalog extends _$Catalog {
   @override
   Future<CatalogModel> build(BookModel book) async {

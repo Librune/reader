@@ -7,6 +7,7 @@ import 'package:reader/reader/data/model/config.dart';
 import 'package:reader/reader/provider/catalog.dart';
 import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/render.dart';
+import 'package:reader/reader/usecase/progress_usecase.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
 import 'package:reader/reader/usecase/text_render_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -35,7 +36,10 @@ class Reader extends _$Reader {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
     pageSliderController = PageSliderController();
-    catalog = await ref.read(catalogProvider(book).future);
+    catalog = await ref.read(ProviderUsecase().catalog.future);
+    Log.f(catalog, "Reader build");
+    // 初始化进度管理
+    await ProgressUsecase().init(catalog);
     // ignore: use_build_context_synchronously
     textRenderUsecase = TextRenderUsecase(context, book: book).init(ref);
     final res = await textRenderUsecase.getPagePainters(fIndex: 0, ref: ref);
