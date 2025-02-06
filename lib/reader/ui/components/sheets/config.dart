@@ -51,7 +51,7 @@ class _ConfigSheetContentState extends ConsumerState<ConfigSheetContent> {
     return CustomScrollView(
       slivers: [
         SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.only(left: 8, right: 8, top: 16),
           sliver: SliverGrid.extent(
               maxCrossAxisExtent: 96,
               childAspectRatio: 1,

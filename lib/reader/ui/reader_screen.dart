@@ -155,9 +155,9 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       },
                       child: CatalogSheetContent()),
                   PersistentBottomSheet(
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 50, left: 4, right: 4),
                       key: MenuSheetUsecase().fontSheetKey,
-                      maxHeight: MediaQuery.of(context).size.height / 2 - 60,
+                      maxHeight: 360,
                       onDragHide: () {
                         MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().fontSheetKey, ref: ref);
                       },
@@ -165,7 +165,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                   PersistentBottomSheet(
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
                       key: MenuSheetUsecase().themeSheetKey,
-                      maxHeight: MediaQuery.of(context).size.height / 2 - 60,
+                      maxHeight: 600,
                       onDragHide: () {
                         MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().themeSheetKey, ref: ref);
                       },
@@ -173,7 +173,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                   PersistentBottomSheet(
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
                       key: MenuSheetUsecase().configSheetKey,
-                      maxHeight: MediaQuery.of(context).size.height / 2 - 60,
+                      maxHeight: MediaQuery.of(context).size.height / 2,
                       onDragHide: () {
                         MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().configSheetKey, ref: ref);
                       },

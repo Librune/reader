@@ -18,7 +18,7 @@ class _ThemeSheetContentState extends ConsumerState<ThemeSheetContent> {
     return CustomScrollView(
       slivers: [
         SliverPadding(
-          padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
+          padding: EdgeInsets.only(left: 16, right: 16, bottom: 20, top: 8),
           sliver: SliverGrid.extent(
             maxCrossAxisExtent: 220,
             childAspectRatio: 1,

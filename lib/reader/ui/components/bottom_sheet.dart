@@ -139,7 +139,7 @@ class PersistentBottomSheetState extends State<PersistentBottomSheet> with Singl
                       Container(
                         width: 40,
                         height: 4,
-                        margin: const EdgeInsets.only(top: 12, bottom: 8),
+                        margin: const EdgeInsets.only(top: 12, bottom: 12),
                         decoration: BoxDecoration(
                           color: Colors.grey[400],
                           borderRadius: BorderRadius.circular(2),
