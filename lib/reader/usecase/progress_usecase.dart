@@ -48,7 +48,10 @@ class ProgressUsecase {
 
   jumpChapter({required ChapterModel chapter}) {
     progress = progress.copyWith(
-        chapterId: chapter.cid, chapterIndex: chapter.chapterIndex!, paragraphIndex: 0, textLineIndex: 0);
+        chapterId: chapter.cid,
+        chapterIndex: catalog.flatChapterList.indexWhere((element) => element.cid == chapter.cid),
+        paragraphIndex: 0,
+        textLineIndex: 0);
     _sync();
   }
 
