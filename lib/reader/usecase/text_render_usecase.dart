@@ -114,9 +114,13 @@ class TextRenderUsecase {
   Future<List<PagePainter>> getPagePainters(
       {int delay = 300,
       // ignore: deprecated_member_use
-      required AsyncNotifierProviderRef<List<PagePainter>> ref}) async {
+      required AsyncNotifierProviderRef<List<PagePainter>> ref,
+      bool useCache = false}) async {
     final cid = ProgressUsecase().progress.chapterId;
-    return (await Future.wait([_getPagePainters(cid: cid, ref: ref), Future.delayed(Duration(milliseconds: delay))]))
+    return (await Future.wait([
+      _getPagePainters(cid: cid, ref: ref, useCache: useCache),
+      Future.delayed(Duration(milliseconds: useCache ? 0 : delay))
+    ]))
         .first as List<PagePainter>;
   }
 

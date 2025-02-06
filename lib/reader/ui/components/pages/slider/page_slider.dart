@@ -3,20 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/utils/log.dart';
+import 'package:reader/reader/usecase/provider_usecase.dart';
 
 class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
   const PageSlider({
     super.key,
     required this.itemCount,
     required this.itemBuilder,
-    required this.callMenu,
+    required this.toggleMenu,
     this.onPageChanged,
     required this.controller, // 新增控制器参数
   });
 
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
-  final void Function() callMenu;
+  final void Function() toggleMenu;
   final void Function(int page)? onPageChanged;
   final PageSliderController controller; // 控制器
 
@@ -137,7 +138,7 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
           });
         }
       } else {
-        callMenu();
+        toggleMenu();
       }
     }
 

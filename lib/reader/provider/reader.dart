@@ -96,7 +96,7 @@ class Reader extends _$Reader {
     if (oldValue != null) {
       state = AsyncValue.loading();
       textRenderUsecase.updateConfig(newValue);
-      textRenderUsecase.getPagePainters(ref: ref).then((value) {
+      textRenderUsecase.getPagePainters(ref: ref, useCache: true).then((value) {
         state = AsyncData(value);
       });
     }

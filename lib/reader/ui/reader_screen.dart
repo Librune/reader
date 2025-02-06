@@ -33,33 +33,33 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
     final reader = ref.watch(ProviderUsecase().reader);
     final colorScheme = ColorScheme.fromSeed(seedColor: Color(0xFFFFDE3F));
     return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
-        if (ref.read(ProviderUsecase().menu.select((value) => value.sub))) {
-          MenuSheetUsecase().close();
-        } else if (ref.read(ProviderUsecase().menu.select((value) => value.bottom))) {
-          ref.read(ProviderUsecase().menu.notifier).closeBottom();
-          ref.read(ProviderUsecase().menu.notifier).closeTop();
-        } else {
-          context.pop();
-        }
-      },
-      child: Theme(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (ref.read(ProviderUsecase().menu.select((value) => value.sub))) {
+            MenuSheetUsecase().close();
+          } else if (ref.read(ProviderUsecase().menu.select((value) => value.bottom))) {
+            ref.read(ProviderUsecase().menu.notifier).closeBottom();
+            ref.read(ProviderUsecase().menu.notifier).closeTop();
+          } else {
+            context.pop();
+          }
+        },
+        child: Theme(
           data: ThemeData(colorScheme: colorScheme),
           child: Material(
               color: colorScheme.surfaceContainerHigh,
-              child: reader.when(
-                data: (value) {
-                  return Stack(
-                    children: [
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            Log.f('constraints: $constraints');
+              child: Stack(
+                children: [
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        Log.f('constraints: $constraints');
+                        return reader.when(
+                          data: (value) {
                             return Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.height,
@@ -74,61 +74,61 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                                     ref.read(ProviderUsecase().reader.notifier).onPageChange(index);
                                     ProgressUsecase().update(page: value[index]);
                                   },
-                                  callMenu: () {
-                                    GestureUsecase(ref).callMenu();
+                                  toggleMenu: () {
+                                    GestureUsecase(ref).toggleMenu();
                                   },
                                 ));
                           },
-                        ),
-                      ),
-                      Consumer(
-                        builder: (context, ref, child) {
-                          final subVisible = ref.watch(ProviderUsecase().menu.select((value) => value.sub));
-                          return IgnorePointer(
-                            ignoring: !subVisible,
-                            child: Scaffold(
-                              backgroundColor: Colors.transparent,
-                              key: MenuSheetUsecase().sheetCtx,
-                              body: GestureDetector(
-                                onTap: () {
-                                  MenuSheetUsecase().close();
-                                },
+                          error: (error, stackTrace) {
+                            return Center(
+                              child: Text(
+                                "加载失败",
+                                style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 16),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                      TopBar(book: widget.book),
-                      BottomBar(
-                        book: widget.book,
-                      )
-                      // onChapterTap: (chapter) {
-                      //   ref.read(ProviderUsecase().reader.notifier).jumpToChapter(chapter);
-                      // }),
-                    ],
-                  );
-                },
-                error: (error, stackTrace) {
-                  return Center(
-                    child: Text(
-                      "加载失败",
-                      style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 16),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                            );
+                          },
+                          loading: () {
+                            return Center(
+                              child: Text(
+                                "正在加载……",
+                                style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 16),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          },
+                        );
+                      },
                     ),
-                  );
-                },
-                loading: () {
-                  return Center(
-                    child: Text(
-                      "正在加载……",
-                      style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 16),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  );
-                },
-              ))),
-    );
+                  ),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final subVisible = ref.watch(ProviderUsecase().menu.select((value) => value.sub));
+                      return IgnorePointer(
+                        ignoring: !subVisible,
+                        child: Scaffold(
+                          backgroundColor: Colors.transparent,
+                          key: MenuSheetUsecase().sheetCtx,
+                          body: GestureDetector(
+                            onTap: () {
+                              MenuSheetUsecase().close();
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  TopBar(book: widget.book),
+                  BottomBar(
+                    book: widget.book,
+                  )
+                  // onChapterTap: (chapter) {
+                  //   ref.read(ProviderUsecase().reader.notifier).jumpToChapter(chapter);
+                  // }),
+                ],
+              )),
+        ));
   }
 }
