@@ -10,6 +10,7 @@ class ReaderThemeModel with _$ReaderThemeModel {
     required String id,
     required String name,
     @Default("佚名") String author,
+    @Default(false) bool image,
     required ReaderThemeColorScheme light,
     required ReaderThemeColorScheme dark,
   }) = _ReaderThemeModel;

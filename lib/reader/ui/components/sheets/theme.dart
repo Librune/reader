@@ -7,6 +7,7 @@ import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/ui/components/sheets/theme_card.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
+import 'package:reader/reader/usecase/provider_usecase.dart';
 
 class ThemeSheet extends ConsumerWidget {
   const ThemeSheet({super.key});
@@ -15,6 +16,7 @@ class ThemeSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final subType = ref.watch(menuProvider.select((value) => value.subType));
     final colorScheme = Theme.of(context).colorScheme;
+    final themes = ref.watch(ProviderUsecase().theme).value ?? [];
     return Expanded(
       flex: 1,
       child: Center(
@@ -34,39 +36,17 @@ class ThemeSheet extends ConsumerWidget {
                         crossAxisSpacing: 16,
                         mainAxisSpacing: 16,
                         children: [
-                          ThemeSheetCard(
-                            colorScheme: colorScheme,
-                            image: CachedNetworkImageProvider(
-                                "https://c-ssl.dtstatic.com/uploads/blog/202301/08/20230108234729_02a0d.thumb.700_0.jpg_webp"),
-                            name: "默认",
-                            author: "zsakvo",
-                            isSelected: true,
-                            onSelect: (value) {
-                              Log.f("select: $value");
-                            },
-                          ),
-                          ThemeSheetCard(
-                            colorScheme: colorScheme,
-                            image: CachedNetworkImageProvider(
-                                "https://c-ssl.dtstatic.com/uploads/blog/202301/08/20230108234729_02a0d.thumb.700_0.jpg_webp"),
-                            name: "默认",
-                            author: "zsakvo",
-                            isSelected: true,
-                            onSelect: (value) {
-                              Log.f("select: $value");
-                            },
-                          ),
-                          ThemeSheetCard(
-                            colorScheme: colorScheme,
-                            image: CachedNetworkImageProvider(
-                                "https://c-ssl.dtstatic.com/uploads/blog/202301/08/20230108234729_02a0d.thumb.700_0.jpg_webp"),
-                            name: "默认",
-                            author: "zsakvo",
-                            isSelected: true,
-                            onSelect: (value) {
-                              Log.f("select: $value");
-                            },
-                          )
+                          ...themes.map((theme) => ThemeSheetCard(
+                                colorScheme: colorScheme,
+                                image: CachedNetworkImageProvider(
+                                    "https://c-ssl.dtstatic.com/uploads/blog/202301/08/20230108234729_02a0d.thumb.700_0.jpg_webp"),
+                                name: theme.name,
+                                author: theme.author,
+                                isSelected: true,
+                                onSelect: (value) {
+                                  Log.f("select: $value");
+                                },
+                              )),
                         ],
                       ),
                     )
