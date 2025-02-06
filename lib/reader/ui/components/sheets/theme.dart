@@ -17,6 +17,7 @@ class ThemeSheet extends ConsumerWidget {
     final subType = ref.watch(menuProvider.select((value) => value.subType));
     final colorScheme = Theme.of(context).colorScheme;
     final themes = ref.watch(ProviderUsecase().theme).value ?? [];
+    Log.d(themes, "themes");
     return Expanded(
       flex: 1,
       child: Center(
