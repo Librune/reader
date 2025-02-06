@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/architecture/service/path.dart';
@@ -12,7 +11,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'catalog.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class Catalog extends _$Catalog {
   @override
   Future<CatalogModel> build(BookModel book) async {

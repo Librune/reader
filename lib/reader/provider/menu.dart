@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'menu.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class Menu extends _$Menu {
   @override
   MenuModel build() {

@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:reader/app/data/model/book.dart';
+import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/catalog.dart';
 import 'package:reader/reader/provider/config.dart';
+import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/provider/reader.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+// ignore: invalid_use_of_internal_member
+typedef MenuProvider = AutoDisposeNotifierProviderImpl<Menu, MenuModel>;
 
 class ProviderUsecase {
   static ProviderUsecase? _instance;
@@ -15,6 +21,7 @@ class ProviderUsecase {
     return _instance ??= ProviderUsecase._internal();
   }
 
+  late MenuProvider menu;
   late CatalogProvider catalog;
   late ReaderProvider reader;
   late ReaderConfigProvider config;
@@ -23,6 +30,7 @@ class ProviderUsecase {
     required BookModel book,
     required BuildContext context,
   }) {
+    menu = menuProvider;
     catalog = catalogProvider(book);
     reader = readerProvider(book, context: context);
     config = readerConfigProvider(context);

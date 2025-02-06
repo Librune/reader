@@ -1,21 +1,16 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
-import 'package:reader/reader/provider/menu.dart';
-import 'package:reader/reader/provider/reader.dart';
 import 'package:reader/reader/ui/components/bottom_bar.dart';
-import 'package:reader/reader/ui/components/gesture_wrapper.dart';
 import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/top_bar.dart';
 import 'package:reader/reader/usecase/gesture_usecase.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
 
-import 'components/pages/flip/page_flip.dart';
 import 'components/render.dart';
 
 class ReaderScreen extends StatefulHookConsumerWidget {
@@ -37,10 +32,15 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
     final reader = ref.watch(ProviderUsecase().reader);
     final colorScheme = ColorScheme.fromSeed(seedColor: Color(0xFFFFDE3F));
     return PopScope(
+      canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        if (didPop) {
-          // ref.invalidate(readerProvider(book, context: context));
-          // ref.invalidate(menuProvider);
+        if (ref.read(ProviderUsecase().menu.select((value) => value.sub))) {
+          MenuSheetUsecase().close();
+        } else if (ref.read(ProviderUsecase().menu.select((value) => value.bottom))) {
+          ref.read(ProviderUsecase().menu.notifier).closeBottom();
+          ref.read(ProviderUsecase().menu.notifier).closeTop();
+        } else {
+          context.pop();
         }
       },
       child: Theme(
@@ -80,7 +80,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       ),
                       Consumer(
                         builder: (context, ref, child) {
-                          final subVisible = ref.watch(menuProvider.select((value) => value.sub));
+                          final subVisible = ref.watch(ProviderUsecase().menu.select((value) => value.sub));
                           return IgnorePointer(
                             ignoring: !subVisible,
                             child: Scaffold(

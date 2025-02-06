@@ -6,10 +6,9 @@ import 'package:reader/app/ui/components/delayed_sliver_list.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/data/model/menu.dart';
-import 'package:reader/reader/provider/catalog.dart';
 import 'package:reader/reader/provider/menu.dart';
-import 'package:reader/reader/provider/reader.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
+import 'package:reader/reader/usecase/provider_usecase.dart';
 
 class CatalogSheet extends StatefulHookConsumerWidget {
   const CatalogSheet({super.key, required this.book, required this.onChapterTap});
@@ -23,7 +22,7 @@ class CatalogSheet extends StatefulHookConsumerWidget {
 class _CatalogSheetState extends ConsumerState<CatalogSheet> {
   @override
   Widget build(BuildContext context) {
-    final catalog = ref.watch(catalogProvider(widget.book)).asData!.value;
+    final volumes = ref.watch(ProviderUsecase().catalog).asData?.value.volumes ?? [];
     final subType = ref.watch(menuProvider.select((value) => value.subType));
     final colorScheme = Theme.of(context).colorScheme;
     return Expanded(
@@ -40,7 +39,7 @@ class _CatalogSheetState extends ConsumerState<CatalogSheet> {
                     DelayedSliverList(
                       delay: const Duration(milliseconds: 250),
                       itemBuilder: (context, index) {
-                        final volume = catalog.volumes[index];
+                        final volume = volumes[index];
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -84,7 +83,7 @@ class _CatalogSheetState extends ConsumerState<CatalogSheet> {
                           ],
                         );
                       },
-                      itemCount: catalog.volumes.length,
+                      itemCount: volumes.length,
                     )
                   ],
                 ),
