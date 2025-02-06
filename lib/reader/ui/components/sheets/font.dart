@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/ui/components/cust_slider/cust_thumb_shape.dart';
 import 'package:reader/app/ui/components/cust_slider/cust_track_shape.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
@@ -51,6 +50,8 @@ class _FontSheetContentState extends ConsumerState<FontSheetContent> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final bodyTextFontSize = useState(ref.read(ProviderUsecase().config).bodyTextFontSize);
+    final bodyTextLineHeight = useState(ref.read(ProviderUsecase().config).bodyTextLineHeight);
+    final edgePaddingDelta = useState(ref.read(ProviderUsecase().config).edgePaddingDelta);
     return Padding(
       padding: EdgeInsets.only(left: 16, right: 16),
       child: Column(
@@ -82,14 +83,11 @@ class _FontSheetContentState extends ConsumerState<FontSheetContent> {
                 child: Slider(
                     value: bodyTextFontSize.value,
                     min: 10.0,
-                    max: 32.0,
+                    max: 42.0,
                     onChanged: (val) {
                       bodyTextFontSize.value = val;
                     },
                     onChangeEnd: (val) {
-                      // ref
-                      //     .read(readerConfigProvider.notifier)
-                      //     .updateReaderConfig("bodyTextLineHeight", bodyTextLineHeight.value);
                       ref.read(ProviderUsecase().config.notifier).updateBodyFontSize(bodyTextFontSize.value.toInt());
                     }),
               )),
@@ -119,22 +117,23 @@ class _FontSheetContentState extends ConsumerState<FontSheetContent> {
                   overlayShape: SliderComponentShape.noOverlay,
                   thumbColor: colorScheme.surface,
                   thumbShape: CustomThumbShape(
-                    text: "2.2",
+                    text: "行高",
                     buildContext: context,
                     enabledThumbRadius: 15, //滑块大小
                   ),
                 ),
                 child: Slider(
-                    value: 2.2,
+                    value: bodyTextLineHeight.value,
                     min: 1.0,
                     max: 3.0,
                     onChanged: (val) {
-                      // bodyTextLineHeight.value = val;
+                      bodyTextLineHeight.value = val;
                     },
                     onChangeEnd: (val) {
                       // ref
                       //     .read(readerConfigProvider.notifier)
                       //     .updateReaderConfig("bodyTextLineHeight", bodyTextLineHeight.value);
+                      ref.read(ProviderUsecase().config.notifier).updateBodyLineHeight(bodyTextLineHeight.value);
                     }),
               )),
               SvgPicture.asset(
@@ -163,22 +162,20 @@ class _FontSheetContentState extends ConsumerState<FontSheetContent> {
                   overlayShape: SliderComponentShape.noOverlay,
                   thumbColor: colorScheme.surface,
                   thumbShape: CustomThumbShape(
-                    text: "2.2",
+                    text: "边距",
                     buildContext: context,
                     enabledThumbRadius: 15, //滑块大小
                   ),
                 ),
                 child: Slider(
-                    value: 2.2,
-                    min: 1.0,
-                    max: 3.0,
+                    value: edgePaddingDelta.value,
+                    min: 0.0,
+                    max: 24.0,
                     onChanged: (val) {
-                      // bodyTextLineHeight.value = val;
+                      edgePaddingDelta.value = val;
                     },
                     onChangeEnd: (val) {
-                      // ref
-                      //     .read(readerConfigProvider.notifier)
-                      //     .updateReaderConfig("bodyTextLineHeight", bodyTextLineHeight.value);
+                      ref.read(ProviderUsecase().config.notifier).updateEdgePaddingDelta(edgePaddingDelta.value);
                     }),
               )),
               SvgPicture.asset(

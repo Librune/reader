@@ -34,6 +34,14 @@ class ReaderConfig extends _$ReaderConfig {
     state = state.copyWith(bodyTextFontSize: fontSize * 1.0);
   }
 
+  updateBodyLineHeight(double lineHeight) {
+    state = state.copyWith(bodyTextLineHeight: lineHeight);
+  }
+
+  updateEdgePaddingDelta(double delta) {
+    state = state.copyWith(edgePaddingDelta: delta);
+  }
+
   _onSelfChange(ReaderConfigModel? oldValue, ReaderConfigModel newValue) {
     configFile.writeAsString(jsonEncode(newValue.toJson()));
   }
