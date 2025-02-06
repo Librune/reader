@@ -1,0 +1,19 @@
+{
+  "id": "dawn",
+  "name": "黎明",
+  "author": "zsakvo",
+  "light": {
+    "primary": "0xff7f5610",
+    "secondary": "0xff6f5b40",
+    "tertiary": "0xff516440",
+    "surface": "0xfffff8f4",
+    "onSurface": "0xff201b13"
+  },
+  "dark": {
+    "primary": "0xfff4bd6e",
+    "secondary": "0xffddc2a1",
+    "tertiary": "0xffb8cea1",
+    "surface": "0xff18120b",
+    "onSurface": "0xffede0d4"
+  }
+}

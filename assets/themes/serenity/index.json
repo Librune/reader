@@ -1,0 +1,19 @@
+{
+  "id": "serenity",
+  "name": "安宁",
+  "author": "zsakvo",
+  "light": {
+    "primary": "0xff445e91",
+    "secondary": "0xff575e71",
+    "tertiary": "0xff715573",
+    "surface": "0xfff9f9ff",
+    "onSurface": "0xff1a1b20"
+  },
+  "dark": {
+    "primary": "0xffadc6ff",
+    "secondary": "0xffbfc6dc",
+    "tertiary": "0xffdebcdf",
+    "surface": "0xff111318",
+    "onSurface": "0xffe2e2e9"
+  }
+}
