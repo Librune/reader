@@ -147,7 +147,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                   ),
                   TopBar(book: widget.book),
                   PersistentBottomSheet(
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 84),
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 64),
                       key: MenuSheetUsecase().catalogSheetKey,
                       maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - 48,
                       onDragHide: () {
