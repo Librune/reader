@@ -94,7 +94,6 @@ class Reader extends _$Reader {
 
   _configListener(ReaderConfigModel? oldValue, ReaderConfigModel newValue) {
     if (oldValue != null) {
-      Log.e("ReaderConfigModel change");
       state = AsyncValue.loading();
       textRenderUsecase.updateConfig(newValue);
       textRenderUsecase.getPagePainters(ref: ref).then((value) {
