@@ -17,21 +17,22 @@ class ReaderThemeModel with _$ReaderThemeModel {
   const ReaderThemeModel._();
   factory ReaderThemeModel.fromJson(Map<String, dynamic> json) => _$ReaderThemeModelFromJson(json);
 
-  ColorScheme get colorScheme => ColorScheme.fromSeed(seedColor: Color(0xff389494)).copyWith(
-        surface: Color(light.surface),
-        onSurface: Color(light.onSurface),
-        primary: Color(light.primary),
-        secondary: Color(light.secondary),
-        tertiary: Color(light.tertiary),
+  ColorScheme get colorScheme => ColorScheme.fromSeed(seedColor: Color(int.parse(light.primary, radix: 16))).copyWith(
+        surface: Color(int.parse(light.surface, radix: 16)),
+        onSurface: Color(int.parse(light.onSurface, radix: 16)),
+        primary: Color(int.parse(light.primary, radix: 16)),
+        secondary: Color(int.parse(light.secondary, radix: 16)),
+        tertiary: Color(int.parse(light.tertiary, radix: 16)),
         brightness: Brightness.light,
       );
 
-  ColorScheme get darkColorScheme => ColorScheme.fromSeed(seedColor: Color(0xff389494)).copyWith(
-        surface: Color(dark.surface),
-        onSurface: Color(dark.onSurface),
-        primary: Color(dark.primary),
-        secondary: Color(dark.secondary),
-        tertiary: Color(dark.tertiary),
+  ColorScheme get darkColorScheme =>
+      ColorScheme.fromSeed(seedColor: Color(int.parse(light.primary, radix: 16))).copyWith(
+        surface: Color(int.parse(dark.surface, radix: 16)),
+        onSurface: Color(int.parse(dark.onSurface, radix: 16)),
+        primary: Color(int.parse(dark.primary, radix: 16)),
+        secondary: Color(int.parse(dark.secondary, radix: 16)),
+        tertiary: Color(int.parse(dark.tertiary, radix: 16)),
         brightness: Brightness.dark,
       );
 }
@@ -39,11 +40,11 @@ class ReaderThemeModel with _$ReaderThemeModel {
 @freezed
 class ReaderThemeColorScheme with _$ReaderThemeColorScheme {
   const factory ReaderThemeColorScheme({
-    required int surface,
-    required int onSurface,
-    required int primary,
-    required int secondary,
-    required int tertiary,
+    required String surface,
+    required String onSurface,
+    required String primary,
+    required String secondary,
+    required String tertiary,
   }) = _ReaderThemeColorScheme;
   const ReaderThemeColorScheme._();
   factory ReaderThemeColorScheme.fromJson(Map<String, dynamic> json) => _$ReaderThemeColorSchemeFromJson(json);

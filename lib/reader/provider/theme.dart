@@ -16,7 +16,7 @@ class ReaderTheme extends _$ReaderTheme {
     final List<ReaderThemeModel> themes = [];
     themesDir.list().forEach((element) async {
       if (element is Directory) {
-        final themeJson = await File(join('${element.path}","index.json')).readAsString();
+        final themeJson = await File(join(element.path, 'index.json')).readAsString();
         try {
           themes.add(ReaderThemeModel.fromJson(jsonDecode(themeJson)));
         } catch (err) {

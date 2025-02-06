@@ -57,30 +57,25 @@ class PathService {
   }
 
   Future<void> initReaderThemes() async {
+    final List _themes = ['clearnight', 'dawn', 'drift', 'landscape', 'serenity'];
     final targetDir = Directory(readerThemesPath);
     if (targetDir.existsSync()) {
       targetDir.deleteSync(recursive: true);
     }
     targetDir.createSync(recursive: true);
-    // 加载 AssetManifest.json
-    final manifestContent = await rootBundle.loadString('AssetManifest.json');
-    final manifestMap = json.decode(manifestContent) as Map<String, dynamic>;
-    Log.d('manifestMap: $manifestMap');
-    // 筛选 assets/themes 下的所有文件
-    final themeAssets = manifestMap.keys.where((key) => key.startsWith('assets/themes/'));
-    for (var assetPath in themeAssets) {
-      // 获取相对路径
-      final relativePath = assetPath.substring('assets/themes/'.length);
-      final newPath = '${targetDir.path}/$relativePath';
-
-      // 创建目标文件目录
-      final file = File(newPath);
-      file.parent.createSync(recursive: true);
-
-      // 加载 asset 数据并写入文件
-      final byteData = await rootBundle.load(assetPath);
-      final bytes = byteData.buffer.asUint8List();
-      await file.writeAsBytes(bytes);
+    for (var themeKey in _themes) {
+      final themeDir = Directory(join(readerThemesPath, '$themeKey'));
+      final _themeJson = 'assets/themes/$themeKey.json';
+      final _themePng = 'assets/themes/$themeKey.png';
+      final themeJson = join(themeDir.path, 'index.json');
+      final themePng = join(themeDir.path, 'image.png');
+      themeDir.createSync(recursive: true);
+      final themeJsonFile = File(themeJson);
+      final themeJsonAsset = await rootBundle.loadString(_themeJson);
+      themeJsonFile.writeAsStringSync(themeJsonAsset);
+      final themePngFile = File(themePng);
+      final themePngAsset = await rootBundle.load(_themePng);
+      themePngFile.writeAsBytesSync(themePngAsset.buffer.asUint8List());
     }
   }
 }

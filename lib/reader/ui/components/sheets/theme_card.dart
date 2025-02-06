@@ -1,21 +1,24 @@
+import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:path/path.dart';
+import 'package:reader/app/architecture/service/path.dart';
 
 class ThemeSheetCard extends StatefulHookConsumerWidget {
   final ColorScheme colorScheme;
-  final ImageProvider image;
   final String name;
   final String author;
+  final String id;
   final bool isSelected;
   final ValueChanged<bool> onSelect;
 
   const ThemeSheetCard({
     super.key,
     required this.colorScheme,
-    required this.image,
     required this.name,
     required this.author,
+    required this.id,
     required this.isSelected,
     required this.onSelect,
   });
@@ -34,7 +37,8 @@ class _ThemeSheetCardState extends ConsumerState<ThemeSheetCard> {
   }
 
   void _resolveImage() {
-    final ImageStream stream = widget.image.resolve(const ImageConfiguration());
+    final ImageProvider image = FileImage(File(join(PathService().readerThemesPath, widget.id, 'image.png')));
+    final ImageStream stream = image.resolve(const ImageConfiguration());
     stream.addListener(ImageStreamListener((ImageInfo info, bool _) {
       setState(() {
         _backgroundImage = info.image;
@@ -132,8 +136,8 @@ class _ThemeCardPainter extends CustomPainter {
       fontWeight: FontWeight.bold,
     );
     final TextStyle authorStyle = TextStyle(
-      color: colorScheme.onPrimaryContainer,
-      fontSize: 12,
+      color: colorScheme.onPrimaryContainer.withAlpha(200),
+      fontSize: 14,
     );
     final TextPainter namePainter = TextPainter(
       text: TextSpan(text: name, style: nameStyle),

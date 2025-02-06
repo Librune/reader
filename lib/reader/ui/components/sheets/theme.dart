@@ -16,8 +16,6 @@ class ThemeSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final subType = ref.watch(menuProvider.select((value) => value.subType));
     final colorScheme = Theme.of(context).colorScheme;
-    final themes = ref.watch(ProviderUsecase().theme).value ?? [];
-    Log.d(themes, "themes");
     return Expanded(
       flex: 1,
       child: Center(
@@ -26,39 +24,51 @@ class ThemeSheet extends ConsumerWidget {
           size: 26,
           color: ReaderBottomSheet.theme == subType ? colorScheme.primary : null,
           onPressed: () {
-            MenuSheetUsecase().toggle(
-                CustomScrollView(
-                  slivers: [
-                    SliverPadding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      sliver: SliverGrid.extent(
-                        maxCrossAxisExtent: 220,
-                        childAspectRatio: 1.6,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                        children: [
-                          ...themes.map((theme) => ThemeSheetCard(
-                                colorScheme: colorScheme,
-                                image: CachedNetworkImageProvider(
-                                    "https://c-ssl.dtstatic.com/uploads/blog/202301/08/20230108234729_02a0d.thumb.700_0.jpg_webp"),
-                                name: theme.name,
-                                author: theme.author,
-                                isSelected: true,
-                                onSelect: (value) {
-                                  Log.f("select: $value");
-                                },
-                              )),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                type: ReaderBottomSheet.theme,
-                maxHeight: MediaQuery.of(context).size.height * 0.5,
-                ref: ref);
+            MenuSheetUsecase().toggle(ThemeSheetContent(),
+                type: ReaderBottomSheet.theme, maxHeight: MediaQuery.of(context).size.height * 0.5, ref: ref);
           },
         ),
       ),
+    );
+  }
+}
+
+class ThemeSheetContent extends StatefulHookConsumerWidget {
+  const ThemeSheetContent({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _ThemeSheetContentState();
+}
+
+class _ThemeSheetContentState extends ConsumerState<ThemeSheetContent> {
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final themes = ref.watch(ProviderUsecase().theme).value ?? [];
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          sliver: SliverGrid.extent(
+            maxCrossAxisExtent: 220,
+            childAspectRatio: .8,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            children: [
+              ...themes.map((theme) => ThemeSheetCard(
+                    colorScheme: theme.colorScheme,
+                    id: theme.id,
+                    name: theme.name,
+                    author: theme.author,
+                    isSelected: true,
+                    onSelect: (value) {
+                      Log.f("select: $value");
+                    },
+                  )),
+            ],
+          ),
+        )
+      ],
     );
   }
 }
