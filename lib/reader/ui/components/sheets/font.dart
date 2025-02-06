@@ -4,39 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/cust_slider/cust_thumb_shape.dart';
 import 'package:reader/app/ui/components/cust_slider/cust_track_shape.dart';
-import 'package:reader/app/ui/components/svg_btn.dart';
-import 'package:reader/reader/data/model/menu.dart';
-import 'package:reader/reader/provider/menu.dart';
-import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
-
-class FontSheet extends StatefulHookConsumerWidget {
-  const FontSheet({super.key});
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _FontSheetState();
-}
-
-class _FontSheetState extends ConsumerState<FontSheet> {
-  @override
-  Widget build(BuildContext context) {
-    final subType = ref.watch(menuProvider.select((value) => value.subType));
-    final colorScheme = Theme.of(context).colorScheme;
-    return Expanded(
-      flex: 1,
-      child: Center(
-        child: SvgBtn(
-          svgName: 'ic_bottom_font',
-          size: 26,
-          color: ReaderBottomSheet.font == subType ? colorScheme.primary : null,
-          onPressed: () {
-            MenuSheetUsecase().toggle(FontSheetContent(), type: ReaderBottomSheet.font, ref: ref, maxHeight: 360);
-          },
-        ),
-      ),
-    );
-  }
-}
 
 class FontSheetContent extends StatefulHookConsumerWidget {
   const FontSheetContent({super.key});

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/data/model/book.dart';
-import 'package:reader/reader/data/model/catalog.dart';
+import 'package:reader/app/ui/components/svg_btn.dart';
+import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/ui/components/sheets/config.dart';
 import 'package:reader/reader/ui/components/sheets/font.dart';
 import 'package:reader/reader/ui/components/sheets/theme.dart';
+import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
 import 'sheets/catalog.dart';
 
@@ -19,6 +21,7 @@ class BottomBar extends HookConsumerWidget {
     final height = MediaQuery.of(context).padding.bottom + 68;
     final visible = ref.watch(menuProvider.select((value) => value.bottom));
     final subVisible = ref.watch(menuProvider.select((value) => value.sub));
+    final subType = ref.watch(menuProvider.select((value) => value.subType));
     return AnimatedPositioned(
       duration: Duration(milliseconds: 200),
       bottom: visible ? 0 : -height - 24,
@@ -52,12 +55,63 @@ class BottomBar extends HookConsumerWidget {
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
         child: Row(
           children: [
-            CatalogSheet(
-              book: book,
+            Expanded(
+              flex: 1,
+              child: Center(
+                child: SvgBtn(
+                  svgName: 'ic_bottom_slider',
+                  size: 26,
+                  color: ReaderBottomSheet.catalog == subType ? colorScheme.primary : null,
+                  onPressed: () {
+                    MenuSheetUsecase().toggle(CatalogSheetContent(),
+                        type: ReaderBottomSheet.catalog, ref: ref, maxHeight: MediaQuery.of(context).size.height - 92);
+                  },
+                ),
+              ),
             ),
-            FontSheet(),
-            ThemeSheet(),
-            ConfigSheet()
+            Expanded(
+              flex: 1,
+              child: Center(
+                child: SvgBtn(
+                  svgName: 'ic_bottom_font',
+                  size: 26,
+                  color: ReaderBottomSheet.font == subType ? colorScheme.primary : null,
+                  onPressed: () {
+                    MenuSheetUsecase()
+                        .toggle(FontSheetContent(), type: ReaderBottomSheet.font, ref: ref, maxHeight: 360);
+                  },
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Center(
+                child: SvgBtn(
+                  svgName: 'ic_bottom_sun',
+                  size: 26,
+                  color: ReaderBottomSheet.theme == subType ? colorScheme.primary : null,
+                  onPressed: () {
+                    MenuSheetUsecase().toggle(ThemeSheetContent(),
+                        type: ReaderBottomSheet.theme, maxHeight: MediaQuery.of(context).size.height * 0.5, ref: ref);
+                  },
+                ),
+              ),
+            ),
+            Expanded(
+                flex: 1,
+                child: Center(
+                  child: SvgBtn(
+                    svgName: 'ic_bottom_settings',
+                    size: 26,
+                    color: ReaderBottomSheet.config == subType ? colorScheme.primary : null,
+                    onPressed: () {
+                      MenuSheetUsecase().toggle(ConfigSheetContent(),
+                          type: ReaderBottomSheet.config,
+                          maxHeight: MediaQuery.of(context).size.height * 0.5,
+                          ref: ref);
+                    },
+                  ),
+                ))
           ],
         ),
       ),

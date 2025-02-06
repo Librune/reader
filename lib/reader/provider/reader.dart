@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/data/model/config.dart';
-import 'package:reader/reader/provider/catalog.dart';
 import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/render.dart';
 import 'package:reader/reader/usecase/progress_usecase.dart';
