@@ -48,8 +48,9 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
           data: ThemeData(colorScheme: colorScheme),
           child: Material(
               color: colorScheme.surfaceContainerHigh,
-              child: switch (reader) {
-                AsyncValue(:final value?) => Stack(
+              child: reader.when(
+                data: (value) {
+                  return Stack(
                     children: [
                       Positioned(
                         bottom: 0,
@@ -105,16 +106,29 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       //   ref.read(ProviderUsecase().reader.notifier).jumpToChapter(chapter);
                       // }),
                     ],
-                  ),
-                _ => Center(
+                  );
+                },
+                error: (error, stackTrace) {
+                  return Center(
+                    child: Text(
+                      "加载失败",
+                      style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 16),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  );
+                },
+                loading: () {
+                  return Center(
                     child: Text(
                       "正在加载……",
                       style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 16),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-              })),
+                  );
+                },
+              ))),
     );
   }
 }
