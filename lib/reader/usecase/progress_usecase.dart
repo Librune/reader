@@ -42,6 +42,8 @@ class ProgressUsecase {
         chapterId: page.chapterId,
         chapterIndex: page.chapterIndex,
         paragraphIndex: page.painters.first.paraIndex,
+        // TODO 改成 chapterIndex 为相对卷的索引
+        // TODO 添加 flatIndex 作为章节在整本书中的索引
         textLineIndex: page.painters.first.paraLineIndex);
     _sync();
   }
