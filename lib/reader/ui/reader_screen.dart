@@ -104,7 +104,12 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                     ],
                   ),
                 _ => Center(
-                    child: CircularProgressIndicator(),
+                    child: Text(
+                      "正在加载……",
+                      style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 16),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
               })),
     );
