@@ -27,9 +27,9 @@ class ConfigSheet extends HookConsumerWidget {
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       sliver: SliverGrid.extent(
                           maxCrossAxisExtent: 96,
-                          childAspectRatio: 0.8,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 10,
+                          childAspectRatio: 1,
+                          crossAxisSpacing: 4,
+                          mainAxisSpacing: 4,
                           children: [
                             ConfigButton(
                               iconPath: "ic_reader_config_vertical",
