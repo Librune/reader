@@ -11,7 +11,12 @@ import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/reader/data/model/theme.dart';
 import 'package:reader/reader/ui/components/bottom_bar.dart';
+import 'package:reader/reader/ui/components/bottom_sheet.dart';
 import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
+import 'package:reader/reader/ui/components/sheets/catalog.dart';
+import 'package:reader/reader/ui/components/sheets/config.dart';
+import 'package:reader/reader/ui/components/sheets/font.dart';
+import 'package:reader/reader/ui/components/sheets/theme.dart';
 import 'package:reader/reader/ui/components/top_bar.dart';
 import 'package:reader/reader/usecase/gesture_usecase.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
@@ -141,7 +146,39 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                     },
                   ),
                   TopBar(book: widget.book),
-                  BottomBar()
+                  PersistentBottomSheet(
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 84),
+                      key: MenuSheetUsecase().catalogSheetKey,
+                      maxHeight: 600,
+                      onDragHide: () {
+                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().catalogSheetKey, ref: ref);
+                      },
+                      child: CatalogSheetContent()),
+                  PersistentBottomSheet(
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
+                      key: MenuSheetUsecase().fontSheetKey,
+                      maxHeight: MediaQuery.of(context).size.height / 2 - 60,
+                      onDragHide: () {
+                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().fontSheetKey, ref: ref);
+                      },
+                      child: FontSheetContent()),
+                  PersistentBottomSheet(
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
+                      key: MenuSheetUsecase().themeSheetKey,
+                      maxHeight: MediaQuery.of(context).size.height / 2 - 60,
+                      onDragHide: () {
+                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().themeSheetKey, ref: ref);
+                      },
+                      child: ThemeSheetContent()),
+                  PersistentBottomSheet(
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
+                      key: MenuSheetUsecase().configSheetKey,
+                      maxHeight: MediaQuery.of(context).size.height / 2 - 60,
+                      onDragHide: () {
+                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().configSheetKey, ref: ref);
+                      },
+                      child: ConfigSheetContent()),
+                  BottomBar(),
                 ],
               )),
         ));

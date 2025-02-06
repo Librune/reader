@@ -3,12 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/menu.dart';
+import 'package:reader/reader/ui/components/bottom_sheet.dart';
 import 'package:reader/reader/ui/components/sheets/config.dart';
 import 'package:reader/reader/ui/components/sheets/font.dart';
 import 'package:reader/reader/ui/components/sheets/theme.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
-
-import 'sheets/catalog.dart';
 
 class BottomBar extends StatefulHookConsumerWidget {
   const BottomBar({super.key});
@@ -66,8 +65,10 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   size: 26,
                   color: ReaderBottomSheet.catalog == subType ? colorScheme.primary : null,
                   onPressed: () {
-                    MenuSheetUsecase().toggle(const CatalogSheetContent(),
-                        type: ReaderBottomSheet.catalog, ref: ref, maxHeight: MediaQuery.of(context).size.height - 92);
+                    // MenuSheetUsecase().toggle(const CatalogSheetContent(),
+                    //     type: ReaderBottomSheet.catalog, ref: ref, maxHeight: MediaQuery.of(context).size.height - 92);
+                    // MenuSheetUsecase().catalogSheetKey.currentState?.toggle();
+                    MenuSheetUsecase().toggleSheet(MenuSheetUsecase().catalogSheetKey, ref: ref);
                   },
                 ),
               ),
@@ -80,8 +81,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   size: 26,
                   color: ReaderBottomSheet.font == subType ? colorScheme.primary : null,
                   onPressed: () {
-                    MenuSheetUsecase()
-                        .toggle(const FontSheetContent(), type: ReaderBottomSheet.font, ref: ref, maxHeight: 360);
+                    MenuSheetUsecase().toggleSheet(MenuSheetUsecase().fontSheetKey, ref: ref);
                   },
                 ),
               ),
@@ -94,8 +94,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   size: 26,
                   color: ReaderBottomSheet.theme == subType ? colorScheme.primary : null,
                   onPressed: () {
-                    MenuSheetUsecase().toggle(const ThemeSheetContent(),
-                        type: ReaderBottomSheet.theme, maxHeight: MediaQuery.of(context).size.height * 0.5, ref: ref);
+                    MenuSheetUsecase().toggleSheet(MenuSheetUsecase().themeSheetKey, ref: ref);
                   },
                 ),
               ),
@@ -108,10 +107,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                     size: 26,
                     color: ReaderBottomSheet.config == subType ? colorScheme.primary : null,
                     onPressed: () {
-                      MenuSheetUsecase().toggle(const ConfigSheetContent(),
-                          type: ReaderBottomSheet.config,
-                          maxHeight: MediaQuery.of(context).size.height * 0.5,
-                          ref: ref);
+                      MenuSheetUsecase().toggleSheet(MenuSheetUsecase().configSheetKey, ref: ref);
                     },
                   ),
                 ))
