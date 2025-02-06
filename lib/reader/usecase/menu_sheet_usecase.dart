@@ -10,22 +10,30 @@ class MenuSheetUsecase {
   MenuSheetUsecase._internal();
 
   final sheetCtx = GlobalKey<ScaffoldState>();
-
+  final Map<ReaderBottomSheet, GlobalKey> _sheetKeys = {};
   PersistentBottomSheetController? controller;
 
+  GlobalKey _getKeyForType(ReaderBottomSheet type) {
+    return _sheetKeys[type] ??= GlobalKey();
+  }
+
   PersistentBottomSheetController? _show(
-    Widget child, {
+    Widget child,
+    ReaderBottomSheet type, {
     double? maxHeight,
   }) {
+    final key = _getKeyForType(type);
     return sheetCtx.currentState?.showBottomSheet(
       (BuildContext context) {
         return RepaintBoundary(
+          key: key,
           child: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: maxHeight ?? MediaQuery.of(context).size.height), // 设置最大高度约束
-              child: Padding(
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 84),
-                child: child,
-              )),
+            constraints: BoxConstraints(maxHeight: maxHeight ?? MediaQuery.of(context).size.height),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 84),
+              child: child,
+            ),
+          ),
         );
       },
       showDragHandle: true,
@@ -55,15 +63,10 @@ class MenuSheetUsecase {
         sheetCtx.currentContext?.pop();
         _clear(ref);
         return;
-      } else {
-        _clear(ref);
-        ref.read(menuProvider.notifier).openSub(type);
-        controller = _show(child, maxHeight: maxHeight);
       }
-    } else {
-      ref.read(menuProvider.notifier).openSub(type);
-      controller = _show(child, maxHeight: maxHeight);
     }
+    ref.read(menuProvider.notifier).openSub(type);
+    controller = _show(child, type, maxHeight: maxHeight);
     controller?.closed.then((value) {
       _clear(ref);
     });

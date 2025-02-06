@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/data/model/book.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/menu.dart';
@@ -11,12 +10,16 @@ import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
 import 'sheets/catalog.dart';
 
-class BottomBar extends HookConsumerWidget {
-  const BottomBar({super.key, required this.book});
-  final BookModel book;
-  // final void Function(ChapterModel chapter) onChapterTap;
+class BottomBar extends StatefulHookConsumerWidget {
+  const BottomBar({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _BottomBarState();
+}
+
+class _BottomBarState extends ConsumerState<BottomBar> {
+  @override
+  Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final height = MediaQuery.of(context).padding.bottom + 68;
     final visible = ref.watch(menuProvider.select((value) => value.bottom));
@@ -63,7 +66,7 @@ class BottomBar extends HookConsumerWidget {
                   size: 26,
                   color: ReaderBottomSheet.catalog == subType ? colorScheme.primary : null,
                   onPressed: () {
-                    MenuSheetUsecase().toggle(CatalogSheetContent(),
+                    MenuSheetUsecase().toggle(const CatalogSheetContent(),
                         type: ReaderBottomSheet.catalog, ref: ref, maxHeight: MediaQuery.of(context).size.height - 92);
                   },
                 ),
@@ -78,7 +81,7 @@ class BottomBar extends HookConsumerWidget {
                   color: ReaderBottomSheet.font == subType ? colorScheme.primary : null,
                   onPressed: () {
                     MenuSheetUsecase()
-                        .toggle(FontSheetContent(), type: ReaderBottomSheet.font, ref: ref, maxHeight: 360);
+                        .toggle(const FontSheetContent(), type: ReaderBottomSheet.font, ref: ref, maxHeight: 360);
                   },
                 ),
               ),
@@ -91,7 +94,7 @@ class BottomBar extends HookConsumerWidget {
                   size: 26,
                   color: ReaderBottomSheet.theme == subType ? colorScheme.primary : null,
                   onPressed: () {
-                    MenuSheetUsecase().toggle(ThemeSheetContent(),
+                    MenuSheetUsecase().toggle(const ThemeSheetContent(),
                         type: ReaderBottomSheet.theme, maxHeight: MediaQuery.of(context).size.height * 0.5, ref: ref);
                   },
                 ),
@@ -105,7 +108,7 @@ class BottomBar extends HookConsumerWidget {
                     size: 26,
                     color: ReaderBottomSheet.config == subType ? colorScheme.primary : null,
                     onPressed: () {
-                      MenuSheetUsecase().toggle(ConfigSheetContent(),
+                      MenuSheetUsecase().toggle(const ConfigSheetContent(),
                           type: ReaderBottomSheet.config,
                           maxHeight: MediaQuery.of(context).size.height * 0.5,
                           ref: ref);
