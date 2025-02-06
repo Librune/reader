@@ -37,7 +37,6 @@ class Reader extends _$Reader {
     screenHeight = MediaQuery.of(context).size.height;
     pageSliderController = PageSliderController();
     catalog = await ref.read(ProviderUsecase().catalog.future);
-    Log.f(catalog, "Reader build");
     // 初始化进度管理
     await ProgressUsecase().init(catalog);
     // ignore: use_build_context_synchronously

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/app/ui/components/delayed_sliver_list.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
@@ -11,9 +12,9 @@ import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
 
 class CatalogSheet extends StatefulHookConsumerWidget {
-  const CatalogSheet({super.key, required this.book, required this.onChapterTap});
+  const CatalogSheet({super.key, required this.book});
   final BookModel book;
-  final void Function(ChapterModel chapter) onChapterTap;
+  // final void Function(ChapterModel chapter) onChapterTap;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CatalogSheetState();
@@ -32,13 +33,8 @@ class _CatalogSheetState extends ConsumerState<CatalogSheet> {
           size: 26,
           color: ReaderBottomSheet.catalog == subType ? colorScheme.primary : null,
           onPressed: () {
-            MenuSheetUsecase().toggle(
-                CatalogSheetContent(
-                  onChapterTap: widget.onChapterTap,
-                ),
-                type: ReaderBottomSheet.catalog,
-                ref: ref,
-                maxHeight: MediaQuery.of(context).size.height - 92);
+            MenuSheetUsecase().toggle(CatalogSheetContent(),
+                type: ReaderBottomSheet.catalog, ref: ref, maxHeight: MediaQuery.of(context).size.height - 92);
           },
         ),
       ),
@@ -47,8 +43,7 @@ class _CatalogSheetState extends ConsumerState<CatalogSheet> {
 }
 
 class CatalogSheetContent extends StatefulHookConsumerWidget {
-  const CatalogSheetContent({super.key, required this.onChapterTap});
-  final void Function(ChapterModel chapter) onChapterTap;
+  const CatalogSheetContent({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CatalogSheetContentState();
@@ -93,7 +88,8 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
                           ),
                           onTap: () {
                             // ref.read(ReaderProvider(book, context: context).notifier).jumpToChapter(chapter);
-                            widget.onChapterTap(chapter);
+                            // widget.onChapterTap(chapter);
+                            ref.read(ProviderUsecase().reader.notifier).jumpToChapter(chapter);
                           },
                         ),
                         Divider(

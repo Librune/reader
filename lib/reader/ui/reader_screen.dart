@@ -97,10 +97,11 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       ),
                       TopBar(book: widget.book),
                       BottomBar(
-                          book: widget.book,
-                          onChapterTap: (chapter) {
-                            ref.read(ProviderUsecase().reader.notifier).jumpToChapter(chapter);
-                          }),
+                        book: widget.book,
+                      )
+                      // onChapterTap: (chapter) {
+                      //   ref.read(ProviderUsecase().reader.notifier).jumpToChapter(chapter);
+                      // }),
                     ],
                   ),
                 _ => Center(

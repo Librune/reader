@@ -10,9 +10,9 @@ import 'package:reader/reader/ui/components/sheets/theme.dart';
 import 'sheets/catalog.dart';
 
 class BottomBar extends HookConsumerWidget {
-  const BottomBar({super.key, required this.book, required this.onChapterTap});
+  const BottomBar({super.key, required this.book});
   final BookModel book;
-  final void Function(ChapterModel chapter) onChapterTap;
+  // final void Function(ChapterModel chapter) onChapterTap;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -54,9 +54,6 @@ class BottomBar extends HookConsumerWidget {
           children: [
             CatalogSheet(
               book: book,
-              onChapterTap: (chapter) {
-                onChapterTap(chapter);
-              },
             ),
             FontSheet(),
             ThemeSheet(),
