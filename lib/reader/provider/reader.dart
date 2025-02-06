@@ -3,9 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/reader/data/model/catalog.dart';
+import 'package:reader/reader/data/model/config.dart';
 import 'package:reader/reader/provider/catalog.dart';
 import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/render.dart';
+import 'package:reader/reader/usecase/provider_usecase.dart';
 import 'package:reader/reader/usecase/text_render_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -35,9 +37,10 @@ class Reader extends _$Reader {
     pageSliderController = PageSliderController();
     catalog = await ref.read(catalogProvider(book).future);
     // ignore: use_build_context_synchronously
-    textRenderUsecase = TextRenderUsecase(context, book: book).init(ref, book: book);
+    textRenderUsecase = TextRenderUsecase(context, book: book).init(ref);
     final res = await textRenderUsecase.getPagePainters(fIndex: 0, ref: ref);
     Log.e(res, "Reader build");
+    ref.listen(ProviderUsecase().config, _configListener);
     return res;
   }
 
@@ -83,5 +86,12 @@ class Reader extends _$Reader {
   prependPages(List<PagePainter> pages) {
     state = AsyncValue.data([...pages, ...state.value!]);
     pageSliderController.jumpToPage(pages.length);
+  }
+
+  _configListener(ReaderConfigModel? oldValue, ReaderConfigModel newValue) {
+    if (oldValue != null) {
+      // state = AsyncValue.loading();
+      // textRenderUsecase.updateConfig(newValue);
+    }
   }
 }
