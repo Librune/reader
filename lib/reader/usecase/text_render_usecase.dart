@@ -9,6 +9,7 @@ import 'package:reader/reader/data/model/config.dart';
 import 'package:reader/reader/provider/catalog.dart';
 import 'package:reader/reader/provider/config.dart';
 import 'package:reader/reader/ui/components/render.dart';
+import 'package:reader/reader/usecase/progress_usecase.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
 
 class TextRenderUsecase {
@@ -111,14 +112,22 @@ class TextRenderUsecase {
 
   // ignore: deprecated_member_use
   Future<List<PagePainter>> getPagePainters(
+      {int delay = 300,
       // ignore: deprecated_member_use
-      {String? cid,
-      int? fIndex,
-      int delay = 300,
       required AsyncNotifierProviderRef<List<PagePainter>> ref}) async {
-    return (await Future.wait(
-            [_getPagePainters(cid: cid, fIndex: fIndex, ref: ref), Future.delayed(Duration(milliseconds: delay))]))
+    final cid = ProgressUsecase().progress.chapterId;
+    return (await Future.wait([_getPagePainters(cid: cid, ref: ref), Future.delayed(Duration(milliseconds: delay))]))
         .first as List<PagePainter>;
+  }
+
+  Future<List<PagePainter>> getNextPagePainters({required AsyncNotifierProviderRef<List<PagePainter>> ref}) async {
+    final fIndex = ProgressUsecase().progress.chapterIndex + 1;
+    return _getPagePainters(fIndex: fIndex, ref: ref);
+  }
+
+  Future<List<PagePainter>> getPrevPagePainters({required AsyncNotifierProviderRef<List<PagePainter>> ref}) async {
+    final fIndex = ProgressUsecase().progress.chapterIndex - 1;
+    return _getPagePainters(fIndex: fIndex, ref: ref);
   }
 
   ColorScheme get colorScheme => Theme.of(context).colorScheme;

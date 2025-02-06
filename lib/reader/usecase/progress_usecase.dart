@@ -46,6 +46,12 @@ class ProgressUsecase {
     _sync();
   }
 
+  jumpChapter({required ChapterModel chapter}) {
+    progress = progress.copyWith(
+        chapterId: chapter.cid, chapterIndex: chapter.chapterIndex!, paragraphIndex: 0, textLineIndex: 0);
+    _sync();
+  }
+
   _sync() async {
     await isar.writeTxn(() async {
       await isar.progressModels.put(progress);

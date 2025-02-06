@@ -41,7 +41,7 @@ class Reader extends _$Reader {
     await ProgressUsecase().init(catalog);
     // ignore: use_build_context_synchronously
     textRenderUsecase = TextRenderUsecase(context, book: book).init(ref);
-    final res = await textRenderUsecase.getPagePainters(fIndex: 0, ref: ref);
+    final res = await textRenderUsecase.getPagePainters(ref: ref);
     Log.e(res, "Reader build");
     ref.listen(ProviderUsecase().config, _configListener);
     return res;
@@ -55,7 +55,7 @@ class Reader extends _$Reader {
       if (catalog.flatChapterList.length > cachedLastPageFlatIndex + 1) {
         isLoadingNextChapter = true;
         try {
-          final nextPage = await textRenderUsecase.getPagePainters(fIndex: cachedLastPageFlatIndex + 1, ref: ref);
+          final nextPage = await textRenderUsecase.getNextPagePainters(ref: ref);
           appendPages(nextPage);
         } finally {
           isLoadingNextChapter = false;
@@ -67,7 +67,7 @@ class Reader extends _$Reader {
       if (cachedFirstPageFlatIndex > 0) {
         isLoadingPrevChapter = true;
         try {
-          final prevPage = await textRenderUsecase.getPagePainters(fIndex: cachedFirstPageFlatIndex - 1, ref: ref);
+          final prevPage = await textRenderUsecase.getPrevPagePainters(ref: ref);
           prependPages(prevPage);
         } finally {
           isLoadingPrevChapter = false;
@@ -77,7 +77,8 @@ class Reader extends _$Reader {
   }
 
   jumpToChapter(ChapterModel chapter) async {
-    final pagePainters = await textRenderUsecase.getPagePainters(cid: chapter.cid, ref: ref);
+    ProgressUsecase().jumpChapter(chapter: chapter);
+    final pagePainters = await textRenderUsecase.getPagePainters(ref: ref);
     state = AsyncValue.data(pagePainters);
     pageSliderController.reset();
   }
