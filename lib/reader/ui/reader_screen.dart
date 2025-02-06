@@ -9,6 +9,7 @@ import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/top_bar.dart';
 import 'package:reader/reader/usecase/gesture_usecase.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
+import 'package:reader/reader/usecase/progress_usecase.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
 
 import 'components/render.dart';
@@ -68,8 +69,9 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                                   },
                                   controller: ref.read(ProviderUsecase().reader.notifier).pageSliderController,
                                   itemCount: value.length,
-                                  onPageChanged: (page) {
-                                    ref.read(ProviderUsecase().reader.notifier).onPageChange(page);
+                                  onPageChanged: (index) {
+                                    ref.read(ProviderUsecase().reader.notifier).onPageChange(index);
+                                    ProgressUsecase().update(page: value[index]);
                                   },
                                   callMenu: () {
                                     GestureUsecase(ref).callMenu();
