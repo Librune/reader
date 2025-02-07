@@ -92,9 +92,7 @@ class Reader extends _$Reader {
 
   prependPages(List<PagePainter> pages) {
     state = AsyncValue.data([...pages, ...state.value!]);
-    Future.delayed(Duration(milliseconds: 5000), () {
-      pageSliderController.jumpToPage(pages.length);
-    });
+    pageSliderController.jumpToPage(pages.length);
   }
 
   _configListener(ReaderConfigModel? oldValue, ReaderConfigModel newValue) {

@@ -43,14 +43,14 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
       // 跳转方法：跳转到指定页
       controller._jumpToPage = (int page) {
         // 限制 page 范围
-        final targetPage = page.clamp(0, itemCount - 1);
+        // final targetPage = page.clamp(0, itemCount - 1);
         scrollController.jumpTo(
-          targetPage * screenWidth,
+          page * screenWidth,
         );
 
-        currentPage.value = targetPage;
+        currentPage.value = page;
         if (onPageChanged != null) {
-          onPageChanged!(targetPage);
+          onPageChanged!(page);
         }
       };
       // 清理时将 _reset 和 _jumpToPage 置空
@@ -204,9 +204,7 @@ class PageSliderController {
   /// 外部调用跳转到指定页面的方法
   void jumpToPage(int page) {
     if (_jumpToPage != null) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        _jumpToPage!(page);
-      });
+      _jumpToPage!(page);
     }
   }
 }
