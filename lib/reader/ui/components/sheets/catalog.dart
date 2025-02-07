@@ -25,6 +25,7 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
     final controller = useScrollController(keepScrollOffset: true);
     final colorScheme = Theme.of(context).colorScheme;
     final catalog = ref.watch(ProviderUsecase().catalog).value;
+    final cid = ref.watch(cidProvider);
     // final volumeList = ref.watch(ProviderUsecase().catalog).value?.volumes ?? [];
     // final flatChapterList = ref.watch(ProviderUsecase().catalog).value?.flatChapterList ?? [];
     // final flatList = <ChapterModel>[];
@@ -58,7 +59,7 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
         SliverList.separated(
           itemBuilder: (context, index) {
             final chapter = flatList[index];
-            final isCurrent = false;
+            final isCurrent = chapter.cid == cid;
             return chapter.cid != ""
                 ? ListTile(
                     dense: true,

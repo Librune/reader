@@ -107,10 +107,8 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                           error: (error, stackTrace) {
                             return Center(
                               child: Text(
-                                "加载失败",
+                                error.toString(),
                                 style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 16),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                               ),
                             );
                           },

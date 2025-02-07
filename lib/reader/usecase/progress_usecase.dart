@@ -1,6 +1,5 @@
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:isar/isar.dart';
-import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/data/model/progress.dart';
@@ -13,7 +12,6 @@ class ProgressUsecase {
   factory ProgressUsecase() {
     return _instance ??= ProgressUsecase._internal();
   }
-
   final Isar isar = Isar.getInstance()!;
   late ProgressModel progress;
   late CatalogModel catalog;
@@ -64,3 +62,14 @@ class ProgressUsecase {
     });
   }
 }
+
+class CidNotifier extends Notifier<String> {
+  @override
+  String build() => '';
+
+  void update(String cid) {
+    state = cid;
+  }
+}
+
+final cidProvider = NotifierProvider<CidNotifier, String>(CidNotifier.new);
