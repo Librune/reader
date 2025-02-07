@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/reader/data/model/menu.dart';
+
+import 'sheets/catalog.dart';
 
 class PersistentBottomSheet extends StatefulWidget {
   /// 内容 Widget
@@ -41,6 +44,8 @@ class PersistentBottomSheetState extends State<PersistentBottomSheet> with Singl
   /// 是否正在显示组件
   bool _isVisible = false;
 
+  final GlobalKey<State> _childKey = GlobalKey<State>();
+
   @override
   void initState() {
     super.initState();
@@ -60,10 +65,20 @@ class PersistentBottomSheetState extends State<PersistentBottomSheet> with Singl
 
   /// 显示组件（展开到底部弹出组件的最大高度）
   void show() {
+    Log.e("show");
+    final state = _childKey.currentState;
+    Log.e(state);
+    if (state != null && state is CatalogContentState) {
+      // CustomChildState 为子组件对应的 State 类型
+      Log.e("show");
+      Log.e(state.toString());
+      state.onShow();
+    }
     setState(() {
       _isVisible = true;
     });
     _animateTo(1.0);
+    // 调用子组件中的指定方法，例如 customMethod
   }
 
   /// 隐藏组件（收起到底部）
@@ -152,7 +167,11 @@ class PersistentBottomSheetState extends State<PersistentBottomSheet> with Singl
                             ),
                           ),
                           // 内容区域，这里仅作为示例显示一个列表
-                          Expanded(child: widget.child),
+                          Expanded(
+                              child: KeyedSubtree(
+                            key: _childKey,
+                            child: widget.child,
+                          )),
                         ],
                       ),
                     )),
