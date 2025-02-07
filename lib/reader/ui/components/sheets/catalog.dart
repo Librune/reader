@@ -6,37 +6,22 @@ import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/usecase/progress_usecase.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
 
-class CatalogSheetContent extends StatelessWidget {
+class CatalogSheetContent extends StatefulHookConsumerWidget {
   const CatalogSheetContent({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const _CatalogContent();
-  }
+  ConsumerState<ConsumerStatefulWidget> createState() => _CatalogSheetContentState();
 }
 
-typedef CatalogContentState = _CatalogContentState;
+typedef CatalogContentState = _CatalogSheetContentState;
 
-class _CatalogContent extends StatefulHookConsumerWidget {
-  const _CatalogContent();
-
-  @override
-  ConsumerState<_CatalogContent> createState() => _CatalogContentState();
-}
-
-class _CatalogContentState extends ConsumerState<_CatalogContent>
-//  with AutomaticKeepAliveClientMixin
-{
-  // @override
-  // bool get wantKeepAlive => true;
-
+class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
   void onShow() {
     Log.e("onShow");
   }
 
   @override
   Widget build(BuildContext context) {
-    // super.build(context);
     final controller = useScrollController(keepScrollOffset: true);
     final colorScheme = Theme.of(context).colorScheme;
     final volumeList = ref.watch(ProviderUsecase().catalog).value?.volumes ?? [];
@@ -108,3 +93,37 @@ class _CatalogContentState extends ConsumerState<_CatalogContent>
     ));
   }
 }
+
+// class CatalogSheetContent extends StatelessWidget {
+//   const CatalogSheetContent({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return const _CatalogContent();
+//   }
+// }
+
+
+// class _CatalogContent extends StatefulHookConsumerWidget {
+//   const _CatalogContent();
+
+//   @override
+//   ConsumerState<_CatalogContent> createState() => _CatalogContentState();
+// }
+
+// class _CatalogContentState extends ConsumerState<_CatalogContent>
+// //  with AutomaticKeepAliveClientMixin
+// {
+//   // @override
+//   // bool get wantKeepAlive => true;
+
+//   void onShow() {
+//     Log.e("onShow");
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // super.build(context);
+   
+//   }
+// }

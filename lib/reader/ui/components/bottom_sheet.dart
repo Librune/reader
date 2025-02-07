@@ -65,7 +65,11 @@ class PersistentBottomSheetState extends State<PersistentBottomSheet> with Singl
 
   /// 显示组件（展开到底部弹出组件的最大高度）
   void show() {
-    Log.e("show");
+    setState(() {
+      _isVisible = true;
+    });
+    _animateTo(1.0);
+    // 调用子组件中的指定方法，例如 customMethod
     final state = _childKey.currentState;
     Log.e(state);
     if (state != null && state is CatalogContentState) {
@@ -74,11 +78,6 @@ class PersistentBottomSheetState extends State<PersistentBottomSheet> with Singl
       Log.e(state.toString());
       state.onShow();
     }
-    setState(() {
-      _isVisible = true;
-    });
-    _animateTo(1.0);
-    // 调用子组件中的指定方法，例如 customMethod
   }
 
   /// 隐藏组件（收起到底部）
