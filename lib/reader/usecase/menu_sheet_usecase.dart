@@ -56,6 +56,7 @@ class MenuSheetUsecase {
           sheetKey.currentState?.hide();
           currentSheetType = null;
           ref.read(menuProvider.notifier).openTop();
+          ref.read(menuProvider.notifier).closeSub();
         } else {
           sheetKey.currentState?.show();
           currentSheetType = sheetKey.currentState!.type;
