@@ -100,66 +100,65 @@ class PersistentBottomSheetState extends State<PersistentBottomSheet> with Singl
 
   @override
   Widget build(BuildContext context) {
-    // 当组件处于隐藏状态时，返回一个空容器，不占位
-    if (!_isVisible) return const SizedBox.shrink();
-
     return Positioned(
-      left: 0,
-      right: 0,
-      bottom: 0,
-      height: widget.maxHeight,
-      child: GestureDetector(
-        // 通过垂直拖动手势更新动画控制器的 value，从而控制高度变化
-        onVerticalDragUpdate: (details) {
-          // 计算拖动量在 0～1 之间的变化比例
-          double delta = details.primaryDelta! / widget.maxHeight;
-          _animationController.value -= delta;
-        },
-        onVerticalDragEnd: (details) {
-          // 根据拖动结束时的动画值决定展开还是收起
-          if (_animationController.value < 0.5) {
-            hide();
-          } else {
-            show();
-          }
-        },
-        child: AnimatedBuilder(
-          animation: _animationController,
-          builder: (context, child) {
-            return Transform.translate(
-              offset: Offset(0, _currentOffset),
-              child: child,
-            );
-          },
-          child: Material(
-            // 使用 Material 包裹以获得默认阴影和背景效果
-            elevation: 12,
-            color: Theme.of(context).colorScheme.surfaceContainerLow,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: ClipRRect(
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: widget.maxHeight,
+        child: Offstage(
+          offstage: !_isVisible,
+          child: GestureDetector(
+            // 通过垂直拖动手势更新动画控制器的 value，从而控制高度变化
+            onVerticalDragUpdate: (details) {
+              // 计算拖动量在 0～1 之间的变化比例
+              double delta = details.primaryDelta! / widget.maxHeight;
+              _animationController.value -= delta;
+            },
+            onVerticalDragEnd: (details) {
+              // 根据拖动结束时的动画值决定展开还是收起
+              if (_animationController.value < 0.5) {
+                hide();
+              } else {
+                show();
+              }
+            },
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return Transform.translate(
+                  offset: Offset(0, _currentOffset),
+                  child: child,
+                );
+              },
+              child: Material(
+                // 使用 Material 包裹以获得默认阴影和背景效果
+                elevation: 12,
+                color: Theme.of(context).colorScheme.surfaceContainerLow,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                child: Padding(
-                  padding: widget.padding,
-                  child: Column(
-                    children: [
-                      // 拖动指示器
-                      Container(
-                        width: 40,
-                        height: 4,
-                        margin: const EdgeInsets.only(top: 12, bottom: 12),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[400],
-                          borderRadius: BorderRadius.circular(2),
-                        ),
+                child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    child: Padding(
+                      padding: widget.padding,
+                      child: Column(
+                        children: [
+                          // 拖动指示器
+                          Container(
+                            width: 40,
+                            height: 4,
+                            margin: const EdgeInsets.only(top: 12, bottom: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[400],
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                          ),
+                          // 内容区域，这里仅作为示例显示一个列表
+                          Expanded(child: widget.child),
+                        ],
                       ),
-                      // 内容区域，这里仅作为示例显示一个列表
-                      Expanded(child: widget.child),
-                    ],
-                  ),
-                )),
+                    )),
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
