@@ -33,7 +33,7 @@ class Catalog extends _$Catalog {
   }
 
   _onSelfChange(AsyncValue<CatalogModel>? oldValue, AsyncValue<CatalogModel> newValue) {
-    if (newValue.value != null && oldValue?.value != null) {
+    if (newValue.value != null) {
       Log.e("Catalog _onSelfChange");
       final CatalogModel? catalog = newValue.value;
       if (catalog == null) return;

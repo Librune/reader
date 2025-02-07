@@ -42,7 +42,6 @@ class Reader extends _$Reader {
     // ignore: use_build_context_synchronously
     textRenderUsecase = TextRenderUsecase(context, book: book).init(ref);
     final res = await textRenderUsecase.getPagePainters(ref: ref);
-    Log.e(res, "Reader build");
     ref.listen(ProviderUsecase().config, _configListener);
     return res;
   }

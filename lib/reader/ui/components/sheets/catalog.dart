@@ -52,7 +52,6 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
       }
       return list;
     }, [catalog]);
-    Log.w('CatalogSheetContent build');
     return CustomScrollView(
       controller: controller,
       slivers: [
