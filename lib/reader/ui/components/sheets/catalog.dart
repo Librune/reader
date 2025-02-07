@@ -24,10 +24,10 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
   Widget build(BuildContext context) {
     final controller = useScrollController(keepScrollOffset: true);
     final colorScheme = Theme.of(context).colorScheme;
-    final volumeList = ref.watch(ProviderUsecase().catalog).value?.volumes ?? [];
-    final flatChapterList = ref.watch(ProviderUsecase().catalog).value?.flatChapterList ?? [];
+    final catalog = ref.watch(ProviderUsecase().catalog).value;
+    // final volumeList = ref.watch(ProviderUsecase().catalog).value?.volumes ?? [];
+    // final flatChapterList = ref.watch(ProviderUsecase().catalog).value?.flatChapterList ?? [];
     // final flatList = <ChapterModel>[];
-    int _index = 0;
     // for (final volume in volumeList) {
     //   final volumeHeader = ChapterModel(cid: "", title: volume.title);
     //   flatList.add(volumeHeader);
@@ -36,13 +36,29 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
     //   flatList.addAll(chapters);
     //   _index += volumeChapterNum;
     // }
+    final flatList = useMemoized(() {
+      if (catalog == null) return [];
+      final volumeList = catalog.volumes;
+      final flatChapterList = catalog.flatChapterList;
+      int _index = 0;
+      final list = <ChapterModel>[];
+      for (final volume in volumeList) {
+        final volumeHeader = ChapterModel(cid: "", title: volume.title);
+        list.add(volumeHeader);
+        final volumeChapterNum = volume.chapters.length;
+        final chapters = flatChapterList.sublist(_index, _index + volumeChapterNum);
+        list.addAll(chapters);
+        _index += volumeChapterNum;
+      }
+      return list;
+    }, [catalog]);
     return RepaintBoundary(
         child: CustomScrollView(
       controller: controller,
       slivers: [
         SliverList.separated(
           itemBuilder: (context, index) {
-            final chapter = flatChapterList[index];
+            final chapter = flatList[index];
             final isCurrent = false;
             return chapter.cid != ""
                 ? ListTile(
@@ -87,7 +103,7 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
               thickness: .6,
             );
           },
-          itemCount: flatChapterList.length,
+          itemCount: flatList.length,
         )
       ],
     ));
