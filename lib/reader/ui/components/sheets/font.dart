@@ -177,6 +177,7 @@ class _FontSheetContentState extends ConsumerState<FontSheetContent> {
                       style: ButtonStyle(
                         padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
                         backgroundColor: WidgetStateProperty.all(colorScheme.tertiaryContainer),
+                        foregroundColor: WidgetStateProperty.all(colorScheme.onTertiaryContainer),
                         shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
                       ),
                       onPressed: () {},

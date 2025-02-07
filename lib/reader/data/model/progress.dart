@@ -16,6 +16,7 @@ class ProgressModel with _$ProgressModel {
     required int chapterIndex,
     required int paragraphIndex,
     required int textLineIndex,
+    int? flatIndex,
   }) = _ProgressModel;
   const ProgressModel._();
   factory ProgressModel.fromJson(Map<String, dynamic> json) => _$ProgressModelFromJson(json);

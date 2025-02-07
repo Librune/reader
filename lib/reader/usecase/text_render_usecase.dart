@@ -125,12 +125,12 @@ class TextRenderUsecase {
   }
 
   Future<List<PagePainter>> getNextPagePainters({required AsyncNotifierProviderRef<List<PagePainter>> ref}) async {
-    final fIndex = ProgressUsecase().progress.chapterIndex + 1;
+    final fIndex = ProgressUsecase().progress.flatIndex! + 1;
     return _getPagePainters(fIndex: fIndex, ref: ref);
   }
 
   Future<List<PagePainter>> getPrevPagePainters({required AsyncNotifierProviderRef<List<PagePainter>> ref}) async {
-    final fIndex = ProgressUsecase().progress.chapterIndex - 1;
+    final fIndex = ProgressUsecase().progress.flatIndex! - 1;
     return _getPagePainters(fIndex: fIndex, ref: ref);
   }
 
