@@ -34,6 +34,7 @@ class Reader extends _$Reader {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
     pageSliderController = PageSliderController();
+    await ref.read(ProviderUsecase().theme.future);
     catalog = await ref.read(ProviderUsecase().catalog.future);
     // 初始化进度管理
     await ProgressUsecase().init(catalog);

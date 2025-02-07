@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
@@ -20,25 +21,20 @@ class _CatalogContent extends StatefulHookConsumerWidget {
 }
 
 class _CatalogContentState extends ConsumerState<_CatalogContent> with AutomaticKeepAliveClientMixin {
-  Widget? _cachedContent;
-
   @override
   bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    _cachedContent ??= _buildContent(context);
-    return _cachedContent!;
-  }
-
-  Widget _buildContent(BuildContext context) {
+    final controller = useScrollController(keepScrollOffset: true);
     final colorScheme = Theme.of(context).colorScheme;
     final volumes = ref.watch(ProviderUsecase().catalog).value?.volumes ?? [];
-    return CustomScrollView(
+    return RepaintBoundary(
+        child: CustomScrollView(
+      controller: controller,
       slivers: [
         SliverList.builder(
-          // delay: const Duration(milliseconds: 250),
           itemBuilder: (context, index) {
             final volume = volumes[index];
             return Column(
@@ -87,6 +83,6 @@ class _CatalogContentState extends ConsumerState<_CatalogContent> with Automatic
           itemCount: volumes.length,
         )
       ],
-    );
+    ));
   }
 }

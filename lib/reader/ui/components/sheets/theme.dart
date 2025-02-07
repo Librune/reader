@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/reader/ui/components/sheets/theme_card.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
 
