@@ -19,24 +19,13 @@ class MenuSheetUsecase {
   ReaderBottomSheet? currentSheetType;
 
   onSheetDragHide(GlobalKey<PersistentBottomSheetState> key, {required WidgetRef ref, triggeredByDrag = true}) {
-    Log.e(triggeredByDrag, "MenuSheetUsecase");
     if (key.currentState?.type == currentSheetType) {
       currentSheetType = null;
     }
     if (triggeredByDrag) {
-      // _checkParentBars(ref);
       ref.read(menuProvider.notifier).openTop();
     }
   }
-
-  // _checkParentBars(WidgetRef ref) {
-  //   if (currentSheetType != null) {
-  //     ref.read(menuProvider.notifier).openSub(currentSheetType!);
-  //   } else {
-  //     ref.read(menuProvider.notifier).closeSub();
-  //     ref.read(menuProvider.notifier).openTop();
-  //   }
-  // }
 
   void toggleMenu(WidgetRef ref) {
     final menuVisible = ref.read(menuProvider);
@@ -81,6 +70,7 @@ class MenuSheetUsecase {
     for (var sheetKey in sheetKeys) {
       sheetKey.currentState?.hide();
     }
+    ref.read(menuProvider.notifier).closeSub();
     ref.read(menuProvider.notifier).closeParent();
   }
 
