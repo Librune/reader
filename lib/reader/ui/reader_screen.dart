@@ -98,7 +98,6 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                                   itemCount: value.length,
                                   onPageChanged: (index) {
                                     ref.read(ProviderUsecase().reader.notifier).onPageChange(index);
-                                    ProgressUsecase().update(page: value[index]);
                                   },
                                   toggleMenu: () {
                                     MenuSheetUsecase().toggleMenu(ref);

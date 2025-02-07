@@ -48,6 +48,7 @@ class Reader extends _$Reader {
   }
 
   onPageChange(int page) async {
+    ProgressUsecase().update(page: state.value![page]);
     // 判断是否需要加载下一章
     if (page == state.value!.length - 1) {
       final lastPage = state.value!.last;
@@ -83,7 +84,6 @@ class Reader extends _$Reader {
     MenuSheetUsecase().closeAll(ref);
     final pages = await textRenderUsecase.getPagePainters(ref: ref);
     state = AsyncData(pages);
-    onPageChange(0);
   }
 
   appendPages(List<PagePainter> pages) {
