@@ -39,6 +39,6 @@ class Menu extends _$Menu {
   }
 
   closeSub() {
-    state = state.copyWith(sub: false, subType: null, top: true);
+    state = state.copyWith(sub: false, subType: null);
   }
 }

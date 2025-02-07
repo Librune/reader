@@ -15,7 +15,7 @@ class PersistentBottomSheet extends StatefulWidget {
   final EdgeInsets padding;
 
   /// 拖拽隐藏回调
-  final VoidCallback? onDragHide;
+  final Function(bool triggeredByDrag)? onHide;
 
   /// sheet 类型
   final ReaderBottomSheet type;
@@ -27,7 +27,7 @@ class PersistentBottomSheet extends StatefulWidget {
     required this.type,
     this.minHeight = 0,
     this.padding = EdgeInsets.zero,
-    this.onDragHide,
+    this.onHide,
   });
 
   @override
@@ -67,12 +67,12 @@ class PersistentBottomSheetState extends State<PersistentBottomSheet> with Singl
   }
 
   /// 隐藏组件（收起到底部）
-  void hide() {
+  void hide({bool triggeredByDrag = false}) {
     _animateTo(0.0).then((_) {
       setState(() {
         _isVisible = false;
       });
-      widget.onDragHide?.call();
+      widget.onHide?.call(triggeredByDrag);
     });
   }
 
@@ -117,7 +117,7 @@ class PersistentBottomSheetState extends State<PersistentBottomSheet> with Singl
             onVerticalDragEnd: (details) {
               // 根据拖动结束时的动画值决定展开还是收起
               if (_animationController.value < 0.5) {
-                hide();
+                hide(triggeredByDrag: true);
               } else {
                 show();
               }

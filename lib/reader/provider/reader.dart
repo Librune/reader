@@ -5,6 +5,7 @@ import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/data/model/config.dart';
 import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/render.dart';
+import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 import 'package:reader/reader/usecase/progress_usecase.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
 import 'package:reader/reader/usecase/text_render_usecase.dart';
@@ -77,9 +78,12 @@ class Reader extends _$Reader {
 
   jumpToChapter(ChapterModel chapter) async {
     ProgressUsecase().jumpChapter(chapter: chapter);
-    final pagePainters = await textRenderUsecase.getPagePainters(ref: ref);
-    state = AsyncValue.data(pagePainters);
-    pageSliderController.reset();
+    // 刷新整个 provider
+    state = AsyncValue.loading();
+    MenuSheetUsecase().closeAll(ref);
+    final pages = await textRenderUsecase.getPagePainters(ref: ref);
+    state = AsyncData(pages);
+    onPageChange(0);
   }
 
   appendPages(List<PagePainter> pages) {
@@ -88,7 +92,9 @@ class Reader extends _$Reader {
 
   prependPages(List<PagePainter> pages) {
     state = AsyncValue.data([...pages, ...state.value!]);
-    pageSliderController.jumpToPage(pages.length);
+    Future.delayed(Duration(milliseconds: 5000), () {
+      pageSliderController.jumpToPage(pages.length);
+    });
   }
 
   _configListener(ReaderConfigModel? oldValue, ReaderConfigModel newValue) {

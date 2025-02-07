@@ -204,7 +204,9 @@ class PageSliderController {
   /// 外部调用跳转到指定页面的方法
   void jumpToPage(int page) {
     if (_jumpToPage != null) {
-      _jumpToPage!(page);
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _jumpToPage!(page);
+      });
     }
   }
 }

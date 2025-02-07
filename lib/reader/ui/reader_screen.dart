@@ -152,8 +152,9 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 64),
                       key: MenuSheetUsecase().catalogSheetKey,
                       maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - 48,
-                      onDragHide: () {
-                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().catalogSheetKey, ref: ref);
+                      onHide: (triggeredByDrag) {
+                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().catalogSheetKey,
+                            ref: ref, triggeredByDrag: triggeredByDrag);
                       },
                       child: CatalogSheetContent()),
                   PersistentBottomSheet(
@@ -161,8 +162,9 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 50, left: 4, right: 4),
                       key: MenuSheetUsecase().fontSheetKey,
                       maxHeight: 360,
-                      onDragHide: () {
-                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().fontSheetKey, ref: ref);
+                      onHide: (triggeredByDrag) {
+                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().fontSheetKey,
+                            ref: ref, triggeredByDrag: triggeredByDrag);
                       },
                       child: FontSheetContent()),
                   PersistentBottomSheet(
@@ -170,8 +172,9 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
                       key: MenuSheetUsecase().themeSheetKey,
                       maxHeight: 600,
-                      onDragHide: () {
-                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().themeSheetKey, ref: ref);
+                      onHide: (triggeredByDrag) {
+                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().themeSheetKey,
+                            ref: ref, triggeredByDrag: triggeredByDrag);
                       },
                       child: ThemeSheetContent()),
                   PersistentBottomSheet(
@@ -179,8 +182,9 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
                       key: MenuSheetUsecase().configSheetKey,
                       maxHeight: MediaQuery.of(context).size.height / 2,
-                      onDragHide: () {
-                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().configSheetKey, ref: ref);
+                      onHide: (triggeredByDrag) {
+                        MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().configSheetKey,
+                            ref: ref, triggeredByDrag: triggeredByDrag);
                       },
                       child: ConfigSheetContent()),
                   BottomBar(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/ui/components/bottom_sheet.dart';
@@ -17,20 +18,25 @@ class MenuSheetUsecase {
 
   ReaderBottomSheet? currentSheetType;
 
-  onSheetDragHide(GlobalKey<PersistentBottomSheetState> key, {required WidgetRef ref}) {
+  onSheetDragHide(GlobalKey<PersistentBottomSheetState> key, {required WidgetRef ref, triggeredByDrag = true}) {
+    Log.e(triggeredByDrag, "MenuSheetUsecase");
     if (key.currentState?.type == currentSheetType) {
       currentSheetType = null;
     }
-    _checkParentBars(ref);
-  }
-
-  _checkParentBars(WidgetRef ref) {
-    if (currentSheetType != null) {
-      ref.read(menuProvider.notifier).openSub(currentSheetType!);
-    } else {
-      ref.read(menuProvider.notifier).closeSub();
+    if (triggeredByDrag) {
+      // _checkParentBars(ref);
+      ref.read(menuProvider.notifier).openTop();
     }
   }
+
+  // _checkParentBars(WidgetRef ref) {
+  //   if (currentSheetType != null) {
+  //     ref.read(menuProvider.notifier).openSub(currentSheetType!);
+  //   } else {
+  //     ref.read(menuProvider.notifier).closeSub();
+  //     ref.read(menuProvider.notifier).openTop();
+  //   }
+  // }
 
   void toggleMenu(WidgetRef ref) {
     final menuVisible = ref.read(menuProvider);
@@ -39,6 +45,8 @@ class MenuSheetUsecase {
     }
     if (menuVisible.sub) {
       sheetKeys.firstWhere((key) => key.currentState?.isVisible ?? false).currentState?.hide();
+      ref.read(menuProvider.notifier).closeSub();
+      ref.read(menuProvider.notifier).openTop();
     } else {
       if (menuVisible.none) {
         ref.read(menuProvider.notifier).openParent();
@@ -57,15 +65,23 @@ class MenuSheetUsecase {
         if (sheetKey.currentState?.isVisible ?? false) {
           sheetKey.currentState?.hide();
           currentSheetType = null;
+          ref.read(menuProvider.notifier).openTop();
         } else {
           sheetKey.currentState?.show();
           currentSheetType = sheetKey.currentState!.type;
+          ref.read(menuProvider.notifier).openSub(currentSheetType!);
         }
       } else {
         sheetKey.currentState?.hide();
       }
     }
-    _checkParentBars(ref);
+  }
+
+  closeAll(dynamic ref) {
+    for (var sheetKey in sheetKeys) {
+      sheetKey.currentState?.hide();
+    }
+    ref.read(menuProvider.notifier).closeParent();
   }
 
   List<GlobalKey<PersistentBottomSheetState>> get sheetKeys => [
