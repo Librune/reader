@@ -56,7 +56,9 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
     useEffect(() {
       final index = flatList.indexWhere((element) => element.cid == cid);
       if (index != -1) {
-        controller.jumpTo(index * 64.0);
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          controller.jumpTo(index * 64.0);
+        });
       }
       return null;
     }, [flatList, cid]);

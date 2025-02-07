@@ -20,7 +20,7 @@ class ShelfScreen extends HookConsumerWidget {
         title: ClipOval(
           child: CachedNetworkImage(
             imageUrl: "https://avatars.githubusercontent.com/u/25399519?v=4",
-            width: 28,
+            width: 32,
           ),
         ),
         canPop: false,
@@ -33,17 +33,9 @@ class ShelfScreen extends HookConsumerWidget {
             icon: SvgPicture.asset(
               "assets/svg/ic_topbar_search.svg",
               colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
-              width: 18,
+              width: 22,
             ),
           ),
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: SvgPicture.asset(
-          //     "assets/svg/ic_btn_more.svg",
-          //     colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
-          //     width: 18,
-          //   ),
-          // ),
           IconButton(
             onPressed: () {
               // context.push("/preference");
@@ -53,7 +45,7 @@ class ShelfScreen extends HookConsumerWidget {
             icon: SvgPicture.asset(
               "assets/svg/ic_topbar_more.svg",
               colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
-              width: 18,
+              width: 22,
             ),
           )
         ],
