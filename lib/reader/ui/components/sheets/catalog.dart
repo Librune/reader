@@ -52,8 +52,8 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
       }
       return list;
     }, [catalog]);
-    return RepaintBoundary(
-        child: CustomScrollView(
+    Log.w('CatalogSheetContent build');
+    return CustomScrollView(
       controller: controller,
       slivers: [
         SliverList.separated(
@@ -106,7 +106,7 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
           itemCount: flatList.length,
         )
       ],
-    ));
+    );
   }
 }
 
