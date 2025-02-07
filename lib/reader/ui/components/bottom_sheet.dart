@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reader/reader/data/model/menu.dart';
 
 class PersistentBottomSheet extends StatefulWidget {
   /// 内容 Widget
@@ -16,10 +17,14 @@ class PersistentBottomSheet extends StatefulWidget {
   /// 拖拽隐藏回调
   final VoidCallback? onDragHide;
 
+  /// sheet 类型
+  final ReaderBottomSheet type;
+
   const PersistentBottomSheet({
     super.key,
     required this.child,
     required this.maxHeight,
+    required this.type,
     this.minHeight = 0,
     this.padding = EdgeInsets.zero,
     this.onDragHide,
@@ -80,6 +85,8 @@ class PersistentBottomSheetState extends State<PersistentBottomSheet> with Singl
   }
 
   bool get isVisible => _isVisible;
+
+  ReaderBottomSheet get type => widget.type;
 
   Future<void> _animateTo(double target) {
     return _animationController.animateTo(target, curve: Curves.easeOut);

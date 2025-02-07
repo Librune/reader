@@ -125,11 +125,11 @@ class _ThemeCardPainter extends CustomPainter {
     canvas.restore();
 
     // 重新设计边框：使用圆角矩形和较柔和的颜色，让边框存在但不过分割裂整体感
-    final Paint borderPaint = Paint()
-      ..color = colorScheme.outline.withOpacity(0.5)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-    canvas.drawRRect(rrect, borderPaint);
+    // final Paint borderPaint = Paint()
+    //   ..color = colorScheme.outline.withOpacity(0.5)
+    //   ..style = PaintingStyle.stroke
+    //   ..strokeWidth = 1;
+    // canvas.drawRRect(rrect, borderPaint);
 
     // 绘制标题与作者文字 (底部左侧) 并附加内边距
     final TextStyle nameStyle = TextStyle(

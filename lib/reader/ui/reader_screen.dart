@@ -9,6 +9,7 @@ import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
+import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/data/model/theme.dart';
 import 'package:reader/reader/ui/components/bottom_bar.dart';
 import 'package:reader/reader/ui/components/bottom_sheet.dart';
@@ -18,7 +19,6 @@ import 'package:reader/reader/ui/components/sheets/config.dart';
 import 'package:reader/reader/ui/components/sheets/font.dart';
 import 'package:reader/reader/ui/components/sheets/theme.dart';
 import 'package:reader/reader/ui/components/top_bar.dart';
-import 'package:reader/reader/usecase/gesture_usecase.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 import 'package:reader/reader/usecase/progress_usecase.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
@@ -53,7 +53,8 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
         canPop: false,
         onPopInvokedWithResult: (didPop, result) {
           if (ref.read(ProviderUsecase().menu.select((value) => value.sub))) {
-            MenuSheetUsecase().close();
+            // MenuSheetUsecase().close();
+            MenuSheetUsecase().toggleMenu(ref);
           } else if (ref.read(ProviderUsecase().menu.select((value) => value.bottom))) {
             ref.read(ProviderUsecase().menu.notifier).closeBottom();
             ref.read(ProviderUsecase().menu.notifier).closeTop();
@@ -100,7 +101,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                                     ProgressUsecase().update(page: value[index]);
                                   },
                                   toggleMenu: () {
-                                    GestureUsecase(ref).toggleMenu();
+                                    MenuSheetUsecase().toggleMenu(ref);
                                   },
                                 ));
                           },
@@ -128,25 +129,26 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       },
                     ),
                   ),
-                  Consumer(
-                    builder: (context, ref, child) {
-                      final subVisible = ref.watch(ProviderUsecase().menu.select((value) => value.sub));
-                      return IgnorePointer(
-                        ignoring: !subVisible,
-                        child: Scaffold(
-                          backgroundColor: Colors.transparent,
-                          key: MenuSheetUsecase().sheetCtx,
-                          body: GestureDetector(
-                            onTap: () {
-                              MenuSheetUsecase().close();
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  // Consumer(
+                  //   builder: (context, ref, child) {
+                  //     final subVisible = ref.watch(ProviderUsecase().menu.select((value) => value.sub));
+                  //     return IgnorePointer(
+                  //       ignoring: !subVisible,
+                  //       child: Scaffold(
+                  //         backgroundColor: Colors.transparent,
+                  //         key: MenuSheetUsecase().sheetCtx,
+                  //         body: GestureDetector(
+                  //           onTap: () {
+                  //             MenuSheetUsecase().close();
+                  //           },
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                   TopBar(book: widget.book),
                   PersistentBottomSheet(
+                      type: ReaderBottomSheet.catalog,
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 64),
                       key: MenuSheetUsecase().catalogSheetKey,
                       maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - 48,
@@ -155,6 +157,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       },
                       child: CatalogSheetContent()),
                   PersistentBottomSheet(
+                      type: ReaderBottomSheet.font,
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 50, left: 4, right: 4),
                       key: MenuSheetUsecase().fontSheetKey,
                       maxHeight: 360,
@@ -163,6 +166,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       },
                       child: FontSheetContent()),
                   PersistentBottomSheet(
+                      type: ReaderBottomSheet.theme,
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
                       key: MenuSheetUsecase().themeSheetKey,
                       maxHeight: 600,
@@ -171,6 +175,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       },
                       child: ThemeSheetContent()),
                   PersistentBottomSheet(
+                      type: ReaderBottomSheet.config,
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
                       key: MenuSheetUsecase().configSheetKey,
                       maxHeight: MediaQuery.of(context).size.height / 2,

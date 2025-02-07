@@ -18,12 +18,20 @@ class Menu extends _$Menu {
     state = state.copyWith(top: false);
   }
 
+  closeParent() {
+    state = state.copyWith(top: false, bottom: false);
+  }
+
   openBottom() {
     state = state.copyWith(bottom: true);
   }
 
   closeBottom() {
     state = state.copyWith(bottom: false);
+  }
+
+  openParent() {
+    state = state.copyWith(top: true, bottom: true);
   }
 
   openSub(ReaderBottomSheet type) {
