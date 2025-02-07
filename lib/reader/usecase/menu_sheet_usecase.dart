@@ -21,6 +21,7 @@ class MenuSheetUsecase {
   onSheetDragHide(GlobalKey<PersistentBottomSheetState> key, {required WidgetRef ref, triggeredByDrag = true}) {
     if (key.currentState?.type == currentSheetType) {
       currentSheetType = null;
+      ref.read(menuProvider.notifier).closeSub();
     }
     if (triggeredByDrag) {
       ref.read(menuProvider.notifier).openTop();
