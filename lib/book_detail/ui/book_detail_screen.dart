@@ -20,19 +20,19 @@ class BookDetailScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final coverUrl = book.cover;
     final colorScheme = Theme.of(context).colorScheme;
-    final coverColorScheme = useCoverColor(context, coverUrl: coverUrl, time: 300);
+    final coverColorScheme = useCoverColor(context, coverUrl: coverUrl, time: 400);
     final _book = book.copyWith(bookSourceId: uuid);
     final isInShelf = ref.watch(bookInShelfProvider(_book));
-    return Material(
-        color: Color.alphaBlend(coverColorScheme.data!.primary.withAlpha(50), Colors.black),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
+    return switch (coverColorScheme) {
+      AsyncSnapshot(:final data?) => Material(
+          color: Color.alphaBlend(coverColorScheme.data!.primary.withAlpha(50), Colors.black),
+          child: LayoutBuilder(builder: (context, constraints) {
             final maxHeight = constraints.maxHeight;
             return Stack(
               children: [
                 ShaderBackground(
                   cover: coverUrl,
-                  colorScheme: coverColorScheme.data!,
+                  colorScheme: data,
                 ),
                 // 毛玻璃效果
                 Positioned(
@@ -158,7 +158,12 @@ class BookDetailScreen extends HookConsumerWidget {
                     )),
               ],
             );
-          },
-        ));
+          })),
+      _ => Material(
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+    };
   }
 }
