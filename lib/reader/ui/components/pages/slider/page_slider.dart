@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/utils/log.dart';
+import 'package:reader/reader/usecase/provider_usecase.dart';
 
 class PageSlider extends StatefulHookConsumerWidget {
   const PageSlider({
@@ -39,6 +40,7 @@ class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObse
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final noMenus = ref.watch(ProviderUsecase().menu.select((value) => value.none));
     final scrollController = useScrollController(
       initialScrollOffset: widget.controller._initialPage != null
           ? widget.controller._initialPage! * MediaQuery.of(context).size.width
@@ -114,40 +116,45 @@ class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObse
     }
 
     void handleTapUp(TapUpDetails details) {
-      if (details.localPosition.dx < screenWidth / 3) {
-        final targetPage = (currentPage.value - 1).clamp(0, widget.itemCount - 1);
-        if (targetPage != currentPage.value) {
-          scrollController
-              .animateTo(
-            targetPage * screenWidth,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          )
-              .then((_) {
-            currentPage.value = targetPage;
-            if (widget.onPageChanged != null) {
-              widget.onPageChanged!(targetPage);
-            }
-          });
-        }
-      } else if (details.localPosition.dx > screenWidth * 2 / 3) {
-        final targetPage = (currentPage.value + 1).clamp(0, widget.itemCount - 1);
-        if (targetPage != currentPage.value) {
-          scrollController
-              .animateTo(
-            targetPage * screenWidth,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          )
-              .then((_) {
-            currentPage.value = targetPage;
-            if (widget.onPageChanged != null) {
-              widget.onPageChanged!(targetPage);
-            }
-          });
-        }
-      } else {
+      if (!noMenus) {
         widget.toggleMenu();
+        return;
+      } else {
+        if (details.localPosition.dx < screenWidth / 3) {
+          final targetPage = (currentPage.value - 1).clamp(0, widget.itemCount - 1);
+          if (targetPage != currentPage.value) {
+            scrollController
+                .animateTo(
+              targetPage * screenWidth,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            )
+                .then((_) {
+              currentPage.value = targetPage;
+              if (widget.onPageChanged != null) {
+                widget.onPageChanged!(targetPage);
+              }
+            });
+          }
+        } else if (details.localPosition.dx > screenWidth * 2 / 3) {
+          final targetPage = (currentPage.value + 1).clamp(0, widget.itemCount - 1);
+          if (targetPage != currentPage.value) {
+            scrollController
+                .animateTo(
+              targetPage * screenWidth,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            )
+                .then((_) {
+              currentPage.value = targetPage;
+              if (widget.onPageChanged != null) {
+                widget.onPageChanged!(targetPage);
+              }
+            });
+          }
+        } else {
+          widget.toggleMenu();
+        }
       }
     }
 
@@ -158,13 +165,14 @@ class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObse
           () => TapGestureRecognizer(),
           (instance) => instance..onTapUp = handleTapUp,
         ),
-        HorizontalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<HorizontalDragGestureRecognizer>(
-          () => HorizontalDragGestureRecognizer(),
-          (instance) => instance
-            ..onStart = handleDragStart
-            ..onUpdate = handleDragUpdate
-            ..onEnd = handleDragEnd,
-        ),
+        if (noMenus)
+          HorizontalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<HorizontalDragGestureRecognizer>(
+            () => HorizontalDragGestureRecognizer(),
+            (instance) => instance
+              ..onStart = handleDragStart
+              ..onUpdate = handleDragUpdate
+              ..onEnd = handleDragEnd,
+          ),
       },
       child: CustomScrollView(
         controller: scrollController,
