@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:localstorage/localstorage.dart';
 import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
@@ -13,17 +14,17 @@ part 'theme.g.dart';
 class ReaderTheme extends _$ReaderTheme {
   @override
   Future<List<ReaderThemeModel>> build() async {
+    final List themeIds = jsonDecode(localStorage.getItem("themes")!);
     final List<ReaderThemeModel> themes = [];
-    themesDir.list().forEach((element) async {
-      if (element is Directory) {
-        final themeJson = await File(join(element.path, 'index.json')).readAsString();
-        try {
-          themes.add(ReaderThemeModel.fromJson(jsonDecode(themeJson)));
-        } catch (err) {
-          Log.e("ReaderTheme error: $err");
-        }
+    for (var id in themeIds) {
+      final themeDir = Directory(join(PathService().readerThemesPath, id));
+      final themeJson = await File(join(themeDir.path, 'index.json')).readAsString();
+      try {
+        themes.add(ReaderThemeModel.fromJson(jsonDecode(themeJson)));
+      } catch (err) {
+        Log.e("ReaderTheme error: $err");
       }
-    });
+    }
     return themes;
   }
 

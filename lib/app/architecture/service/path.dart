@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reader/app/architecture/utils/log.dart';
@@ -59,23 +60,26 @@ class PathService {
   Future<void> initReaderThemes() async {
     final List _themes = ['clearnight', 'dawn', 'drift', 'landscape', 'serenity'];
     final targetDir = Directory(readerThemesPath);
-    if (targetDir.existsSync()) {
-      targetDir.deleteSync(recursive: true);
-    }
-    targetDir.createSync(recursive: true);
-    for (var themeKey in _themes) {
-      final themeDir = Directory(join(readerThemesPath, '$themeKey'));
-      final _themeJson = 'assets/themes/$themeKey.json';
-      final _themePng = 'assets/themes/$themeKey.png';
-      final themeJson = join(themeDir.path, 'index.json');
-      final themePng = join(themeDir.path, 'image.png');
-      themeDir.createSync(recursive: true);
-      final themeJsonFile = File(themeJson);
-      final themeJsonAsset = await rootBundle.loadString(_themeJson);
-      themeJsonFile.writeAsStringSync(themeJsonAsset);
-      final themePngFile = File(themePng);
-      final themePngAsset = await rootBundle.load(_themePng);
-      themePngFile.writeAsBytesSync(themePngAsset.buffer.asUint8List());
+    // if (targetDir.existsSync()) {
+    //   targetDir.deleteSync(recursive: true);
+    // }
+    if (!targetDir.existsSync()) {
+      targetDir.createSync(recursive: true);
+      for (var themeKey in _themes) {
+        final themeDir = Directory(join(readerThemesPath, '$themeKey'));
+        final _themeJson = 'assets/themes/$themeKey.json';
+        final _themePng = 'assets/themes/$themeKey.png';
+        final themeJson = join(themeDir.path, 'index.json');
+        final themePng = join(themeDir.path, 'image.png');
+        themeDir.createSync(recursive: true);
+        final themeJsonFile = File(themeJson);
+        final themeJsonAsset = await rootBundle.loadString(_themeJson);
+        themeJsonFile.writeAsStringSync(themeJsonAsset);
+        final themePngFile = File(themePng);
+        final themePngAsset = await rootBundle.load(_themePng);
+        themePngFile.writeAsBytesSync(themePngAsset.buffer.asUint8List());
+      }
+      localStorage.setItem("themes", jsonEncode(_themes));
     }
   }
 }
