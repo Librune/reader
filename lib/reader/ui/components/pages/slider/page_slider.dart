@@ -3,75 +3,86 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/utils/log.dart';
-import 'package:reader/reader/usecase/provider_usecase.dart';
 
-class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
+class PageSlider extends StatefulHookConsumerWidget {
   const PageSlider({
     super.key,
     required this.itemCount,
     required this.itemBuilder,
     required this.toggleMenu,
     this.onPageChanged,
-    required this.controller, // 新增控制器参数
+    required this.controller,
   });
 
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
   final void Function() toggleMenu;
   final void Function(int page)? onPageChanged;
-  final PageSliderController controller; // 控制器
+  final PageSliderController controller;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PageSlider> createState() => _PageSliderState();
+}
+
+class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    // 用于记录拖动开始时的滚动位置
     final startDragOffset = useState<double?>(null);
-    // 用 useRef 存储当前页（初始为 0）
     final currentPage = useRef(0);
     final screenWidth = MediaQuery.of(context).size.width;
 
-    // 将控制器的重置和跳转方法赋值出去（仅在第一次 build 时执行）
     useEffect(() {
-      // 重置方法：回到第 0 页
-      controller._reset = () {
+      widget.controller._reset = () {
         currentPage.value = 0;
         scrollController.jumpTo(0);
-        if (onPageChanged != null) {
-          onPageChanged!(0);
+        if (widget.onPageChanged != null) {
+          widget.onPageChanged!(0);
         }
       };
-      // 跳转方法：跳转到指定页
-      controller._jumpToPage = (int page) {
-        // 限制 page 范围
-        // final targetPage = page.clamp(0, itemCount - 1);
+
+      widget.controller._jumpToPage = (int page) {
         scrollController.jumpTo(
           page * screenWidth,
         );
-
         currentPage.value = page;
-        if (onPageChanged != null) {
-          onPageChanged!(page);
+        if (widget.onPageChanged != null) {
+          widget.onPageChanged!(page);
         }
       };
-      // 清理时将 _reset 和 _jumpToPage 置空
-      return () {
-        controller._reset = null;
-        controller._jumpToPage = null;
-      };
-    }, [controller, scrollController, screenWidth]);
 
-    // 拖动开始时调用
+      return () {
+        widget.controller._reset = null;
+        widget.controller._jumpToPage = null;
+      };
+    }, [widget.controller, scrollController, screenWidth]);
+
     void handleDragStart(DragStartDetails details) {
       startDragOffset.value = scrollController.offset;
     }
 
-    // 拖动更新时调用
     void handleDragUpdate(DragUpdateDetails details) {
       final delta = details.primaryDelta ?? 0;
       scrollController.jumpTo(scrollController.offset - delta);
     }
 
-    // 拖动结束时调用
     void handleDragEnd(DragEndDetails details) {
       const threshold = 8.0;
       final currentOffset = scrollController.offset;
@@ -85,7 +96,7 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
         } else {
           targetPage = currentPage.value - 1;
         }
-        targetPage = targetPage.clamp(0, itemCount - 1);
+        targetPage = targetPage.clamp(0, widget.itemCount - 1);
       }
       final targetOffset = targetPage * screenWidth;
 
@@ -97,16 +108,15 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
       )
           .then((_) {
         currentPage.value = targetPage;
-        if (onPageChanged != null) {
-          onPageChanged!(targetPage);
+        if (widget.onPageChanged != null) {
+          widget.onPageChanged!(targetPage);
         }
       });
     }
 
-    // 点击事件处理
     void handleTapUp(TapUpDetails details) {
       if (details.localPosition.dx < screenWidth / 3) {
-        final targetPage = (currentPage.value - 1).clamp(0, itemCount - 1);
+        final targetPage = (currentPage.value - 1).clamp(0, widget.itemCount - 1);
         if (targetPage != currentPage.value) {
           scrollController
               .animateTo(
@@ -116,13 +126,13 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
           )
               .then((_) {
             currentPage.value = targetPage;
-            if (onPageChanged != null) {
-              onPageChanged!(targetPage);
+            if (widget.onPageChanged != null) {
+              widget.onPageChanged!(targetPage);
             }
           });
         }
       } else if (details.localPosition.dx > screenWidth * 2 / 3) {
-        final targetPage = (currentPage.value + 1).clamp(0, itemCount - 1);
+        final targetPage = (currentPage.value + 1).clamp(0, widget.itemCount - 1);
         if (targetPage != currentPage.value) {
           scrollController
               .animateTo(
@@ -132,13 +142,13 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
           )
               .then((_) {
             currentPage.value = targetPage;
-            if (onPageChanged != null) {
-              onPageChanged!(targetPage);
+            if (widget.onPageChanged != null) {
+              widget.onPageChanged!(targetPage);
             }
           });
         }
       } else {
-        toggleMenu();
+        widget.toggleMenu();
       }
     }
 
@@ -173,16 +183,11 @@ class PageSlider extends HookConsumerWidget with WidgetsBindingObserver {
   Widget _buildPageSliver() {
     return SliverFillViewport(
       delegate: SliverChildBuilderDelegate(
-        (context, index) => itemBuilder(context, index),
-        childCount: itemCount,
+        (context, index) => widget.itemBuilder(context, index),
+        childCount: widget.itemCount,
       ),
       viewportFraction: 1,
     );
-  }
-
-  @override
-  void didChangeMetrics() {
-    super.didChangeMetrics();
   }
 }
 
