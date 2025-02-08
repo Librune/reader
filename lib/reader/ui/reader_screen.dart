@@ -46,6 +46,10 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
     final colorScheme =
         Theme.of(context).brightness == Brightness.dark ? themeModel.darkColorScheme : themeModel.colorScheme;
     final backgroundPngFile = File(join(PathService().readerThemesPath, themeId, 'image.png'));
+    final backgroundFollowConfig = ref.watch(ProviderUsecase().extra.select((value) => value.backgroundFollow));
+    final backgroundFollow = useMemoized(() {
+      return backgroundFollowConfig && backgroundPngFile.existsSync();
+    }, [backgroundFollowConfig, backgroundPngFile.existsSync()]);
     return PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, result) {
@@ -73,41 +77,35 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                   ),
                   child: Stack(
                     children: [
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        top: 0,
+                      Positioned.fill(
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             Log.f('constraints: $constraints');
                             return reader.when(
                               data: (value) {
-                                return Container(
-                                    decoration: BoxDecoration(
-                                      image: backgroundPngFile.existsSync()
-                                          ? DecorationImage(
-                                              image: FileImage(backgroundPngFile),
-                                              fit: BoxFit.cover,
-                                            )
-                                          : null,
-                                      color: colorScheme.surfaceContainer.withAlpha(180),
-                                    ),
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height,
-                                    child: PageSlider(
-                                      itemBuilder: (context, index) {
-                                        return ReaderPage(pagePainter: value[index], context: context);
-                                      },
-                                      controller: ref.read(ProviderUsecase().reader.notifier).pageSliderController,
-                                      itemCount: value.length,
-                                      onPageChanged: (index) {
-                                        ref.read(ProviderUsecase().reader.notifier).onPageChange(index);
-                                      },
-                                      toggleMenu: () {
-                                        MenuSheetUsecase().toggleMenu(ref);
-                                      },
-                                    ));
+                                return PageSlider(
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        image: backgroundFollow
+                                            ? DecorationImage(
+                                                image: FileImage(backgroundPngFile),
+                                                fit: BoxFit.cover,
+                                              )
+                                            : null,
+                                      ),
+                                      child: ReaderPage(pagePainter: value[index], context: context),
+                                    );
+                                  },
+                                  controller: ref.read(ProviderUsecase().reader.notifier).pageSliderController,
+                                  itemCount: value.length,
+                                  onPageChanged: (index) {
+                                    ref.read(ProviderUsecase().reader.notifier).onPageChange(index);
+                                  },
+                                  toggleMenu: () {
+                                    MenuSheetUsecase().toggleMenu(ref);
+                                  },
+                                );
                               },
                               error: (error, stackTrace) {
                                 return Center(
