@@ -95,10 +95,28 @@ class _ConfigSheetContentState extends ConsumerState<ConfigSheetContent> {
                     }),
                 ConfigButton(iconPath: "ic_reader_config_locate", label: "定位页面"),
                 ConfigButton(iconPath: "ic_reader_config_search", label: "搜索内容"),
-                ConfigButton(iconPath: "ic_reader_config_tea", label: "禅模式", enabled: extra.zenMode),
+                ConfigButton(
+                    iconPath: "ic_reader_config_tea",
+                    label: "禅模式",
+                    enabled: extra.zenMode,
+                    onPressed: () {
+                      ref.read(ProviderUsecase().extra.notifier).updateBoolean('zenMode');
+                    }),
                 ConfigButton(iconPath: "ic_reader_config_chart", label: "统计数据"),
-                ConfigButton(iconPath: "ic_reader_config_anchor", label: "全屏下一页", enabled: extra.fullScreenNext),
-                ConfigButton(iconPath: "ic_reader_config_finger", label: "点按动画", enabled: extra.tapAnimation),
+                ConfigButton(
+                    iconPath: "ic_reader_config_anchor",
+                    label: "全屏下一页",
+                    enabled: extra.fullScreenNext,
+                    onPressed: () {
+                      ref.read(ProviderUsecase().extra.notifier).updateBoolean('backgrofullScreenNextundFollow');
+                    }),
+                ConfigButton(
+                    iconPath: "ic_reader_config_finger",
+                    label: "点按动画",
+                    enabled: extra.tapAnimation,
+                    onPressed: () {
+                      ref.read(ProviderUsecase().extra.notifier).updateBoolean('tapAnimation');
+                    }),
                 ConfigButton(
                     iconPath: "ic_reader_config_landscape",
                     label: "背景跟随",
@@ -106,8 +124,20 @@ class _ConfigSheetContentState extends ConsumerState<ConfigSheetContent> {
                     onPressed: () {
                       ref.read(ProviderUsecase().extra.notifier).updateBoolean('backgroundFollow');
                     }),
-                ConfigButton(iconPath: "ic_reader_config_bookmark", label: "下拉书签", enabled: extra.pullBookmark),
-                ConfigButton(iconPath: "ic_reader_config_lock", label: "屏幕常亮", enabled: extra.keepScreenOn),
+                ConfigButton(
+                    iconPath: "ic_reader_config_bookmark",
+                    label: "下拉书签",
+                    enabled: extra.pullBookmark,
+                    onPressed: () {
+                      ref.read(ProviderUsecase().extra.notifier).updateBoolean('pullBookmark');
+                    }),
+                ConfigButton(
+                    iconPath: "ic_reader_config_lock",
+                    label: "屏幕常亮",
+                    enabled: extra.keepScreenOn,
+                    onPressed: () {
+                      ref.read(ProviderUsecase().extra.notifier).updateBoolean('keepScreenOn');
+                    }),
                 ConfigButton(iconPath: "ic_reader_config_links", label: "访问来源"),
               ]),
         )
