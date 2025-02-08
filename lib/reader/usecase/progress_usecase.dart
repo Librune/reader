@@ -41,7 +41,7 @@ class ProgressUsecase {
     }
     for (var page in pagePainters) {
       for (var painter in page.painters) {
-        if (painter.paraIndex == progress.paragraphIndex) {
+        if (painter.paraIndex == progress.paragraphIndex && progress.textLineIndex == painter.paraLineIndex) {
           return page.pageIndex;
         }
       }

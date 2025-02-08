@@ -429,7 +429,7 @@ class TextRender {
                 letterPadding: (renderWidth - line.width) / (lineText.length),
                 justify: true,
                 paraIndex: _paraIndex,
-                paraLineIndex: (_paraLineIndex + i),
+                paraLineIndex: (_paraLineIndex),
                 chapterIndex: chapterIndex,
                 volumeIndex: volumeIndex,
                 pageIndex: page));
