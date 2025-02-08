@@ -19,7 +19,7 @@ class ReaderExtraModal with _$ReaderExtraModal {
     // 全屏下一页
     @Default(false) bool fullScreenNext,
     // 点按动画
-    @Default(false) bool tapAnimation,
+    @Default(true) bool tapAnimation,
     // 背景跟随
     @Default(false) bool backgroundFollow,
     // 下拉书签
