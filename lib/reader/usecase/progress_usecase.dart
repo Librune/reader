@@ -35,6 +35,19 @@ class ProgressUsecase {
     }
   }
 
+  detectPage(List<PagePainter> pagePainters) {
+    if (progress.paragraphIndex <= 0) {
+      return 0;
+    }
+    for (var page in pagePainters) {
+      for (var painter in page.painters) {
+        if (painter.paraIndex == progress.paragraphIndex) {
+          return page.pageIndex;
+        }
+      }
+    }
+  }
+
   update({required PagePainter page}) {
     progress = progress.copyWith(
         volumeId: catalog.volumes[page.volumeIndex].vid,

@@ -34,7 +34,6 @@ class Reader extends _$Reader {
   }) async {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
-    pageSliderController = PageSliderController();
     await ref.read(ProviderUsecase().theme.future);
     catalog = await ref.read(ProviderUsecase().catalog.future);
     // 初始化进度管理
@@ -43,6 +42,8 @@ class Reader extends _$Reader {
     textRenderUsecase = TextRenderUsecase(context, book: book).init(ref);
     final res = await textRenderUsecase.getPagePainters(ref: ref);
     ref.listen(ProviderUsecase().config, _configListener);
+    final page = ProgressUsecase().detectPage(res);
+    pageSliderController = PageSliderController();
     return res;
   }
 
