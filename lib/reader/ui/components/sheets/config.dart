@@ -108,7 +108,7 @@ class _ConfigSheetContentState extends ConsumerState<ConfigSheetContent> {
                     label: "全屏下一页",
                     enabled: extra.fullScreenNext,
                     onPressed: () {
-                      ref.read(ProviderUsecase().extra.notifier).updateBoolean('backgrofullScreenNextundFollow');
+                      ref.read(ProviderUsecase().extra.notifier).updateBoolean('fullScreenNext');
                     }),
                 ConfigButton(
                     iconPath: "ic_reader_config_finger",
