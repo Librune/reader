@@ -101,10 +101,10 @@ class Reader extends _$Reader {
 
   _configListener(ReaderConfigModel? oldValue, ReaderConfigModel newValue) {
     if (oldValue != null) {
-      state = AsyncValue.loading();
       textRenderUsecase.updateConfig(newValue);
       textRenderUsecase.getPagePainters(ref: ref, useCache: true).then((value) {
         state = AsyncData(value);
+        pageSliderController.jumpToPage(ProgressUsecase().detectPage(value));
       });
     }
   }
