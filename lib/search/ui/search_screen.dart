@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
-import 'package:reader/search/provider/search_provider.dart';
+import 'package:reader/search/provider/history_provider.dart';
 
 class SearchScreen extends HookConsumerWidget {
   const SearchScreen({super.key, this.keyword});
@@ -15,6 +15,7 @@ class SearchScreen extends HookConsumerWidget {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     final searchController = useTextEditingController(text: keyword);
+    final history = ref.watch(searchHistoryProvider);
     return Scaffold(
       appBar: AppTopBar(
           title: Row(
@@ -34,6 +35,7 @@ class SearchScreen extends HookConsumerWidget {
                   colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 16),
             ),
             onSubmitted: (value) {
+              ref.read(searchHistoryProvider.notifier).push(value);
               context.replace('/book_search_result/$value');
             },
             trailing: [
@@ -85,30 +87,39 @@ class SearchScreen extends HookConsumerWidget {
                     style: textTheme.titleSmall,
                   ),
                   Spacer(),
-                  SvgBtn(svgName: "ic_btn_clean")
+                  SvgBtn(
+                    svgName: "ic_btn_clean",
+                    onPressed: () {
+                      ref.read(searchHistoryProvider.notifier).clear();
+                    },
+                  )
                 ],
               )),
           Expanded(
               child: ListView.separated(
             itemBuilder: (BuildContext context, int index) {
+              final str = history[index];
               return ListTile(
                 dense: false,
-                contentPadding: EdgeInsets.only(left: 24, right: 4),
+                contentPadding: EdgeInsets.only(left: 20, right: 4),
                 horizontalTitleGap: 12,
-                leading: SvgPicture.asset(
-                  "assets/svg/ic_leading_star.svg",
-                  width: 16,
-                ),
+                // leading: SvgPicture.asset(
+                //   "assets/svg/ic_leading_star.svg",
+                //   width: 16,
+                // ),
                 title: Text(
-                  "搜索历史 $index",
+                  str,
                   style: textTheme.bodyMedium,
                 ),
                 onTap: () {
-                  context.replace('/book_search_result/Demo');
+                  context.replace('/book_search_result/$str');
                 },
                 trailing: SvgBtn(
                   svgName: "ic_btn_close",
-                  size: 14,
+                  size: 15,
+                  onPressed: () {
+                    ref.read(searchHistoryProvider.notifier).remove(str);
+                  },
                 ),
               );
             },
@@ -121,7 +132,7 @@ class SearchScreen extends HookConsumerWidget {
                 color: colorScheme.surfaceContainerHighest,
               );
             },
-            itemCount: 48,
+            itemCount: history.length,
           )),
         ],
       ),

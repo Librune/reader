@@ -9,10 +9,16 @@ import 'package:reader/shelf/provider/book_provider.dart';
 import 'package:reader/shelf/ui/components/last_read.dart';
 import 'package:reader/shelf/ui/components/shelf_grid.dart';
 
-class ShelfScreen extends HookConsumerWidget {
+class ShelfScreen extends StatefulHookConsumerWidget {
   const ShelfScreen({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ShelfScreenState();
+}
+
+class _ShelfScreenState extends ConsumerState<ShelfScreen> {
+  @override
+  Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final books = ref.watch(bookProviderProvider);
     return Scaffold(
