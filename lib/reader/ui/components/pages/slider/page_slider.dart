@@ -24,13 +24,7 @@ class PageSlider extends StatefulHookConsumerWidget {
   ConsumerState<PageSlider> createState() => _PageSliderState();
 }
 
-class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObserver {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
+class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObserver, AutomaticKeepAliveClientMixin {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
@@ -44,9 +38,14 @@ class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObse
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = useScrollController();
+    super.build(context);
+    final scrollController = useScrollController(
+      initialScrollOffset: widget.controller._initialPage != null
+          ? widget.controller._initialPage! * MediaQuery.of(context).size.width
+          : 0,
+    );
     final startDragOffset = useState<double?>(null);
-    final currentPage = useRef(0);
+    final currentPage = useRef(widget.controller._initialPage ?? 0);
     final screenWidth = MediaQuery.of(context).size.width;
 
     useEffect(() {
@@ -189,10 +188,21 @@ class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObse
       viewportFraction: 1,
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 /// 控制器类
 class PageSliderController {
+  PageSliderController({this.initialPage});
+
+  /// 初始页面
+  int? initialPage;
+
+  /// 内部访问 initialPage
+  int? get _initialPage => initialPage;
+
   /// 内部保存重置方法，由 PageSlider 初始化后赋值
   void Function()? _reset;
 

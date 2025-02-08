@@ -43,7 +43,7 @@ class Reader extends _$Reader {
     final res = await textRenderUsecase.getPagePainters(ref: ref);
     ref.listen(ProviderUsecase().config, _configListener);
     final page = ProgressUsecase().detectPage(res);
-    pageSliderController = PageSliderController();
+    pageSliderController = PageSliderController(initialPage: page);
     return res;
   }
 
@@ -81,11 +81,13 @@ class Reader extends _$Reader {
 
   jumpToChapter(ChapterModel chapter) async {
     ProgressUsecase().jumpChapter(chapter: chapter);
-    state = AsyncValue.loading();
+    // state = AsyncValue.loading();
     MenuSheetUsecase().closeAll(ref);
     final pages = await textRenderUsecase.getPagePainters(ref: ref);
     state = AsyncData(pages);
-    onPageChange(0);
+    Future.microtask(() {
+      pageSliderController.jumpToPage(0);
+    });
   }
 
   appendPages(List<PagePainter> pages) {
