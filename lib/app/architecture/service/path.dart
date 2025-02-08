@@ -25,6 +25,7 @@ class PathService {
   late final String bookSourceManifestPath;
 
   late final String readerConfigPath;
+  late final String readerExtraConfigPath;
 
   late final String readerThemesPath;
 
@@ -35,6 +36,7 @@ class PathService {
     bookSourcePath = join(appPath, 'bks');
     bookSourceManifestPath = join(bookSourcePath, 'index.json');
     readerConfigPath = join(appPath, 'config.json');
+    readerExtraConfigPath = join(appPath, 'extra.json');
     readerThemesPath = join(appPath, 'themes');
 
     await initReaderThemes();

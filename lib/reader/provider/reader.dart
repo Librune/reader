@@ -3,6 +3,7 @@ import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/data/model/config.dart';
+import 'package:reader/reader/data/model/extra.dart';
 import 'package:reader/reader/ui/components/pages/slider/page_slider.dart';
 import 'package:reader/reader/ui/components/render.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
@@ -27,6 +28,8 @@ class Reader extends _$Reader {
 
   late final PageSliderController pageSliderController;
 
+  late ReaderExtraModal extra;
+
   @override
   Future<List<PagePainter>> build(
     BookModel book, {
@@ -38,6 +41,8 @@ class Reader extends _$Reader {
     catalog = await ref.read(ProviderUsecase().catalog.future);
     // 初始化进度管理
     await ProgressUsecase().init(catalog);
+    // 额外设置
+    extra = ref.read(ProviderUsecase().extra);
     // ignore: use_build_context_synchronously
     textRenderUsecase = TextRenderUsecase(context, book: book).init(ref);
     final res = await textRenderUsecase.getPagePainters(ref: ref);
