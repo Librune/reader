@@ -41,6 +41,13 @@ class ReaderExtraConfig extends _$ReaderExtraConfig {
     state = ReaderExtraModal.fromJson(json);
   }
 
+  updateBoolean(String id) {
+    final json = state.toJson();
+    final boolValue = json[id];
+    json[id] = !boolValue;
+    state = ReaderExtraModal.fromJson(json);
+  }
+
   _onSelfChange(ReaderExtraModal? oldValue, ReaderExtraModal newValue) {
     extraFile.writeAsString(jsonEncode(newValue.toJson()));
   }
