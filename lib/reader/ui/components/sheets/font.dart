@@ -175,10 +175,11 @@ class _FontSheetContentState extends ConsumerState<FontSheetContent> {
                   flex: 1,
                   child: TextButton(
                       style: ButtonStyle(
-                        padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
-                        backgroundColor: WidgetStateProperty.all(colorScheme.tertiaryContainer),
-                        foregroundColor: WidgetStateProperty.all(colorScheme.onTertiaryContainer),
-                        shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                        padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 16, vertical: 6)),
+                        backgroundColor: WidgetStateProperty.all(Colors.transparent),
+                        shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: colorScheme.primary, width: .6))),
                       ),
                       onPressed: () {},
                       child: Text("选择字体")),
