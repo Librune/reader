@@ -5,11 +5,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 
 class BookSearchBar extends HookConsumerWidget implements PreferredSizeWidget {
-  const BookSearchBar({super.key, this.keyword, this.onTap, this.autoFocus = true});
+  const BookSearchBar({super.key, this.keyword, this.onTap, this.autoFocus = true, this.showClear = false});
 
   final bool? autoFocus;
   final String? keyword;
   final void Function()? onTap;
+  final bool? showClear;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
@@ -34,14 +35,15 @@ class BookSearchBar extends HookConsumerWidget implements PreferredSizeWidget {
                 colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 16),
           ),
           trailing: [
-            ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: 36),
-                child: IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset(
-                      "assets/svg/ic_btn_close.svg",
-                      width: 16,
-                    ))),
+            if (showClear!)
+              ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: 36),
+                  child: IconButton(
+                      onPressed: () {},
+                      icon: SvgPicture.asset(
+                        "assets/svg/ic_btn_close.svg",
+                        width: 16,
+                      ))),
             SizedBox(
               width: 0,
               height: 20,
