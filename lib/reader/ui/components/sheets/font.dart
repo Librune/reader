@@ -143,7 +143,9 @@ class _FontSheetContentState extends ConsumerState<FontSheetContent> {
                       edgePaddingDelta.value = val;
                     },
                     onChangeEnd: (val) {
-                      ref.read(ProviderUsecase().config.notifier).updateEdgePaddingDelta(edgePaddingDelta.value);
+                      ref
+                          .read(ProviderUsecase().config.notifier)
+                          .updateEdgePaddingDelta(edgePaddingDelta.value.toInt());
                     }),
               )),
               SvgPicture.asset(

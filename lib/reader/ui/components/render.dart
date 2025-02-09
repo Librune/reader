@@ -47,19 +47,17 @@ class ReaderPage extends HookConsumerWidget {
             }
           }
           return Positioned(
-              left: posX,
-              top: posY,
-              child: Container(
-                constraints: BoxConstraints(maxWidth: painter.width, maxHeight: painter.height),
-                child: Text.rich(
-                  // painter.textSpan,
-                  TextSpan(
-                    text: painter.text,
-                    style: painter.renderStyle.copyWith(color: colorScheme.onSurface),
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-              ));
+            left: posX,
+            top: posY,
+            child: Text.rich(
+              // painter.textSpan,
+              TextSpan(
+                text: painter.text,
+                style: painter.renderStyle.copyWith(color: colorScheme.onSurface),
+              ),
+              textAlign: TextAlign.start,
+            ),
+          );
         }),
         if (pagePainter.pageIndex == 0)
           Positioned(

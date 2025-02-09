@@ -38,8 +38,8 @@ class ReaderConfig extends _$ReaderConfig {
     state = state.copyWith(bodyTextLineHeight: lineHeight);
   }
 
-  updateEdgePaddingDelta(double delta) {
-    state = state.copyWith(edgePaddingDelta: delta);
+  updateEdgePaddingDelta(int delta) {
+    state = state.copyWith(edgePaddingDelta: delta * 1.0);
   }
 
   updateTheme(String theme) {
