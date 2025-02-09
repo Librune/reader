@@ -88,6 +88,11 @@ class BookSourcePreference extends HookConsumerWidget {
                                   subtitle: ele.placeholder ?? "暂无说明",
                                   name: ele.field,
                                 ),
+                              BookSourceFormItemType.button => PreferenceButton(
+                                  title: ele.title,
+                                  subtitle: ele.placeholder ?? "暂无说明",
+                                  onPressed: () {},
+                                ),
                               _ => PreferenceTap(title: ele.title, subtitle: ele.placeholder ?? "暂无说明", onTap: () {})
                             })
                         .toList());

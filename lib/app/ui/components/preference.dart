@@ -261,3 +261,25 @@ class PreferenceInput extends PereferenceItem {
         ));
   }
 }
+
+class PreferenceButton extends PereferenceItem {
+  const PreferenceButton({super.key, required super.title, required super.subtitle, required this.onPressed});
+
+  final void Function() onPressed;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      title: TextButton(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(colorScheme.primaryContainer),
+            foregroundColor: WidgetStateProperty.all(colorScheme.onPrimaryContainer),
+          ),
+          onPressed: onPressed,
+          child: Text(title)),
+      titleAlignment: ListTileTitleAlignment.center,
+    );
+  }
+}
