@@ -7,6 +7,7 @@ import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/usecase/bks_channel_usecase.dart';
+import 'package:reader/book_source/usecase/bks_libs_usecase.dart';
 import 'package:uuid/uuid.dart';
 
 class BookSourceService {
@@ -37,6 +38,7 @@ class BookSourceService {
       $BOOK_SOURCE_SUPER_CLASS
     """);
     BookSourceChannelUsecase.inject(runtime);
+    BookSourceLibsUsecase.fromBundle(runtime, name: "utils");
   }
 
   _initBookSourceObjects() async {
@@ -229,6 +231,10 @@ class __BOOK_SOURCE__ {
 
   getLocalStorage=(key)=>{
     return sendMessage('invokeLocalStorageGet', JSON.stringify({key,uuid:this.uuid}));
+  }
+
+  noneAction=()=>{
+    this.toast("请实现对应的 Action");
   }
 
   info=()=>{

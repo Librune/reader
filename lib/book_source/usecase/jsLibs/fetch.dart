@@ -34,7 +34,7 @@ Future<Map<String, dynamic>> dioFetch(dynamic args) async {
     "ok": response.statusCode != null && (response.statusCode! >= 200 && response.statusCode! < 300),
     "status": response.statusCode,
     "statusText": response.statusMessage,
-    "headers": response.headers.map.map((key, value) => MapEntry(key, value.toString())),
+    "headers": response.headers.map.map((key, value) => MapEntry(key, jsonEncode(value))),
     "body": response.data,
     "responseURL": response.requestOptions.uri.toString(),
     "responseText": response.headers.value("content-type").toString().contains(Headers.jsonContentType)

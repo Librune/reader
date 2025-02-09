@@ -14,6 +14,7 @@ localStorageSet(dynamic args) {
     ...envs,
     key: value,
   };
+  Log.e(destEnvsFile.path);
   destEnvsFile.writeAsStringSync(jsonEncode(newEnvs));
 }
 

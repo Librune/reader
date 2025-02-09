@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nil/nil.dart';
 
@@ -234,6 +235,7 @@ class PreferenceInput extends PereferenceItem {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+    final controller = useTextEditingController();
     return ListTile(
         tileColor: _backgroundColor,
         title: Text(title, style: _titleStyle),
@@ -242,6 +244,7 @@ class PreferenceInput extends PereferenceItem {
           child: FormBuilderTextField(
             cursorHeight: 18,
             name: name,
+            controller: controller,
             style: TextStyle(fontSize: 14, color: colorScheme.onSurface),
             decoration: InputDecoration(
               hintStyle: TextStyle(fontSize: 14, color: colorScheme.onSurface.withAlpha(150)),

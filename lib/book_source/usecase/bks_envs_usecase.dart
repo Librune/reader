@@ -22,4 +22,11 @@ class BksEnvsUsecase {
   }
 
   static read({required String uuid}) => jsonDecode(BookSourceFilesUsecase.getEnvFile(uuid).readAsStringSync());
+
+  static Future syncValueToJs(GlobalKey<FormBuilderState> key, {required String uuid}) async {
+    key.currentState?.saveAndValidate();
+    final data = key.currentState?.value;
+    if (data == null) return;
+    await BookSourceService().updateEnvs(uuid, data);
+  }
 }

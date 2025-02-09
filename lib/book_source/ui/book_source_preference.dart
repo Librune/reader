@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
+import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/app/ui/components/preference.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
@@ -91,7 +92,11 @@ class BookSourcePreference extends HookConsumerWidget {
                               BookSourceFormItemType.button => PreferenceButton(
                                   title: ele.title,
                                   subtitle: ele.placeholder ?? "暂无说明",
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    BksEnvsUsecase.syncValueToJs(_formKey, uuid: model.uuid).then((_) async {
+                                      await BookSourceService().action(uuid: model.uuid, act: ele.field);
+                                    });
+                                  },
                                 ),
                               _ => PreferenceTap(title: ele.title, subtitle: ele.placeholder ?? "暂无说明", onTap: () {})
                             })
