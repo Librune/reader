@@ -5,12 +5,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 AsyncSnapshot<ColorScheme> useCoverColor(BuildContext context, {required String coverUrl, int time = 0}) {
   final brightness = Theme.of(context).brightness;
   final cachedNetWorkImageProvider = CachedNetworkImageProvider(coverUrl);
+  final appColorScheme = Theme.of(context).colorScheme;
 
-  return useFuture(useMemoized(() async {
-    final futures = await Future.wait([
-      ColorScheme.fromImageProvider(provider: cachedNetWorkImageProvider, brightness: brightness),
-      Future.delayed(Duration(milliseconds: time))
-    ]);
-    return futures[0] as ColorScheme;
-  }, [coverUrl, brightness, time]));
+  return useFuture(
+      useMemoized(() async {
+        final futures = await Future.wait([
+          ColorScheme.fromImageProvider(provider: cachedNetWorkImageProvider, brightness: brightness),
+          Future.delayed(Duration(milliseconds: time))
+        ]);
+        return futures[0] as ColorScheme;
+      }, [coverUrl, brightness, time]),
+      initialData: appColorScheme);
 }

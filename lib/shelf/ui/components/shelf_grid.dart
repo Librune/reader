@@ -4,11 +4,17 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/data/model/book.dart';
 
-class ShelfGrid extends HookConsumerWidget {
+class ShelfGrid extends StatefulHookConsumerWidget {
   const ShelfGrid({super.key, required this.books});
   final List<BookModel> books;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ShelfGridState();
+}
+
+class _ShelfGridState extends ConsumerState<ShelfGrid> {
+  @override
+  Widget build(BuildContext context) {
     return GridView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -26,13 +32,13 @@ class ShelfGrid extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CachedNetworkImage(
-                        imageUrl: books[index].cover,
+                        imageUrl: widget.books[index].cover,
                         width: constraints.maxWidth,
                         height: constraints.maxHeight - 32,
                         fit: BoxFit.cover,
                       ),
                       Text(
-                        books[index].name,
+                        widget.books[index].name,
                         style: TextStyle(fontSize: 13, height: 2),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -40,13 +46,13 @@ class ShelfGrid extends HookConsumerWidget {
                     ],
                   ),
                   onTap: () {
-                    context.push("/reader", extra: books[index]);
+                    context.push("/reader", extra: widget.books[index]);
                   },
                 );
               },
             ));
       },
-      itemCount: books.length,
+      itemCount: widget.books.length,
     );
   }
 }
