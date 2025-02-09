@@ -74,6 +74,7 @@ class BookSourcePreference extends HookConsumerWidget {
                 final formGroup = model.forms[index];
                 return PreferenceSection(
                     title: formGroup.title,
+                    subtitle: formGroup.subtitle,
                     children: formGroup.form
                         .map((ele) => switch (ele.type) {
                               BookSourceFormItemType.toggle => PreferenceSwitch(

@@ -8,12 +8,14 @@ class PreferenceSection extends HookConsumerWidget {
   const PreferenceSection({
     super.key,
     this.padding,
+    this.subtitle,
     required this.title,
     required this.children,
   });
   final String title;
   final List<PereferenceItem> children;
   final EdgeInsetsGeometry? padding;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,6 +44,13 @@ class PreferenceSection extends HookConsumerWidget {
                   children: children,
                 ),
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8, top: 8, right: 8),
+            child: Text(
+              subtitle ?? "",
+              style: typography.labelMedium?.copyWith(color: colorScheme.secondary),
             ),
           ),
         ],
