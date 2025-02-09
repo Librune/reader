@@ -139,6 +139,7 @@ class _ConfigSheetContentState extends ConsumerState<ConfigSheetContent> {
                       ref.read(ProviderUsecase().extra.notifier).updateBoolean('keepScreenOn');
                     }),
                 ConfigButton(iconPath: "ic_reader_config_links", label: "访问来源"),
+                ConfigButton(iconPath: "ic_sheet_download", label: "缓存内容"),
               ]),
         )
       ],
