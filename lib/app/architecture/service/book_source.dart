@@ -79,11 +79,11 @@ class BookSourceService {
     final js = file.readAsStringSync();
     final uuid = Uuid().v4();
     final realUuid = await runtime.evaluateAsync("""
-        const obj = (()=>{
+        var obj = (()=>{
           $js
           return new BookSource();
         })()
-        const realUuid = obj.uuid || '$uuid';
+        var realUuid = obj.uuid || '$uuid';
         __BOOK_SOURCE_MAP__[realUuid] = obj;
         realUuid
       """);
@@ -96,6 +96,8 @@ class BookSourceService {
 
   Future<BookSourceModel> getBookSourceInfo(String uuid) async {
     final res = await runtime.evaluateAsync("""
+      delete obj;
+      delete realUuid;
       __BOOK_SOURCE_MAP__['$uuid'].info();
     """);
     return BookSourceModel.fromJson({...jsonDecode(res.stringResult), "uuid": uuid});
@@ -109,7 +111,7 @@ class BookSourceService {
 
   remove(String uuid) async {
     await runtime.evaluateAsync("""
-      delete __BOOK_SOURCE_MAP__['$uuid']
+      delete __BOOK_SOURCE_MAP__['$uuid'] 
     """);
     bookSourceList.removeWhere((element) => element.uuid == uuid);
   }
@@ -199,6 +201,8 @@ const BOOK_SOURCE_SUPER_CLASS = """
 const __BOOK_SOURCE_MAP__ = {};
 class __BOOK_SOURCE__ {
   uuid = '';
+  forms = [];
+  actions = [];
   __envs__ = {};
 
   constructor(uuid,envs) {
