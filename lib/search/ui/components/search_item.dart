@@ -37,6 +37,7 @@ class BookSearchItem extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(4),
                 child: CachedNetworkImage(
                   imageUrl: book.cover,
+                  httpHeaders: {"user-agent": "Dalvik/2.1.0 (Linux; U; Android 11; IN2010 Build/RP1A.201005.001)"},
                   width: 64,
                   height: 86,
                   fit: BoxFit.cover,
