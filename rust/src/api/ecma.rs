@@ -57,6 +57,11 @@ pub fn init_js_scripts(scripts: HashMap<String, String>) {
 }
 
 #[frb(sync)]
+pub fn insert_js_script(uuid: String, code: String) {
+    insert_ecma_script(uuid, code);
+}
+
+#[frb(sync)]
 pub fn remove_js_script(uuid: String) {
     remove_ecma_script(&uuid);
 }

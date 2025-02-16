@@ -30,6 +30,9 @@ Map<String, String> jsGetAttributes(
 void initJsScripts({required Map<String, String> scripts}) =>
     RustLib.instance.api.crateApiEcmaInitJsScripts(scripts: scripts);
 
+void insertJsScript({required String uuid, required String code}) =>
+    RustLib.instance.api.crateApiEcmaInsertJsScript(uuid: uuid, code: code);
+
 void removeJsScript({required String uuid}) =>
     RustLib.instance.api.crateApiEcmaRemoveJsScript(uuid: uuid);
 

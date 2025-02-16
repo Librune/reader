@@ -85,6 +85,7 @@ class BookSourceService {
   Future<BookSourceModel> injectBookSourceFromFile(File file) async {
     final js = file.readAsStringSync();
     final uuid = getUuid(code: js);
+    insertJsScript(uuid: uuid, code: js);
     final bookSource = getBookSourceInfo(uuid);
     if (!bookSourceList.any((element) => element.uuid == bookSource.uuid)) {
       bookSourceList.add(bookSource);
@@ -95,14 +96,17 @@ class BookSourceService {
   BookSourceModel getBookSourceInfo(String uuid) {
     // final name = jsGetAttribute(uuid: uuid, key: "name");
     // final author = jsGetAttribute(uuid: uuid, key: "author");
-    // final forms = jsGetAttribute(uuid: uuid, key: "forms");
+    // final forms = jsonDecode(jsGetAttribute(uuid: uuid, key: "forms"))
+    //     .map<BookSourceFormModel>((e) => BookSourceFormModel.fromJson(e))
+    //     .toList<BookSourceFormModel>();
     // final actions = jsGetAttribute(uuid: uuid, key: "actions");
     final envs = jsGetAttributes(uuid: uuid, keys: ["name", "author", "forms", "actions"]);
-    final Map<String, String> _envJson = {};
-    envs.forEach((key, value) {
-      _envJson[key] = jsonDecode(value);
-    });
-    return BookSourceModel.fromJson(_envJson);
+    final forms = (jsonDecode(envs["forms"] ?? "[]") as List)
+        .map<BookSourceFormModel>((e) => BookSourceFormModel.fromJson(e))
+        .toList();
+    final actions = (jsonDecode(envs["actions"] ?? "[]") as List);
+    // return BookSourceModel.fromJson(_envJson);
+    return BookSourceModel(uuid: uuid, name: envs["name"]!, author: envs["author"]!, forms: forms, actions: actions);
   }
 
   updateEnvs(String uuid, Map<String, String> envs) {
