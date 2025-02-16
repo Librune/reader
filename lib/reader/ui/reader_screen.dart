@@ -40,18 +40,13 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
       return null;
     }, []);
     final reader = ref.watch(ProviderUsecase().reader);
-    final themeId =
-        ref.watch(ProviderUsecase().config.select((value) => value.theme));
-    final themeModel = ReaderThemeModel.fromJson(jsonDecode(
-        File(join(PathService().readerThemesPath, themeId, 'index.json'))
-            .readAsStringSync()));
-    final colorScheme = Theme.of(context).brightness == Brightness.dark
-        ? themeModel.darkColorScheme
-        : themeModel.colorScheme;
-    final backgroundPngFile =
-        File(join(PathService().readerThemesPath, themeId, 'image.png'));
-    final backgroundFollowConfig = ref.watch(
-        ProviderUsecase().extra.select((value) => value.backgroundFollow));
+    final themeId = ref.watch(ProviderUsecase().config.select((value) => value.theme));
+    final themeModel = ReaderThemeModel.fromJson(
+        jsonDecode(File(join(PathService().readerThemesPath, themeId, 'index.json')).readAsStringSync()));
+    final colorScheme =
+        Theme.of(context).brightness == Brightness.dark ? themeModel.darkColorScheme : themeModel.colorScheme;
+    final backgroundPngFile = File(join(PathService().readerThemesPath, themeId, 'image.png'));
+    final backgroundFollowConfig = ref.watch(ProviderUsecase().extra.select((value) => value.backgroundFollow));
     final backgroundFollow = useMemoized(() {
       return backgroundFollowConfig && backgroundPngFile.existsSync();
     }, [backgroundFollowConfig, backgroundPngFile.existsSync()]);
@@ -60,8 +55,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
         onPopInvokedWithResult: (didPop, result) {
           if (ref.read(ProviderUsecase().menu.select((value) => value.sub))) {
             MenuSheetUsecase().toggleMenu(ref);
-          } else if (ref
-              .read(ProviderUsecase().menu.select((value) => value.bottom))) {
+          } else if (ref.read(ProviderUsecase().menu.select((value) => value.bottom))) {
             ref.read(ProviderUsecase().menu.notifier).closeBottom();
             ref.read(ProviderUsecase().menu.notifier).closeTop();
           } else {
@@ -95,25 +89,18 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                                       decoration: BoxDecoration(
                                         image: backgroundFollow
                                             ? DecorationImage(
-                                                image: FileImage(
-                                                    backgroundPngFile),
+                                                image: FileImage(backgroundPngFile),
                                                 fit: BoxFit.cover,
                                               )
                                             : null,
                                       ),
-                                      child: ReaderPage(
-                                          pagePainter: value[index],
-                                          context: context),
+                                      child: ReaderPage(pagePainter: value[index], context: context),
                                     );
                                   },
-                                  controller: ref
-                                      .read(ProviderUsecase().reader.notifier)
-                                      .pageSliderController,
+                                  controller: ref.read(ProviderUsecase().reader.notifier).pageSliderController,
                                   itemCount: value.length,
                                   onPageChanged: (index) {
-                                    ref
-                                        .read(ProviderUsecase().reader.notifier)
-                                        .onPageChange(index);
+                                    ref.read(ProviderUsecase().reader.notifier).onPageChange(index);
                                   },
                                   toggleMenu: () {
                                     MenuSheetUsecase().toggleMenu(ref);
@@ -123,11 +110,8 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                               error: (error, stackTrace) {
                                 return Center(
                                   child: Text(
-                                    error.toString(),
-                                    style: TextStyle(
-                                        color: colorScheme.onSurface
-                                            .withAlpha(150),
-                                        fontSize: 16),
+                                    stackTrace.toString(),
+                                    style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 16),
                                   ),
                                 );
                               },
@@ -135,10 +119,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                                 return Center(
                                   child: Text(
                                     "正在加载……",
-                                    style: TextStyle(
-                                        color: colorScheme.onSurface
-                                            .withAlpha(150),
-                                        fontSize: 16),
+                                    style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 16),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -168,62 +149,43 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                       TopBar(book: widget.book),
                       PersistentBottomSheet(
                           type: ReaderBottomSheet.catalog,
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  MediaQuery.of(context).padding.bottom + 64),
+                          padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 64),
                           key: MenuSheetUsecase().catalogSheetKey,
-                          maxHeight: MediaQuery.of(context).size.height -
-                              MediaQuery.of(context).padding.top -
-                              48,
+                          maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - 48,
                           onHide: (triggeredByDrag) {
-                            MenuSheetUsecase().onSheetDragHide(
-                                MenuSheetUsecase().catalogSheetKey,
-                                ref: ref,
-                                triggeredByDrag: triggeredByDrag);
+                            MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().catalogSheetKey,
+                                ref: ref, triggeredByDrag: triggeredByDrag);
                           },
                           child: CatalogSheetContent()),
                       PersistentBottomSheet(
                           type: ReaderBottomSheet.font,
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  MediaQuery.of(context).padding.bottom + 50,
-                              left: 4,
-                              right: 4),
+                          padding:
+                              EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 50, left: 4, right: 4),
                           key: MenuSheetUsecase().fontSheetKey,
                           maxHeight: 360,
                           onHide: (triggeredByDrag) {
-                            MenuSheetUsecase().onSheetDragHide(
-                                MenuSheetUsecase().fontSheetKey,
-                                ref: ref,
-                                triggeredByDrag: triggeredByDrag);
+                            MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().fontSheetKey,
+                                ref: ref, triggeredByDrag: triggeredByDrag);
                           },
                           child: FontSheetContent()),
                       PersistentBottomSheet(
                           type: ReaderBottomSheet.theme,
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  MediaQuery.of(context).padding.bottom + 72),
+                          padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
                           key: MenuSheetUsecase().themeSheetKey,
                           maxHeight: 600,
                           onHide: (triggeredByDrag) {
-                            MenuSheetUsecase().onSheetDragHide(
-                                MenuSheetUsecase().themeSheetKey,
-                                ref: ref,
-                                triggeredByDrag: triggeredByDrag);
+                            MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().themeSheetKey,
+                                ref: ref, triggeredByDrag: triggeredByDrag);
                           },
                           child: ThemeSheetContent()),
                       PersistentBottomSheet(
                           type: ReaderBottomSheet.config,
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  MediaQuery.of(context).padding.bottom + 72),
+                          padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72),
                           key: MenuSheetUsecase().configSheetKey,
                           maxHeight: MediaQuery.of(context).size.height / 2,
                           onHide: (triggeredByDrag) {
-                            MenuSheetUsecase().onSheetDragHide(
-                                MenuSheetUsecase().configSheetKey,
-                                ref: ref,
-                                triggeredByDrag: triggeredByDrag);
+                            MenuSheetUsecase().onSheetDragHide(MenuSheetUsecase().configSheetKey,
+                                ref: ref, triggeredByDrag: triggeredByDrag);
                           },
                           child: ConfigSheetContent()),
                       BottomBar(),
