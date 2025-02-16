@@ -3,10 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/svg_btn.dart';
 import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/menu.dart';
-import 'package:reader/reader/ui/components/bottom_sheet.dart';
-import 'package:reader/reader/ui/components/sheets/config.dart';
-import 'package:reader/reader/ui/components/sheets/font.dart';
-import 'package:reader/reader/ui/components/sheets/theme.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 
 class BottomBar extends StatefulHookConsumerWidget {
@@ -63,12 +59,16 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 child: SvgBtn(
                   svgName: 'ic_bottom_slider',
                   size: 26,
-                  color: ReaderBottomSheet.catalog == subType ? colorScheme.primary : null,
+                  color: ReaderBottomSheet.catalog == subType
+                      ? colorScheme.primary
+                      : null,
                   onPressed: () {
                     // MenuSheetUsecase().toggle(const CatalogSheetContent(),
                     //     type: ReaderBottomSheet.catalog, ref: ref, maxHeight: MediaQuery.of(context).size.height - 92);
                     // MenuSheetUsecase().catalogSheetKey.currentState?.toggle();
-                    MenuSheetUsecase().toggleSheet(MenuSheetUsecase().catalogSheetKey, ref: ref);
+                    MenuSheetUsecase().toggleSheet(
+                        MenuSheetUsecase().catalogSheetKey,
+                        ref: ref);
                   },
                 ),
               ),
@@ -79,9 +79,12 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 child: SvgBtn(
                   svgName: 'ic_bottom_font',
                   size: 26,
-                  color: ReaderBottomSheet.font == subType ? colorScheme.primary : null,
+                  color: ReaderBottomSheet.font == subType
+                      ? colorScheme.primary
+                      : null,
                   onPressed: () {
-                    MenuSheetUsecase().toggleSheet(MenuSheetUsecase().fontSheetKey, ref: ref);
+                    MenuSheetUsecase()
+                        .toggleSheet(MenuSheetUsecase().fontSheetKey, ref: ref);
                   },
                 ),
               ),
@@ -92,9 +95,13 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 child: SvgBtn(
                   svgName: 'ic_bottom_sun',
                   size: 26,
-                  color: ReaderBottomSheet.theme == subType ? colorScheme.primary : null,
+                  color: ReaderBottomSheet.theme == subType
+                      ? colorScheme.primary
+                      : null,
                   onPressed: () {
-                    MenuSheetUsecase().toggleSheet(MenuSheetUsecase().themeSheetKey, ref: ref);
+                    MenuSheetUsecase().toggleSheet(
+                        MenuSheetUsecase().themeSheetKey,
+                        ref: ref);
                   },
                 ),
               ),
@@ -105,9 +112,13 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   child: SvgBtn(
                     svgName: 'ic_bottom_settings',
                     size: 26,
-                    color: ReaderBottomSheet.config == subType ? colorScheme.primary : null,
+                    color: ReaderBottomSheet.config == subType
+                        ? colorScheme.primary
+                        : null,
                     onPressed: () {
-                      MenuSheetUsecase().toggleSheet(MenuSheetUsecase().configSheetKey, ref: ref);
+                      MenuSheetUsecase().toggleSheet(
+                          MenuSheetUsecase().configSheetKey,
+                          ref: ref);
                     },
                   ),
                 ))

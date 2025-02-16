@@ -34,7 +34,8 @@ class PersistentBottomSheet extends StatefulWidget {
   PersistentBottomSheetState createState() => PersistentBottomSheetState();
 }
 
-class PersistentBottomSheetState extends State<PersistentBottomSheet> with SingleTickerProviderStateMixin {
+class PersistentBottomSheetState extends State<PersistentBottomSheet>
+    with SingleTickerProviderStateMixin {
   /// 控制底部弹出组件高度的动画控制器，取值范围 0～1
   late AnimationController _animationController;
 
@@ -134,9 +135,11 @@ class PersistentBottomSheetState extends State<PersistentBottomSheet> with Singl
                 // 使用 Material 包裹以获得默认阴影和背景效果
                 elevation: 12,
                 color: Theme.of(context).colorScheme.surfaceContainerLow,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(16)),
                 child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(16)),
                     child: Padding(
                       padding: widget.padding,
                       child: Column(

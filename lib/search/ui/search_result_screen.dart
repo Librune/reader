@@ -27,7 +27,8 @@ class SearchResultScreen extends HookConsumerWidget {
         body: EasyRefresh.builder(
           controller: controller,
           refreshOnStart: true,
-          onRefresh: () => SearchKeywordUsecase.searchBooksFromAll(ref, keyword: keyword),
+          onRefresh: () =>
+              SearchKeywordUsecase.searchBooksFromAll(ref, keyword: keyword),
           // onLoad: ref.read(provider.notifier).loadMore,
           childBuilder: (context, physics) {
             return CustomScrollView(

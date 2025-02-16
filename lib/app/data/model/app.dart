@@ -10,7 +10,8 @@ class AppModel with _$AppModel {
     @Default(PreferenceModel()) PreferenceModel preference,
   }) = _AppModel;
 
-  factory AppModel.fromJson(Map<String, dynamic> json) => _$AppModelFromJson(json);
+  factory AppModel.fromJson(Map<String, dynamic> json) =>
+      _$AppModelFromJson(json);
 
   const AppModel._();
 }

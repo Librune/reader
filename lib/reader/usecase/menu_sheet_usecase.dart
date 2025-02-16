@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/reader/data/model/menu.dart';
 import 'package:reader/reader/provider/menu.dart';
 import 'package:reader/reader/ui/components/bottom_sheet.dart';
@@ -11,14 +10,19 @@ class MenuSheetUsecase {
   factory MenuSheetUsecase() => _instance;
   MenuSheetUsecase._internal();
 
-  final GlobalKey<PersistentBottomSheetState> catalogSheetKey = GlobalKey<PersistentBottomSheetState>();
-  final GlobalKey<PersistentBottomSheetState> fontSheetKey = GlobalKey<PersistentBottomSheetState>();
-  final GlobalKey<PersistentBottomSheetState> themeSheetKey = GlobalKey<PersistentBottomSheetState>();
-  final GlobalKey<PersistentBottomSheetState> configSheetKey = GlobalKey<PersistentBottomSheetState>();
+  final GlobalKey<PersistentBottomSheetState> catalogSheetKey =
+      GlobalKey<PersistentBottomSheetState>();
+  final GlobalKey<PersistentBottomSheetState> fontSheetKey =
+      GlobalKey<PersistentBottomSheetState>();
+  final GlobalKey<PersistentBottomSheetState> themeSheetKey =
+      GlobalKey<PersistentBottomSheetState>();
+  final GlobalKey<PersistentBottomSheetState> configSheetKey =
+      GlobalKey<PersistentBottomSheetState>();
 
   ReaderBottomSheet? currentSheetType;
 
-  onSheetDragHide(GlobalKey<PersistentBottomSheetState> key, {required WidgetRef ref, triggeredByDrag = true}) {
+  onSheetDragHide(GlobalKey<PersistentBottomSheetState> key,
+      {required WidgetRef ref, triggeredByDrag = true}) {
     if (key.currentState?.type == currentSheetType) {
       currentSheetType = null;
       ref.read(menuProvider.notifier).closeSub();
@@ -34,7 +38,10 @@ class MenuSheetUsecase {
       return;
     }
     if (menuVisible.sub) {
-      sheetKeys.firstWhere((key) => key.currentState?.isVisible ?? false).currentState?.hide();
+      sheetKeys
+          .firstWhere((key) => key.currentState?.isVisible ?? false)
+          .currentState
+          ?.hide();
       ref.read(menuProvider.notifier).closeSub();
       ref.read(menuProvider.notifier).openTop();
     } else {

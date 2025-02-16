@@ -15,7 +15,8 @@ class AppBarSearchAnchor extends HookConsumerWidget {
           },
           icon: SvgPicture.asset(
             "assets/svg/ic_topbar_search.svg",
-            colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
+            colorFilter:
+                ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
             width: 18,
           ),
         );
@@ -26,7 +27,7 @@ class AppBarSearchAnchor extends HookConsumerWidget {
       viewBuilder: (Iterable<Widget> suggestions) {
         return Scaffold(
           // 使用 Scaffold 提供全屏布局
-          body: Container(
+          body: SizedBox(
             // 内容区域占满剩余空间
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,

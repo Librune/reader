@@ -6,8 +6,6 @@ import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/data/model/config.dart';
-import 'package:reader/reader/provider/catalog.dart';
-import 'package:reader/reader/provider/config.dart';
 import 'package:reader/reader/ui/components/render.dart';
 import 'package:reader/reader/usecase/progress_usecase.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
@@ -36,14 +34,17 @@ class TextRenderUsecase {
         bookName: book.name,
         titlePaddingTop: readerConfig.titlePaddingTop,
         titlePaddingBottom: readerConfig.titlePaddingBottom,
-        titleVolumeTextStyle:
-            TextStyle(fontSize: 14, color: colorScheme.onSurface.withOpacity(0.5), fontFamily: readerConfig.fontFamily),
+        titleVolumeTextStyle: TextStyle(
+            fontSize: 14,
+            color: colorScheme.onSurface.withOpacity(0.5),
+            fontFamily: readerConfig.fontFamily),
         titleChapterTextStyle: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: colorScheme.onSurface.withOpacity(1),
             fontFamily: readerConfig.fontFamily),
-        bodyTextStyle: readerConfig.bodyTextStyle.copyWith(color: colorScheme.onSurface),
+        bodyTextStyle:
+            readerConfig.bodyTextStyle.copyWith(color: colorScheme.onSurface),
         layoutWidth: MediaQuery.of(context).size.width,
         layoutHeight: MediaQuery.of(context).size.height,
         edgePadding: readerConfig.edgePadding,
@@ -57,14 +58,17 @@ class TextRenderUsecase {
         bookName: book.name,
         titlePaddingTop: readerConfig.titlePaddingTop,
         titlePaddingBottom: readerConfig.titlePaddingBottom,
-        titleVolumeTextStyle:
-            TextStyle(fontSize: 14, color: colorScheme.onSurface.withOpacity(0.5), fontFamily: readerConfig.fontFamily),
+        titleVolumeTextStyle: TextStyle(
+            fontSize: 14,
+            color: colorScheme.onSurface.withOpacity(0.5),
+            fontFamily: readerConfig.fontFamily),
         titleChapterTextStyle: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: colorScheme.onSurface.withOpacity(1),
             fontFamily: readerConfig.fontFamily),
-        bodyTextStyle: readerConfig.bodyTextStyle.copyWith(color: colorScheme.onSurface),
+        bodyTextStyle:
+            readerConfig.bodyTextStyle.copyWith(color: colorScheme.onSurface),
         layoutWidth: MediaQuery.of(context).size.width,
         layoutHeight: MediaQuery.of(context).size.height,
         edgePadding: readerConfig.edgePadding,
@@ -73,7 +77,10 @@ class TextRenderUsecase {
   }
 
   Future _getContent(ChapterModel chapter) async {
-    return BookSourceService().action(uuid: book.bookSourceId!, act: "chapter", args: {"chapter_id": chapter.cid});
+    return BookSourceService().action(
+        uuid: book.bookSourceId!,
+        act: "chapter",
+        args: {"chapter_id": chapter.cid});
   }
 
   Future<List<PagePainter>> _getPagePainters({
@@ -85,7 +92,8 @@ class TextRenderUsecase {
     // int? cIndex,
     bool useCache = false,
   }) async {
-    final flatCatalog = ref.read(ProviderUsecase().catalog).asData!.value.flatChapterList;
+    final flatCatalog =
+        ref.read(ProviderUsecase().catalog).asData!.value.flatChapterList;
     late ChapterModel chapter;
     if (cid != null) {
       chapter = flatCatalog.firstWhere((element) => element.cid == cid);
@@ -124,12 +132,14 @@ class TextRenderUsecase {
         .first as List<PagePainter>;
   }
 
-  Future<List<PagePainter>> getNextPagePainters({required AsyncNotifierProviderRef<List<PagePainter>> ref}) async {
+  Future<List<PagePainter>> getNextPagePainters(
+      {required AsyncNotifierProviderRef<List<PagePainter>> ref}) async {
     final fIndex = ProgressUsecase().progress.flatIndex! + 1;
     return _getPagePainters(fIndex: fIndex, ref: ref);
   }
 
-  Future<List<PagePainter>> getPrevPagePainters({required AsyncNotifierProviderRef<List<PagePainter>> ref}) async {
+  Future<List<PagePainter>> getPrevPagePainters(
+      {required AsyncNotifierProviderRef<List<PagePainter>> ref}) async {
     final fIndex = ProgressUsecase().progress.flatIndex! - 1;
     return _getPagePainters(fIndex: fIndex, ref: ref);
   }

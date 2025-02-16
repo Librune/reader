@@ -32,5 +32,6 @@ class ReaderExtraModal with _$ReaderExtraModal {
     @Default(false) bool showTimeBattery,
   }) = _ReaderExtraModal;
   const ReaderExtraModal._();
-  factory ReaderExtraModal.fromJson(Map<String, dynamic> json) => _$ReaderExtraModalFromJson(json);
+  factory ReaderExtraModal.fromJson(Map<String, dynamic> json) =>
+      _$ReaderExtraModalFromJson(json);
 }

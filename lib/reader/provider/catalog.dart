@@ -26,13 +26,16 @@ class Catalog extends _$Catalog {
       }
     } catch (e) {
       Log.e("Catalog File read error: $e");
-      final json =
-          await BookSourceService().action(uuid: book.bookSourceId!, act: "catalog", args: {"book_id": book.bookId});
+      final json = await BookSourceService().action(
+          uuid: book.bookSourceId!,
+          act: "catalog",
+          args: {"book_id": book.bookId});
       return CatalogModel.fromJson({"volumes": json, ...book.toJson()});
     }
   }
 
-  _onSelfChange(AsyncValue<CatalogModel>? oldValue, AsyncValue<CatalogModel> newValue) {
+  _onSelfChange(
+      AsyncValue<CatalogModel>? oldValue, AsyncValue<CatalogModel> newValue) {
     if (newValue.value != null) {
       Log.e("Catalog _onSelfChange");
       final CatalogModel? catalog = newValue.value;
@@ -41,5 +44,6 @@ class Catalog extends _$Catalog {
     }
   }
 
-  File get catalogJsonFile => File(join(PathService().getBookCacheDir(book).path, "catalog.json"));
+  File get catalogJsonFile =>
+      File(join(PathService().getBookCacheDir(book).path, "catalog.json"));
 }

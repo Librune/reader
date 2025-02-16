@@ -32,7 +32,8 @@ class PreferenceSection extends HookConsumerWidget {
             padding: const EdgeInsets.only(bottom: 8, left: 8),
             child: Text(
               title,
-              style: typography.labelMedium?.copyWith(color: colorScheme.secondary),
+              style: typography.labelMedium
+                  ?.copyWith(color: colorScheme.secondary),
             ),
           ),
           ClipRRect(
@@ -51,7 +52,8 @@ class PreferenceSection extends HookConsumerWidget {
             padding: const EdgeInsets.only(left: 8, top: 8, right: 8),
             child: Text(
               subtitle ?? "",
-              style: typography.labelMedium?.copyWith(color: colorScheme.secondary),
+              style: typography.labelMedium
+                  ?.copyWith(color: colorScheme.secondary),
             ),
           ),
         ],
@@ -94,9 +96,11 @@ abstract class PereferenceItem extends HookConsumerWidget {
   final Color? backgroundColor;
 
   Color get _backgroundColor => backgroundColor ?? const Color(0x00000000);
-  TextStyle get _titleStyle => titleStyle ?? const TextStyle(fontWeight: FontWeight.w600, fontSize: 14);
+  TextStyle get _titleStyle =>
+      titleStyle ?? const TextStyle(fontWeight: FontWeight.w600, fontSize: 14);
   TextStyle _subtitleStyle(ColorScheme colorScheme) =>
-      subtitleStyle ?? TextStyle(fontSize: 12, color: colorScheme.onSurface.withAlpha(150));
+      subtitleStyle ??
+      TextStyle(fontSize: 12, color: colorScheme.onSurface.withAlpha(150));
   //  final subtitleStyle =
   //       this.subtitleStyle ?? typography.bodySmall?.copyWith(color: colorScheme.onSurface.withOpacity(.6));
 }
@@ -120,9 +124,11 @@ class PreferenceTap extends PereferenceItem {
     final colorScheme = Theme.of(context).colorScheme;
     final typography = Theme.of(context).textTheme;
     final bgColor = backgroundColor ?? const Color(0x00000000);
-    final titleStyle = this.titleStyle ?? const TextStyle(fontWeight: FontWeight.w600, fontSize: 14);
-    final subtitleStyle =
-        this.subtitleStyle ?? typography.bodySmall?.copyWith(color: colorScheme.onSurface.withOpacity(.6));
+    final titleStyle = this.titleStyle ??
+        const TextStyle(fontWeight: FontWeight.w600, fontSize: 14);
+    final subtitleStyle = this.subtitleStyle ??
+        typography.bodySmall
+            ?.copyWith(color: colorScheme.onSurface.withOpacity(.6));
     final icon = iconWidget ??
         (iconData != null
             ? Icon(
@@ -150,8 +156,9 @@ class PreferenceTap extends PereferenceItem {
             style: titleStyle,
           ),
         ),
-        subtitle:
-            Padding(padding: const EdgeInsets.only(top: 4, right: 8), child: Text(subtitle, style: subtitleStyle)),
+        subtitle: Padding(
+            padding: const EdgeInsets.only(top: 4, right: 8),
+            child: Text(subtitle, style: subtitleStyle)),
         onTap: onTap,
         trailing: suffixIcon);
   }
@@ -181,9 +188,11 @@ class PreferenceSwitch extends PereferenceItem {
     final colorScheme = Theme.of(context).colorScheme;
     final typography = Theme.of(context).textTheme;
     final bgColor = backgroundColor ?? const Color(0x00000000);
-    final titleStyle = this.titleStyle ?? const TextStyle(fontWeight: FontWeight.w600, fontSize: 14);
-    final subtitleStyle =
-        this.subtitleStyle ?? typography.bodySmall?.copyWith(color: colorScheme.onSurface.withOpacity(.6));
+    final titleStyle = this.titleStyle ??
+        const TextStyle(fontWeight: FontWeight.w600, fontSize: 14);
+    final subtitleStyle = this.subtitleStyle ??
+        typography.bodySmall
+            ?.copyWith(color: colorScheme.onSurface.withOpacity(.6));
     final icon = iconWidget ??
         (iconData != null
             ? Icon(
@@ -206,7 +215,9 @@ class PreferenceSwitch extends PereferenceItem {
           style: titleStyle,
         ),
       ),
-      subtitle: Padding(padding: const EdgeInsets.only(top: 4, right: 8), child: Text(subtitle, style: subtitleStyle)),
+      subtitle: Padding(
+          padding: const EdgeInsets.only(top: 4, right: 8),
+          child: Text(subtitle, style: subtitleStyle)),
       onTap: () {
         onChanged(!value);
       },
@@ -247,17 +258,20 @@ class PreferenceInput extends PereferenceItem {
             controller: controller,
             style: TextStyle(fontSize: 14, color: colorScheme.onSurface),
             decoration: InputDecoration(
-              hintStyle: TextStyle(fontSize: 14, color: colorScheme.onSurface.withAlpha(150)),
+              hintStyle: TextStyle(
+                  fontSize: 14, color: colorScheme.onSurface.withAlpha(150)),
               hintMaxLines: 1,
               isDense: false,
               contentPadding: EdgeInsets.only(left: 2, right: 2, bottom: 2),
               fillColor: Colors.transparent,
               hintText: subtitle,
               enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: colorScheme.onSurface.withAlpha(50)),
+                borderSide:
+                    BorderSide(color: colorScheme.onSurface.withAlpha(50)),
               ),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: colorScheme.onSurface.withAlpha(50)),
+                borderSide:
+                    BorderSide(color: colorScheme.onSurface.withAlpha(50)),
               ),
             ),
           ),
@@ -266,7 +280,11 @@ class PreferenceInput extends PereferenceItem {
 }
 
 class PreferenceButton extends PereferenceItem {
-  const PreferenceButton({super.key, required super.title, required super.subtitle, required this.onPressed});
+  const PreferenceButton(
+      {super.key,
+      required super.title,
+      required super.subtitle,
+      required this.onPressed});
 
   final void Function() onPressed;
 
@@ -277,8 +295,10 @@ class PreferenceButton extends PereferenceItem {
       contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       title: TextButton(
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(colorScheme.primaryContainer),
-            foregroundColor: WidgetStateProperty.all(colorScheme.onPrimaryContainer),
+            backgroundColor:
+                WidgetStateProperty.all(colorScheme.primaryContainer),
+            foregroundColor:
+                WidgetStateProperty.all(colorScheme.onPrimaryContainer),
           ),
           onPressed: onPressed,
           child: Text(title)),

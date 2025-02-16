@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
-import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 

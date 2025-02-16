@@ -22,7 +22,8 @@ class BookModel with _$BookModel {
     List<String>? tags,
     String? lastReadChapterId,
   }) = _BookModel;
-  factory BookModel.fromJson(Map<String, dynamic> json) => _$BookModelFromJson(json);
+  factory BookModel.fromJson(Map<String, dynamic> json) =>
+      _$BookModelFromJson(json);
   const BookModel._();
 
   @override

@@ -7,13 +7,15 @@ class ThemeSheetContent extends StatefulHookConsumerWidget {
   const ThemeSheetContent({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ThemeSheetContentState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ThemeSheetContentState();
 }
 
 class _ThemeSheetContentState extends ConsumerState<ThemeSheetContent> {
   @override
   Widget build(BuildContext context) {
-    final currentTheme = ref.watch(ProviderUsecase().config.select((value) => value.theme));
+    final currentTheme =
+        ref.watch(ProviderUsecase().config.select((value) => value.theme));
     final themes = ref.watch(ProviderUsecase().theme).value ?? [];
     return CustomScrollView(
       slivers: [
@@ -32,7 +34,9 @@ class _ThemeSheetContentState extends ConsumerState<ThemeSheetContent> {
                     author: theme.author,
                     isSelected: currentTheme == theme.id,
                     onSelect: (id) {
-                      ref.read(ProviderUsecase().config.notifier).updateTheme(id);
+                      ref
+                          .read(ProviderUsecase().config.notifier)
+                          .updateTheme(id);
                     },
                   )),
             ],

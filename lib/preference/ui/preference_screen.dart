@@ -39,7 +39,9 @@ class PreferenceScreen extends HookConsumerWidget {
                 subtitle: "提供外部操作接口",
                 value: preference.autoDarkMode,
                 onChanged: (value) {
-                  ref.read(preferenceProvider.notifier).updateAutoDarkMode(value);
+                  ref
+                      .read(preferenceProvider.notifier)
+                      .updateAutoDarkMode(value);
                 },
               ),
             ]),
@@ -49,7 +51,9 @@ class PreferenceScreen extends HookConsumerWidget {
                 subtitle: "跟随系统设置自动开启或关闭暗色模式",
                 value: preference.autoDarkMode,
                 onChanged: (value) {
-                  ref.read(preferenceProvider.notifier).updateAutoDarkMode(value);
+                  ref
+                      .read(preferenceProvider.notifier)
+                      .updateAutoDarkMode(value);
                 },
               ),
               if (!preference.autoDarkMode)
@@ -57,7 +61,9 @@ class PreferenceScreen extends HookConsumerWidget {
                   title: "夜间模式",
                   subtitle: "将 APP 切换到暗色主题",
                   onChanged: (value) {
-                    ref.read(preferenceProvider.notifier).updateIsDarkMode(value);
+                    ref
+                        .read(preferenceProvider.notifier)
+                        .updateIsDarkMode(value);
                   },
                   value: preference.isDarkMode,
                 ),
@@ -80,26 +86,31 @@ class PreferenceScreen extends HookConsumerWidget {
                 subtitle: "启动时需要进行身份验证",
                 value: preference.autoDarkMode,
                 onChanged: (value) {
-                  ref.read(preferenceProvider.notifier).updateAutoDarkMode(value);
+                  ref
+                      .read(preferenceProvider.notifier)
+                      .updateAutoDarkMode(value);
                 },
               ),
             ]),
-            PreferenceSection(title: "其它", padding: EdgeInsets.all(16), children: [
-              PreferenceTap(
-                  title: "关于",
-                  subtitle: "更新日志，问题反馈，联系作者",
-                  onTap: () {
-                    // context.push("/palette");
-                    // ref.read(preferenceProvider.notifier).onEvent();
-                  }),
-              PreferenceTap(
-                  title: "恢复默认",
-                  subtitle: "擦除所有设置，恢复到默认状态",
-                  onTap: () {
-                    // context.push("/palette");
-                    // ref.read(preferenceProvider.notifier).onEvent();
-                  }),
-            ]),
+            PreferenceSection(
+                title: "其它",
+                padding: EdgeInsets.all(16),
+                children: [
+                  PreferenceTap(
+                      title: "关于",
+                      subtitle: "更新日志，问题反馈，联系作者",
+                      onTap: () {
+                        // context.push("/palette");
+                        // ref.read(preferenceProvider.notifier).onEvent();
+                      }),
+                  PreferenceTap(
+                      title: "恢复默认",
+                      subtitle: "擦除所有设置，恢复到默认状态",
+                      onTap: () {
+                        // context.push("/palette");
+                        // ref.read(preferenceProvider.notifier).onEvent();
+                      }),
+                ]),
           ],
         ),
       ),

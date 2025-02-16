@@ -23,7 +23,8 @@ class PageFlip extends HookConsumerWidget {
     final currentPage = useState(0);
     final dragProgress = useState(0.0);
     final edgePosition = useState(0.0);
-    final animationController = useAnimationController(duration: const Duration(milliseconds: 300));
+    final animationController =
+        useAnimationController(duration: const Duration(milliseconds: 300));
 
     // 处理边界情况
     final canSwipeLeft = useMemoized(() => currentPage.value > 0);

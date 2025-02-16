@@ -6,7 +6,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class RankCard extends HookConsumerWidget {
   const RankCard(
-      {super.key, required this.favIcon, required this.name, required this.rankNum, required this.subRankNum});
+      {super.key,
+      required this.favIcon,
+      required this.name,
+      required this.rankNum,
+      required this.subRankNum});
   final String favIcon;
   final String name;
   final int rankNum;
@@ -17,7 +21,8 @@ class RankCard extends HookConsumerWidget {
     final brightness = Theme.of(context).brightness;
     final cachedNetWorkImageProvider = CachedNetworkImageProvider(favIcon);
     final coverScheme = useFuture(useMemoized(
-        () => ColorScheme.fromImageProvider(provider: cachedNetWorkImageProvider, brightness: brightness),
+        () => ColorScheme.fromImageProvider(
+            provider: cachedNetWorkImageProvider, brightness: brightness),
         [favIcon, brightness]));
     return SizedBox(
       height: 84,
@@ -47,27 +52,36 @@ class RankCard extends HookConsumerWidget {
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
-                            color: coverScheme.data?.primary ?? colorScheme.primary)),
+                            color: coverScheme.data?.primary ??
+                                colorScheme.primary)),
                     Row(
                       spacing: 10,
                       children: [
                         Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
-                              color: coverScheme.data?.secondaryContainer.withAlpha(255)),
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              color: coverScheme.data?.secondaryContainer
+                                  .withAlpha(255)),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           child: Text("$rankNum个总榜",
-                              style:
-                                  TextStyle(fontSize: 14, color: coverScheme.data?.secondary ?? colorScheme.secondary)),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: coverScheme.data?.secondary ??
+                                      colorScheme.secondary)),
                         ),
                         Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
-                              color: coverScheme.data?.secondaryContainer.withAlpha(255)),
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              color: coverScheme.data?.secondaryContainer
+                                  .withAlpha(255)),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           child: Text("$subRankNum个子榜",
-                              style:
-                                  TextStyle(fontSize: 14, color: coverScheme.data?.secondary ?? colorScheme.secondary)),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: coverScheme.data?.secondary ??
+                                      colorScheme.secondary)),
                         )
                       ],
                     )
@@ -76,7 +90,9 @@ class RankCard extends HookConsumerWidget {
                 Spacer(),
                 Center(
                   child: SvgPicture.asset("assets/svg/ic_card_right.svg",
-                      colorFilter: ColorFilter.mode(coverScheme.data?.primary ?? colorScheme.primary, BlendMode.srcIn),
+                      colorFilter: ColorFilter.mode(
+                          coverScheme.data?.primary ?? colorScheme.primary,
+                          BlendMode.srcIn),
                       width: 14),
                 )
               ],

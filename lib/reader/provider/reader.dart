@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 import 'package:reader/reader/data/model/catalog.dart';
 import 'package:reader/reader/data/model/config.dart';
@@ -63,7 +62,8 @@ class Reader extends _$Reader {
       if (catalog.flatChapterList.length > cachedLastPageFlatIndex + 1) {
         isLoadingNextChapter = true;
         try {
-          final nextPage = await textRenderUsecase.getNextPagePainters(ref: ref);
+          final nextPage =
+              await textRenderUsecase.getNextPagePainters(ref: ref);
           appendPages(nextPage);
         } finally {
           isLoadingNextChapter = false;
@@ -75,7 +75,8 @@ class Reader extends _$Reader {
       if (cachedFirstPageFlatIndex > 0) {
         isLoadingPrevChapter = true;
         try {
-          final prevPage = await textRenderUsecase.getPrevPagePainters(ref: ref);
+          final prevPage =
+              await textRenderUsecase.getPrevPagePainters(ref: ref);
           prependPages(prevPage);
         } finally {
           isLoadingPrevChapter = false;

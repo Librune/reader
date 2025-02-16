@@ -53,7 +53,6 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   collection: ^1.19.0
   dartx: ^1.2.0
-  flutter_js: ^0.8.1
   dio: ^5.7.0
   flash: ^3.1.1
   pull_down_button: ^0.10.2
@@ -82,6 +81,9 @@ dependencies:
   battery_plus: ^6.2.1
   intl: ^0.19.0
   localstorage: ^5.0.0
+  rust_lib_reader:
+    path: rust_builder
+  flutter_rust_bridge: 2.7.1
 
 dependency_overrides:
   json_serializable: ^6.9.2
@@ -111,6 +113,8 @@ dev_dependencies:
       url: https://github.com/mdddj/isar
       ref: v3
       path: packages/isar_generator/
+  integration_test:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

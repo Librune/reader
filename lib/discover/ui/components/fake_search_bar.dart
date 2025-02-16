@@ -21,7 +21,8 @@ class FakeSearchBar extends ConsumerWidget {
         children: [
           SvgPicture.asset(
             "assets/svg/ic_topbar_search.svg",
-            colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
+            colorFilter:
+                ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
             width: 18,
           ),
           const SizedBox(width: 8),

@@ -30,7 +30,12 @@ class ReaderExtraConfig extends _$ReaderExtraConfig {
 
   updatePageTurning(String id) {
     final json = state.toJson();
-    final turnings = ['verticalScroll', 'horizontalScroll', 'curlPage', 'flipPage'];
+    final turnings = [
+      'verticalScroll',
+      'horizontalScroll',
+      'curlPage',
+      'flipPage'
+    ];
     for (var turning in turnings) {
       if (turning == id) {
         json[turning] = true;

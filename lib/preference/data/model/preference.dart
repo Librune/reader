@@ -12,7 +12,8 @@ class PreferenceModel with _$PreferenceModel {
     @Default(true) bool autoDarkMode,
   }) = _PreferenceModel;
 
-  factory PreferenceModel.fromJson(Map<String, dynamic> json) => _$PreferenceModelFromJson(json);
+  factory PreferenceModel.fromJson(Map<String, dynamic> json) =>
+      _$PreferenceModelFromJson(json);
 
   const PreferenceModel._();
 

@@ -37,7 +37,8 @@ class _ThemeSheetCardState extends ConsumerState<ThemeSheetCard> {
   }
 
   void _resolveImage() {
-    final ImageProvider image = FileImage(File(join(PathService().readerThemesPath, widget.id, 'image.png')));
+    final ImageProvider image = FileImage(
+        File(join(PathService().readerThemesPath, widget.id, 'image.png')));
     final ImageStream stream = image.resolve(const ImageConfiguration());
     stream.addListener(ImageStreamListener((ImageInfo info, bool _) {
       setState(() {
@@ -86,7 +87,8 @@ class _ThemeCardPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Rect rect = Offset.zero & size;
     const double padding = 12.0;
-    final RRect rrect = RRect.fromRectAndRadius(rect, const Radius.circular(8.0));
+    final RRect rrect =
+        RRect.fromRectAndRadius(rect, const Radius.circular(8.0));
 
     // 使用圆角裁剪背景内容
     canvas.save();
@@ -100,12 +102,14 @@ class _ThemeCardPainter extends CustomPainter {
         fit: BoxFit.cover,
       );
     } else {
-      canvas.drawRect(rect, Paint()..color = colorScheme.surfaceVariant);
+      canvas.drawRect(
+          rect, Paint()..color = colorScheme.surfaceContainerHighest);
     }
     canvas.restore();
 
     // 绘制前景遮罩，不影响背景图片展示
-    final maskPaint = Paint()..color = colorScheme.surfaceContainer.withOpacity(0.15);
+    final maskPaint = Paint()
+      ..color = colorScheme.surfaceContainer.withOpacity(0.15);
     canvas.drawRect(rect, maskPaint);
 
     // 绘制三个嵌套圆（圆环效果），圆心设置在左上角，
@@ -116,9 +120,12 @@ class _ThemeCardPainter extends CustomPainter {
     final double outerRadius = size.height;
     final double midRadius = outerRadius * 0.66;
     final double innerRadius = outerRadius * 0.33;
-    final Paint outerPaint = Paint()..color = colorScheme.secondaryContainer.withOpacity(0.1);
-    final Paint midPaint = Paint()..color = colorScheme.primaryContainer.withOpacity(0.1);
-    final Paint innerPaint = Paint()..color = colorScheme.primary.withOpacity(0.1);
+    final Paint outerPaint = Paint()
+      ..color = colorScheme.secondaryContainer.withOpacity(0.1);
+    final Paint midPaint = Paint()
+      ..color = colorScheme.primaryContainer.withOpacity(0.1);
+    final Paint innerPaint = Paint()
+      ..color = colorScheme.primary.withOpacity(0.1);
     canvas.drawCircle(circleCenter, outerRadius, outerPaint);
     canvas.drawCircle(circleCenter, midRadius, midPaint);
     canvas.drawCircle(circleCenter, innerRadius, innerPaint);
@@ -155,10 +162,12 @@ class _ThemeCardPainter extends CustomPainter {
     );
     namePainter.layout(maxWidth: size.width - 2 * padding);
     authorPainter.layout(maxWidth: size.width - 2 * padding);
-    final double textTotalHeight = namePainter.height + 4 + authorPainter.height;
+    final double textTotalHeight =
+        namePainter.height + 4 + authorPainter.height;
     final double textY = size.height - textTotalHeight - padding;
     namePainter.paint(canvas, Offset(padding, textY));
-    authorPainter.paint(canvas, Offset(padding, textY + namePainter.height + 4));
+    authorPainter.paint(
+        canvas, Offset(padding, textY + namePainter.height + 4));
 
     // 重新设计 radio 样式，使其颜色和尺寸更加和谐精致
     const double radioOuterRadius = 8.0;

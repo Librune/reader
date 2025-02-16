@@ -24,7 +24,8 @@ class ReaderConfig extends _$ReaderConfig {
       }
     } catch (err) {
       Log.e(err);
-      _config = ReaderConfigModel.defaultAndroid(systemPadding: MediaQuery.of(context).padding);
+      _config = ReaderConfigModel.defaultAndroid(
+          systemPadding: MediaQuery.of(context).padding);
     }
     listenSelf(_onSelfChange);
     return _config;

@@ -32,15 +32,18 @@ class Preference extends _$Preference {
   }
 
   void updateAutoDarkMode(bool autoDarkMode) {
-    state = UpdatePreferenceKvUsecase.invoke(state, key: 'autoDarkMode', value: autoDarkMode);
+    state = UpdatePreferenceKvUsecase.invoke(state,
+        key: 'autoDarkMode', value: autoDarkMode);
   }
 
   void updateColorSeed(int colorSeed) {
-    state = UpdatePreferenceKvUsecase.invoke(state, key: 'colorSeed', value: colorSeed);
+    state = UpdatePreferenceKvUsecase.invoke(state,
+        key: 'colorSeed', value: colorSeed);
   }
 
   void updateIsDarkMode(bool isDarkMode) {
-    state = UpdatePreferenceKvUsecase.invoke(state, key: 'isDarkMode', value: isDarkMode);
+    state = UpdatePreferenceKvUsecase.invoke(state,
+        key: 'isDarkMode', value: isDarkMode);
   }
 
   _onSelfChange(PreferenceModel? oldState, PreferenceModel newState) {

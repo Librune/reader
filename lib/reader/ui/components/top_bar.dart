@@ -51,7 +51,8 @@ class TopBar extends HookConsumerWidget {
                 svgName: 'ic_btn_back',
                 size: 22,
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(colorScheme.surfaceContainerHighest),
+                  backgroundColor: WidgetStateProperty.all(
+                      colorScheme.surfaceContainerHighest),
                   padding: WidgetStateProperty.all(EdgeInsets.all(5)),
                 ),
                 onPressed: () => Navigator.of(context).pop(),

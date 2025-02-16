@@ -10,7 +10,8 @@ class CatalogSheetContent extends StatefulHookConsumerWidget {
   const CatalogSheetContent({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CatalogSheetContentState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CatalogSheetContentState();
 }
 
 typedef CatalogContentState = _CatalogSheetContentState;
@@ -47,7 +48,8 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
         final volumeHeader = ChapterModel(cid: "", title: volume.title);
         list.add(volumeHeader);
         final volumeChapterNum = volume.chapters.length;
-        final chapters = flatChapterList.sublist(_index, _index + volumeChapterNum);
+        final chapters =
+            flatChapterList.sublist(_index, _index + volumeChapterNum);
         list.addAll(chapters);
         _index += volumeChapterNum;
       }
@@ -72,33 +74,44 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
             return chapter.cid != ""
                 ? ListTile(
                     dense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                     title: Text(
                       chapter.title,
                       style: TextStyle(
-                          color: isCurrent ? colorScheme.primary : colorScheme.onSurface,
+                          color: isCurrent
+                              ? colorScheme.primary
+                              : colorScheme.onSurface,
                           fontSize: 14,
-                          fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal),
+                          fontWeight:
+                              isCurrent ? FontWeight.bold : FontWeight.normal),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     subtitle: Text(
                       chapter.updateTime ?? "",
-                      style: TextStyle(color: colorScheme.onSurface.withAlpha(150), fontSize: 12),
+                      style: TextStyle(
+                          color: colorScheme.onSurface.withAlpha(150),
+                          fontSize: 12),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     onTap: () {
                       // ref.read(ReaderProvider(book, context: context).notifier).jumpToChapter(chapter);
                       // widget.onChapterTap(chapter);
-                      ref.read(ProviderUsecase().reader.notifier).jumpToChapter(chapter);
+                      ref
+                          .read(ProviderUsecase().reader.notifier)
+                          .jumpToChapter(chapter);
                     },
                   )
                 : Container(
                     padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
                     child: Text(
                       chapter.title,
-                      style: TextStyle(color: colorScheme.tertiary, fontWeight: FontWeight.bold, fontSize: 14),
+                      style: TextStyle(
+                          color: colorScheme.tertiary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -128,7 +141,6 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
 //   }
 // }
 
-
 // class _CatalogContent extends StatefulHookConsumerWidget {
 //   const _CatalogContent();
 
@@ -149,6 +161,6 @@ class _CatalogSheetContentState extends ConsumerState<CatalogSheetContent> {
 //   @override
 //   Widget build(BuildContext context) {
 //     // super.build(context);
-   
+
 //   }
 // }

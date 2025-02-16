@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
 
 class PathService {
@@ -52,7 +51,8 @@ class PathService {
   }
 
   Directory getBookCacheDir(BookModel book) {
-    final dir = Directory(join(cachePath, 'books', "${book.bookSourceId!}-${book.bookId}"));
+    final dir = Directory(
+        join(cachePath, 'books', "${book.bookSourceId!}-${book.bookId}"));
     if (!dir.existsSync()) {
       dir.createSync(recursive: true);
     }
@@ -60,7 +60,13 @@ class PathService {
   }
 
   Future<void> initReaderThemes() async {
-    final List _themes = ['clearnight', 'dawn', 'drift', 'landscape', 'serenity'];
+    final List _themes = [
+      'clearnight',
+      'dawn',
+      'drift',
+      'landscape',
+      'serenity'
+    ];
     final targetDir = Directory(readerThemesPath);
     // if (targetDir.existsSync()) {
     //   targetDir.deleteSync(recursive: true);

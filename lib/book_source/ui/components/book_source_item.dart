@@ -51,8 +51,10 @@ class BookSourceItem extends ConsumerWidget {
                       scale: .74,
                       alignment: Alignment.centerLeft,
                       child: Chip(
-                          labelPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          labelPadding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
                           avatar: Icon(Icons.check, size: 18),
                           label: Text(
                             "已启用",

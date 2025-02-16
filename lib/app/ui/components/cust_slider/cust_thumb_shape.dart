@@ -4,7 +4,10 @@ class CustomThumbShape extends RoundSliderThumbShape {
   final String text;
   final BuildContext buildContext;
 
-  CustomThumbShape({required this.text, required this.buildContext, super.enabledThumbRadius});
+  CustomThumbShape(
+      {required this.text,
+      required this.buildContext,
+      super.enabledThumbRadius});
 
   @override
   void paint(
@@ -36,7 +39,10 @@ class CustomThumbShape extends RoundSliderThumbShape {
 
     // 绘制文本
     final textStyle = TextStyle(
-        color: Theme.of(buildContext).colorScheme.onSurface, height: 1, fontSize: 10, fontWeight: FontWeight.normal);
+        color: Theme.of(buildContext).colorScheme.onSurface,
+        height: 1,
+        fontSize: 10,
+        fontWeight: FontWeight.normal);
     final TextSpan span = TextSpan(style: textStyle, text: text);
     final TextPainter textPainter = TextPainter(
       text: span,
@@ -46,7 +52,8 @@ class CustomThumbShape extends RoundSliderThumbShape {
     textPainter.layout();
 
     // 计算文本位置
-    final Offset textOffset = Offset(center.dx - textPainter.width / 2, center.dy - textPainter.height / 2 + .3);
+    final Offset textOffset = Offset(center.dx - textPainter.width / 2,
+        center.dy - textPainter.height / 2 + .3);
     textPainter.paint(context.canvas, textOffset);
   }
 }

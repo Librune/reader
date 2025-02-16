@@ -66,7 +66,11 @@ class ShaderPainter extends CustomPainter {
   ui.Image? _image;
   final ColorScheme colorScheme;
 
-  ShaderPainter({required this.shader, required this.image, required this.blurAmount, required this.colorScheme}) {
+  ShaderPainter(
+      {required this.shader,
+      required this.image,
+      required this.blurAmount,
+      required this.colorScheme}) {
     _loadImage();
   }
 
@@ -115,7 +119,8 @@ class ShaderPainter extends CustomPainter {
     double scale = targetWidth / _image!.width;
     double targetHeight = _image!.height * scale;
 
-    final Color overlayColor = Color.alphaBlend(colorScheme.primary.withAlpha(50), Colors.black);
+    final Color overlayColor =
+        Color.alphaBlend(colorScheme.primary.withAlpha(50), Colors.black);
 
     // 2. 设置着色器参数 - 保持1:1的缩放比
     shader

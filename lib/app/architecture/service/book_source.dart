@@ -1,18 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_js/flutter_js.dart';
 import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/usecase/bks_channel_usecase.dart';
 import 'package:reader/book_source/usecase/bks_libs_usecase.dart';
+import 'package:reader/src/rust/api/ecma.dart';
+import 'package:reader/src/rust/api/envs.dart';
 import 'package:uuid/uuid.dart';
 
 class BookSourceService {
   // jsRuntime实例
-  late final JavascriptRuntime runtime;
+  // late final JavascriptRuntime runtime;
   final List<BookSourceModel> bookSourceList = [];
   static final BookSourceService _instance = BookSourceService._internal();
   BookSourceService._internal();
@@ -25,126 +26,122 @@ class BookSourceService {
   }
 
   _initJsRuntime() async {
-    runtime = getJavascriptRuntime(forceJavascriptCoreOnAndroid: false)..setInspectable(true);
-    await _bootstrap();
+    // runtime = getJavascriptRuntime(forceJavascriptCoreOnAndroid: false)..setInspectable(true);
+    // await _bootstrap();
     await _initBookSourceObjects();
   }
 
-  _bootstrap() async {
-    await runtime.evaluateAsync("""
-      $INCLUDE 
-      $PRXOY_JS_OBJ
-      $LOG_JS_OBJ
-      $BOOK_SOURCE_SUPER_CLASS
-    """);
-    BookSourceChannelUsecase.inject(runtime);
-    BookSourceLibsUsecase.fromBundle(runtime, name: "utils");
-  }
+  // _bootstrap() async {
+  //   await runtime.evaluateAsync("""
+  //     $INCLUDE
+  //     $PRXOY_JS_OBJ
+  //     $LOG_JS_OBJ
+  //     $BOOK_SOURCE_SUPER_CLASS
+  //   """);
+  //   BookSourceChannelUsecase.inject(runtime);
+  //   BookSourceLibsUsecase.fromBundle(runtime, name: "utils");
+  // }
 
   _initBookSourceObjects() async {
-    final bksList = [];
+    final Map<String, String> bks = {};
     try {
       if (!bksManifest.existsSync()) {
         bksManifest.createSync(recursive: true);
       } else {
         final json = jsonDecode(bksManifest.readAsStringSync()) as List<dynamic>;
-        bksList.addAll(json.where(((bks) => bks["enabled"] == true)));
+        json.where(((bks) => bks["enabled"] == true)).forEach((bks) {
+          final uuid = bks["uuid"];
+          final file = File(join(PathService().bookSourcePath, uuid, "index.js"));
+          final js = file.readAsStringSync();
+          bks[uuid] = js;
+        });
+        initJsScripts(scripts: bks);
       }
     } catch (e) {
       bksManifest.writeAsStringSync("[]");
     }
-    for (var bks in bksList) {
-      await injectBookSource(bks["uuid"]);
-    }
   }
 
   injectBookSource(String uuid) async {
-    final bksFile = File(join(PathService().bookSourcePath, uuid, "index.js"));
-    final js = bksFile.readAsStringSync();
-    final isInjected = await runtime.evaluateAsync("""
-      __BOOK_SOURCE_MAP__.hasOwnProperty('$uuid')
-    """);
-    if (isInjected.stringResult == "false") {
-      final bookSourceEnvs = PathService().getEnvFile(uuid);
-      final envs = bookSourceEnvs.readAsStringSync();
-      await runtime.evaluateAsync("""
-        __BOOK_SOURCE_MAP__['$uuid'] = (()=>{
-          $js
-          return new BookSource('$uuid','$envs');
-        })()
-      """);
-    }
-    bookSourceList.add(await getBookSourceInfo(uuid));
+    // final bksFile = File(join(PathService().bookSourcePath, uuid, "index.js"));
+    // final js = bksFile.readAsStringSync();
+
+    // final isInjected = await runtime.evaluateAsync("""
+    //   __BOOK_SOURCE_MAP__.hasOwnProperty('$uuid')
+    // """);
+    // if (isInjected.stringResult == "false") {
+    //   final bookSourceEnvs = PathService().getEnvFile(uuid);
+    //   final envs = bookSourceEnvs.readAsStringSync();
+    //   await runtime.evaluateAsync("""
+    //     __BOOK_SOURCE_MAP__['$uuid'] = (()=>{
+    //       $js
+    //       return new BookSource('$uuid','$envs');
+    //     })()
+    //   """);
+    // }
+    // bookSourceList.add(await getBookSourceInfo(uuid));
   }
 
   Future<BookSourceModel> injectBookSourceFromFile(File file) async {
     final js = file.readAsStringSync();
-    final uuid = Uuid().v4();
-    final realUuid = await runtime.evaluateAsync("""
-        var obj = (()=>{
-          $js
-          return new BookSource();
-        })()
-        var realUuid = obj.uuid || '$uuid';
-        __BOOK_SOURCE_MAP__[realUuid] = obj;
-        realUuid
-      """);
-    final bookSource = await getBookSourceInfo(realUuid.stringResult);
+    final uuid = getUuid(code: js);
+    final bookSource = getBookSourceInfo(uuid);
     if (!bookSourceList.any((element) => element.uuid == bookSource.uuid)) {
       bookSourceList.add(bookSource);
     }
     return bookSource;
   }
 
-  Future<BookSourceModel> getBookSourceInfo(String uuid) async {
-    final res = await runtime.evaluateAsync("""
-      delete obj;
-      delete realUuid;
-      __BOOK_SOURCE_MAP__['$uuid'].info();
-    """);
-    return BookSourceModel.fromJson({...jsonDecode(res.stringResult), "uuid": uuid});
+  BookSourceModel getBookSourceInfo(String uuid) {
+    // final name = jsGetAttribute(uuid: uuid, key: "name");
+    // final author = jsGetAttribute(uuid: uuid, key: "author");
+    // final forms = jsGetAttribute(uuid: uuid, key: "forms");
+    // final actions = jsGetAttribute(uuid: uuid, key: "actions");
+    final envs = jsGetAttributes(uuid: uuid, keys: ["name", "author", "forms", "actions"]);
+    final Map<String, String> _envJson = {};
+    envs.forEach((key, value) {
+      _envJson[key] = jsonDecode(value);
+    });
+    return BookSourceModel.fromJson(_envJson);
   }
 
-  updateEnvs(String uuid, Map<String, dynamic> envs) async {
-    await runtime.evaluateAsync("""
-      __BOOK_SOURCE_MAP__['$uuid'].__envs__ = JSON.parse('${jsonEncode(envs)}');
-    """);
+  updateEnvs(String uuid, Map<String, String> envs) {
+    setEnv(uuid: uuid, value: envs);
   }
 
   remove(String uuid) async {
-    await runtime.evaluateAsync("""
-      delete __BOOK_SOURCE_MAP__['$uuid'] 
-    """);
+    removeJsScript(uuid: uuid);
     bookSourceList.removeWhere((element) => element.uuid == uuid);
   }
 
-  lsitAll() async {
-    final res = await runtime.evaluateAsync("""
-      Object.keys(__BOOK_SOURCE_MAP__)
-    """);
-    Log.d("listAll: ${res.stringResult}");
-  }
+  // lsitAll() async {
+  //   final res = await runtime.evaluateAsync("""
+  //     Object.keys(__BOOK_SOURCE_MAP__)
+  //   """);
+  //   Log.d("listAll: ${res.stringResult}");
+  // }
 
   /// @param uuid 书源uuid
   /// @param act 书源方法
   /// @param args 书源方法参数
   /// @return 书源方法返回值 —— 你应该知道自己需要的是什么类型，如果是可序列化的对象，那么会自动处理，否则请自行判断
   Future<dynamic> action({required String uuid, required String act, Map<String, dynamic>? args}) async {
-    runtime.executePendingJob();
-    final res = await runtime.evaluateAsync("""
-       __BOOK_SOURCE_MAP__['$uuid'].action('$act', ${args != null ? jsonEncode(args) : ''});
-    """);
-    JsEvalResult asyncResult = await runtime.handlePromise(res);
-    try {
-      var dynamicRes = jsonDecode(asyncResult.stringResult);
-      if (dynamicRes is String) {
-        return jsonDecode(dynamicRes);
-      } else {
-        return dynamicRes;
-      }
-    } catch (e) {
-      return asyncResult.stringResult;
-    }
+    return jsAction(uuid: uuid, method: act, args: jsonEncode(args ?? {}));
+    // runtime.executePendingJob();
+    // final res = await runtime.evaluateAsync("""
+    //    __BOOK_SOURCE_MAP__['$uuid'].action('$act', ${args != null ? jsonEncode(args) : ''});
+    // """);
+    // JsEvalResult asyncResult = await runtime.handlePromise(res);
+    // try {
+    //   var dynamicRes = jsonDecode(asyncResult.stringResult);
+    //   if (dynamicRes is String) {
+    //     return jsonDecode(dynamicRes);
+    //   } else {
+    //     return dynamicRes;
+    //   }
+    // } catch (e) {
+    //   return asyncResult.stringResult;
+    // }
   }
 
   File get bksManifest => File(PathService().bookSourceManifestPath);

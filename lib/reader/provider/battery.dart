@@ -22,7 +22,8 @@ class ReaderBattery extends _$ReaderBattery {
 
   _batteryListener(BatteryState bst) async {
     final batteryLevel = await battery.batteryLevel;
-    state = AsyncValue.data(BatteryModel(batteryLevel: batteryLevel, batteryState: bst));
+    state = AsyncValue.data(
+        BatteryModel(batteryLevel: batteryLevel, batteryState: bst));
   }
 
   _batteryLevelScanner() async {

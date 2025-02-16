@@ -28,7 +28,8 @@ class PreferenceSection extends HookConsumerWidget {
             padding: const EdgeInsets.only(bottom: 8, left: 8),
             child: Text(
               title,
-              style: typography.labelMedium?.copyWith(color: colorScheme.secondary),
+              style: typography.labelMedium
+                  ?.copyWith(color: colorScheme.secondary),
             ),
           ),
           ClipRRect(

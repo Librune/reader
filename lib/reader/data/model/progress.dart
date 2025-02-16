@@ -19,7 +19,8 @@ class ProgressModel with _$ProgressModel {
     int? flatIndex,
   }) = _ProgressModel;
   const ProgressModel._();
-  factory ProgressModel.fromJson(Map<String, dynamic> json) => _$ProgressModelFromJson(json);
+  factory ProgressModel.fromJson(Map<String, dynamic> json) =>
+      _$ProgressModelFromJson(json);
 
   @override
   // ignore: recursive_getters

@@ -20,7 +20,8 @@ class CatalogModel with _$CatalogModel {
     required List<VolumeModel> volumes,
     String? lastChapterId,
   }) = _CatalogModel;
-  factory CatalogModel.fromJson(Map<String, dynamic> json) => _$CatalogModelFromJson(json);
+  factory CatalogModel.fromJson(Map<String, dynamic> json) =>
+      _$CatalogModelFromJson(json);
   const CatalogModel._();
 
   @override
@@ -51,7 +52,8 @@ class VolumeModel with _$VolumeModel {
     @Default("") String title,
     @Default([]) List<ChapterModel> chapters,
   }) = _VolumeModel;
-  factory VolumeModel.fromJson(Map<String, dynamic> json) => _$VolumeModelFromJson(json);
+  factory VolumeModel.fromJson(Map<String, dynamic> json) =>
+      _$VolumeModelFromJson(json);
   const VolumeModel._();
 }
 
@@ -74,6 +76,7 @@ class ChapterModel with _$ChapterModel {
     int? chapterIndex,
     String? volumeName,
   }) = _ChapterModel;
-  factory ChapterModel.fromJson(Map<String, dynamic> json) => _$ChapterModelFromJson(json);
+  factory ChapterModel.fromJson(Map<String, dynamic> json) =>
+      _$ChapterModelFromJson(json);
   const ChapterModel._();
 }

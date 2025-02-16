@@ -5,7 +5,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader/app/ui/components/app_top_bar.dart';
 
 class BookSearchBar extends HookConsumerWidget implements PreferredSizeWidget {
-  const BookSearchBar({super.key, this.keyword, this.onTap, this.autoFocus = true, this.showClear = false});
+  const BookSearchBar(
+      {super.key,
+      this.keyword,
+      this.onTap,
+      this.autoFocus = true,
+      this.showClear = false});
 
   final bool? autoFocus;
   final String? keyword;
@@ -22,7 +27,8 @@ class BookSearchBar extends HookConsumerWidget implements PreferredSizeWidget {
         Expanded(
             child: SearchBar(
           autoFocus: autoFocus!,
-          backgroundColor: WidgetStateProperty.all(colorScheme.inverseSurface.withAlpha(20)),
+          backgroundColor:
+              WidgetStateProperty.all(colorScheme.inverseSurface.withAlpha(20)),
           controller: searchController,
           elevation: WidgetStatePropertyAll(0),
           constraints: BoxConstraints(minHeight: 38),
@@ -32,7 +38,9 @@ class BookSearchBar extends HookConsumerWidget implements PreferredSizeWidget {
           leading: Padding(
             padding: EdgeInsets.only(left: 4),
             child: SvgPicture.asset("assets/svg/ic_topbar_search.svg",
-                colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 16),
+                colorFilter:
+                    ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
+                width: 16),
           ),
           trailing: [
             if (showClear!)
@@ -56,7 +64,8 @@ class BookSearchBar extends HookConsumerWidget implements PreferredSizeWidget {
               child: TextButton(
                   onPressed: () {},
                   style: ButtonStyle(
-                    foregroundColor: WidgetStateProperty.all(colorScheme.onSurface),
+                    foregroundColor:
+                        WidgetStateProperty.all(colorScheme.onSurface),
                   ),
                   child: Text(
                     "搜索",

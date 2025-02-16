@@ -13,16 +13,19 @@ class ReaderPage extends HookConsumerWidget {
 
   double get titleIndicatorPosX => pagePainter.painters.first.posX;
 
-  double get titleIndicatorPosY => pagePainter.painters.first.posY + titleIndicatorHeight * .36;
+  double get titleIndicatorPosY =>
+      pagePainter.painters.first.posY + titleIndicatorHeight * .36;
 
-  const ReaderPage({super.key, required this.pagePainter, required this.context});
+  const ReaderPage(
+      {super.key, required this.pagePainter, required this.context});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final extraConfig = ref.watch(readerExtraConfigProvider);
     final batteryInfo = ref.watch(readerBatteryProvider);
     final timeInfo = ref.watch(readerTimeProvider);
     final colorScheme = Theme.of(context).colorScheme;
-    final infoTextStyle = pagePainter.infoTextStyle.copyWith(color: colorScheme.onSurface.withOpacity(.5));
+    final infoTextStyle = pagePainter.infoTextStyle
+        .copyWith(color: colorScheme.onSurface.withOpacity(.5));
     return Stack(
       key: ObjectKey({
         "cIndex": pagePainter.chapterIndex,
@@ -53,7 +56,8 @@ class ReaderPage extends HookConsumerWidget {
               // painter.textSpan,
               TextSpan(
                 text: painter.text,
-                style: painter.renderStyle.copyWith(color: colorScheme.onSurface),
+                style:
+                    painter.renderStyle.copyWith(color: colorScheme.onSurface),
               ),
               textAlign: TextAlign.start,
             ),
@@ -75,7 +79,11 @@ class ReaderPage extends HookConsumerWidget {
             right: pagePainter.topInfoPadding.right,
             child: Row(
               children: [
-                Text(pagePainter.pageIndex == 0 ? pagePainter.bookName : pagePainter.chapterName, style: infoTextStyle),
+                Text(
+                    pagePainter.pageIndex == 0
+                        ? pagePainter.bookName
+                        : pagePainter.chapterName,
+                    style: infoTextStyle),
               ],
             )),
         Positioned(
@@ -93,10 +101,12 @@ class ReaderPage extends HookConsumerWidget {
                 if (extraConfig.showTimeBattery)
                   Transform.rotate(
                     angle: 3.14 / 2,
-                    child: Icon(batteryInfo.value!.icon, size: 22, color: infoTextStyle.color),
+                    child: Icon(batteryInfo.value!.icon,
+                        size: 22, color: infoTextStyle.color),
                   ),
                 const Spacer(),
-                Text("${pagePainter.pageIndex + 1}/${pagePainter.totalPages}", style: infoTextStyle),
+                Text("${pagePainter.pageIndex + 1}/${pagePainter.totalPages}",
+                    style: infoTextStyle),
               ],
             ))
       ],
@@ -146,7 +156,8 @@ class PagePainter {
 
   double get titleIndicatorPosX => painters.first.posX;
 
-  double get titleIndicatorPosY => painters.first.posY + titleIndicatorHeight * .1;
+  double get titleIndicatorPosY =>
+      painters.first.posY + titleIndicatorHeight * .1;
 
   @override
   toString() {
@@ -292,11 +303,14 @@ class TextRender {
     required this.layoutHeight,
     required this.layoutWidth,
     this.edgePadding = EdgeInsets.zero,
-    this.titleChapterTextStyle = const TextStyle(fontSize: 24, color: Colors.black, height: 1.7),
-    this.titleVolumeTextStyle = const TextStyle(fontSize: 28, color: Colors.black, height: 1.7),
+    this.titleChapterTextStyle =
+        const TextStyle(fontSize: 24, color: Colors.black, height: 1.7),
+    this.titleVolumeTextStyle =
+        const TextStyle(fontSize: 28, color: Colors.black, height: 1.7),
     this.titlePaddingTop = 16.0,
     this.titlePaddingBottom = 24.0,
-    this.bodyTextStyle = const TextStyle(fontSize: 20, color: Colors.black, height: 1.7),
+    this.bodyTextStyle =
+        const TextStyle(fontSize: 20, color: Colors.black, height: 1.7),
     this.titleVolumeChapterPadding = 0.0,
     this.paragraphPadding = 24.0,
     this.indent = true,
@@ -309,10 +323,18 @@ class TextRender {
     );
     textPainter.layout();
     _singleTextWidth = textPainter.width;
-    this.topInfoPadding =
-        topInfoPadding ?? EdgeInsets.only(left: edgePadding.left, top: 0, right: edgePadding.right, bottom: 0);
-    this.bottomInfoPadding =
-        bottomInfoPadding ?? EdgeInsets.only(left: edgePadding.left, top: 0, right: edgePadding.right, bottom: 0);
+    this.topInfoPadding = topInfoPadding ??
+        EdgeInsets.only(
+            left: edgePadding.left,
+            top: 0,
+            right: edgePadding.right,
+            bottom: 0);
+    this.bottomInfoPadding = bottomInfoPadding ??
+        EdgeInsets.only(
+            left: edgePadding.left,
+            top: 0,
+            right: edgePadding.right,
+            bottom: 0);
     infoTextStyle = TextStyle(
         fontSize: 13,
         color: (bodyTextStyle.color ?? Colors.black).withOpacity(0.4),
@@ -344,13 +366,15 @@ class TextRender {
 
     // 绘制卷名（如果存在的话）
     if (volumeName != null) {
-      final volumePainter = _drawVolumeName(volumeName, volumeIndex, chapterIndex);
+      final volumePainter =
+          _drawVolumeName(volumeName, volumeIndex, chapterIndex);
       pageSpanBuffer.add(volumePainter);
       _currentPosY += volumePainter.height + titleVolumeChapterPadding;
     }
 
     // 绘制章节名
-    final chapterPainter = _drawChapterName(chapterName, volumeIndex, chapterIndex);
+    final chapterPainter =
+        _drawChapterName(chapterName, volumeIndex, chapterIndex);
     pageSpanBuffer.add(chapterPainter);
     _currentPosY += chapterPainter.height + titlePaddingBottom;
 
@@ -367,7 +391,8 @@ class TextRender {
       }
       bool indent = this.indent && firstLineIsPara;
       final textPainter = TextPainter(
-        text: TextSpan(text: (indent ? "国国" : "") + textPara, style: bodyTextStyle),
+        text: TextSpan(
+            text: (indent ? "国国" : "") + textPara, style: bodyTextStyle),
         textDirection: TextDirection.ltr,
       );
       textPainter.layout(maxWidth: renderWidth);
@@ -379,7 +404,9 @@ class TextRender {
         // 如果当前页面剩余空间可以容纳当前段落
         for (int i = 0; i < textLines.length; i++) {
           final line = textLines[i];
-          final lineEndOffset = textPainter.getPositionForOffset(Offset(line.width, line.baseline)).offset;
+          final lineEndOffset = textPainter
+              .getPositionForOffset(Offset(line.width, line.baseline))
+              .offset;
           _endIndex = lineEndOffset;
           if (indent) _endIndex -= 2;
           final lineText = textPara.substring(_startIndex, _endIndex);
@@ -389,7 +416,8 @@ class TextRender {
           pageSpanBuffer.add(TextSpanPainter(
               text: lineText,
               style: bodyTextStyle,
-              posX: edgePadding.left + ((indent && i == 0) ? 2 * _singleTextWidth : 0),
+              posX: edgePadding.left +
+                  ((indent && i == 0) ? 2 * _singleTextWidth : 0),
               posY: _currentPosY,
               width: renderWidth,
               height: line.height,
@@ -412,7 +440,9 @@ class TextRender {
         // 放不下，只能尽可能多放入当前页面
         for (int i = 0; i < textLines.length; i++) {
           final line = textLines[i];
-          final lineEndOffset = textPainter.getPositionForOffset(Offset(line.width, line.baseline)).offset;
+          final lineEndOffset = textPainter
+              .getPositionForOffset(Offset(line.width, line.baseline))
+              .offset;
           _endIndex = lineEndOffset;
           if (indent) _endIndex -= 2;
           final lineText = textPara.substring(_startIndex, _endIndex);
@@ -420,7 +450,8 @@ class TextRender {
             pageSpanBuffer.add(TextSpanPainter(
                 text: lineText,
                 style: bodyTextStyle,
-                posX: edgePadding.left + ((indent && i == 0) ? 2 * _singleTextWidth : 0),
+                posX: edgePadding.left +
+                    ((indent && i == 0) ? 2 * _singleTextWidth : 0),
                 posY: _currentPosY,
                 width: renderWidth,
                 height: line.height,
@@ -438,7 +469,8 @@ class TextRender {
             // 本页已结束，把剩余的文本放到下一页
             textArr[0] = textPara.substring(_startIndex);
             final lastPainter = pageSpanBuffer.last;
-            final restHeight = renderHeight - lastPainter.posY - lastPainter.height;
+            final restHeight =
+                renderHeight - lastPainter.posY - lastPainter.height;
             pages.add(PagePainter(
                 chapterId: chapterId,
                 topInfoPadding: topInfoPadding,

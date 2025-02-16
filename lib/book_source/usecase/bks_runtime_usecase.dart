@@ -78,7 +78,7 @@
 //     }
 //     return this.export({
 //       name: this.name,
-//       author: this.author,       
+//       author: this.author,
 //       forms: this.forms,
 //       actions: this.actions
 //     })
@@ -126,7 +126,7 @@
 
 //   _super(JavascriptRuntime jsRuntime) {
 //     jsRuntime.evaluate("""
-//       $INCLUDE 
+//       $INCLUDE
 //       $PRXOY_JS_OBJ
 //       $LOG_JS_OBJ
 //       $BOOK_SOURCE_SUPER_CLASS

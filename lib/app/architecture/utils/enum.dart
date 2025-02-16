@@ -40,7 +40,8 @@ String formatReadableNumber(dynamic number, String label) {
     formattedNumber = value.toStringAsFixed(1);
     // 移除末尾的.0
     if (formattedNumber.endsWith('.0')) {
-      formattedNumber = formattedNumber.substring(0, formattedNumber.length - 2);
+      formattedNumber =
+          formattedNumber.substring(0, formattedNumber.length - 2);
     }
   }
 

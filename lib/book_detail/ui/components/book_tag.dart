@@ -28,13 +28,21 @@ class BookTag extends HookConsumerWidget {
           TextSpan(
               text: value,
               style: TextStyle(
-                  fontSize: valueFontSize, color: _colorScheme.onSurface.withAlpha(180), fontWeight: FontWeight.bold)),
+                  fontSize: valueFontSize,
+                  color: _colorScheme.onSurface.withAlpha(180),
+                  fontWeight: FontWeight.bold)),
           if (unit != null)
             TextSpan(
-                text: unit, style: TextStyle(fontSize: unitFontSize, color: _colorScheme.onSurface.withAlpha(180))),
+                text: unit,
+                style: TextStyle(
+                    fontSize: unitFontSize,
+                    color: _colorScheme.onSurface.withAlpha(180))),
           TextSpan(text: "\n \n", style: TextStyle(height: 1, fontSize: 6)),
           TextSpan(
-              text: label, style: TextStyle(fontSize: labelFontSize, color: _colorScheme.onSurface.withAlpha(100))),
+              text: label,
+              style: TextStyle(
+                  fontSize: labelFontSize,
+                  color: _colorScheme.onSurface.withAlpha(100))),
         ]));
   }
 }

@@ -11,7 +11,8 @@ class BookProvider extends _$BookProvider {
   late final Isar isar;
   @override
   Future<List<BookModel>> build() async {
-    isar = await Isar.open([BookModelSchema, ProgressModelSchema], directory: PathService().docPath);
+    isar = await Isar.open([BookModelSchema, ProgressModelSchema],
+        directory: PathService().docPath);
     return isarBookModels.where().findAll();
   }
 
@@ -24,9 +25,10 @@ class BookProvider extends _$BookProvider {
 
   remove(BookModel book) async {
     await isar.writeTxn(() async {
-      await isar.bookModels.delete(book.id!);
+      await isar.bookModels.delete(book.id);
     });
-    state = AsyncData(state.value!.where((element) => element.id != book.id).toList());
+    state = AsyncData(
+        state.value!.where((element) => element.id != book.id).toList());
   }
 
   IsarCollection<BookModel> get isarBookModels => isar.bookModels;

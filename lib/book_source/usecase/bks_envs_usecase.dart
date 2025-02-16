@@ -11,7 +11,7 @@ class BksEnvsUsecase {
     key.currentState?.saveAndValidate();
     final data = key.currentState?.value;
     if (data == null) return;
-    BookSourceService().updateEnvs(uuid, data);
+    BookSourceService().updateEnvs(uuid, data.map((key, value) => MapEntry(key, value.toString())));
     BookSourceFilesUsecase.getEnvFile(uuid).writeAsStringSync(jsonEncode(data));
     Fluttertoast.showToast(
         msg: "保存成功",
@@ -27,6 +27,6 @@ class BksEnvsUsecase {
     key.currentState?.saveAndValidate();
     final data = key.currentState?.value;
     if (data == null) return;
-    await BookSourceService().updateEnvs(uuid, data);
+    await BookSourceService().updateEnvs(uuid, data.map((key, value) => MapEntry(key, value.toString())));
   }
 }

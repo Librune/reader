@@ -28,7 +28,9 @@ class ReaderConfigModel with _$ReaderConfigModel {
     @Default("landscape") String theme,
   }) = _ReaderConfigModel;
 
-  factory ReaderConfigModel.defaultAndroid({EdgeInsets systemPadding = EdgeInsets.zero}) => ReaderConfigModel(
+  factory ReaderConfigModel.defaultAndroid(
+          {EdgeInsets systemPadding = EdgeInsets.zero}) =>
+      ReaderConfigModel(
         fontFamily: "System",
         bodyTextFontSize: 20.0,
         bodyTextLineHeight: 1.7,
@@ -48,9 +50,13 @@ class ReaderConfigModel with _$ReaderConfigModel {
         transition: 0,
       );
   const ReaderConfigModel._();
-  factory ReaderConfigModel.fromJson(Map<String, dynamic> json) => _$ReaderConfigModelFromJson(json);
+  factory ReaderConfigModel.fromJson(Map<String, dynamic> json) =>
+      _$ReaderConfigModelFromJson(json);
 
-  TextStyle get textStyle => TextStyle(fontSize: bodyTextFontSize, height: bodyTextLineHeight, fontFamily: fontFamily);
+  TextStyle get textStyle => TextStyle(
+      fontSize: bodyTextFontSize,
+      height: bodyTextLineHeight,
+      fontFamily: fontFamily);
 
   EdgeInsets get edgePadding => EdgeInsets.only(
       top: edgePaddingTop + edgePaddingDelta,
@@ -58,14 +64,20 @@ class ReaderConfigModel with _$ReaderConfigModel {
       bottom: edgePaddingBottom + edgePaddingDelta,
       left: edgePaddingLeft + edgePaddingDelta);
 
-  EdgeInsets get topInfoPadding =>
-      EdgeInsets.only(top: topInfoPaddingTop, right: topInfoPaddingRight, left: topInfoPaddingLeft);
+  EdgeInsets get topInfoPadding => EdgeInsets.only(
+      top: topInfoPaddingTop,
+      right: topInfoPaddingRight,
+      left: topInfoPaddingLeft);
 
-  EdgeInsets get bottomInfoPadding =>
-      EdgeInsets.only(bottom: bottomInfoPaddingBottom, right: bottomInfoPaddingRight, left: bottomInfoPaddingLeft);
+  EdgeInsets get bottomInfoPadding => EdgeInsets.only(
+      bottom: bottomInfoPaddingBottom,
+      right: bottomInfoPaddingRight,
+      left: bottomInfoPaddingLeft);
 
-  TextStyle get bodyTextStyle =>
-      TextStyle(fontSize: bodyTextFontSize, height: bodyTextLineHeight, fontFamily: fontFamily);
+  TextStyle get bodyTextStyle => TextStyle(
+      fontSize: bodyTextFontSize,
+      height: bodyTextLineHeight,
+      fontFamily: fontFamily);
 
   String get customFontPath => "${PathService().appPath}/fonts/font.ttf";
 }

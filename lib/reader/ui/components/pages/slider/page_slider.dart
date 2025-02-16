@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
 
 class PageSlider extends StatefulHookConsumerWidget {
@@ -25,7 +24,8 @@ class PageSlider extends StatefulHookConsumerWidget {
   ConsumerState<PageSlider> createState() => _PageSliderState();
 }
 
-class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObserver, AutomaticKeepAliveClientMixin {
+class _PageSliderState extends ConsumerState<PageSlider>
+    with WidgetsBindingObserver, AutomaticKeepAliveClientMixin {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
@@ -33,14 +33,10 @@ class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObse
   }
 
   @override
-  void didChangeMetrics() {
-    super.didChangeMetrics();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
-    final noMenus = ref.watch(ProviderUsecase().menu.select((value) => value.none));
+    final noMenus =
+        ref.watch(ProviderUsecase().menu.select((value) => value.none));
     final scrollController = useScrollController(
       initialScrollOffset: widget.controller._initialPage != null
           ? widget.controller._initialPage! * MediaQuery.of(context).size.width
@@ -121,7 +117,8 @@ class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObse
         return;
       } else {
         if (details.localPosition.dx < screenWidth / 3) {
-          final targetPage = (currentPage.value - 1).clamp(0, widget.itemCount - 1);
+          final targetPage =
+              (currentPage.value - 1).clamp(0, widget.itemCount - 1);
           if (targetPage != currentPage.value) {
             scrollController
                 .animateTo(
@@ -137,7 +134,8 @@ class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObse
             });
           }
         } else if (details.localPosition.dx > screenWidth * 2 / 3) {
-          final targetPage = (currentPage.value + 1).clamp(0, widget.itemCount - 1);
+          final targetPage =
+              (currentPage.value + 1).clamp(0, widget.itemCount - 1);
           if (targetPage != currentPage.value) {
             scrollController
                 .animateTo(
@@ -161,12 +159,14 @@ class _PageSliderState extends ConsumerState<PageSlider> with WidgetsBindingObse
     return RawGestureDetector(
       behavior: HitTestBehavior.translucent,
       gestures: {
-        TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
+        TapGestureRecognizer:
+            GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
           () => TapGestureRecognizer(),
           (instance) => instance..onTapUp = handleTapUp,
         ),
         if (noMenus)
-          HorizontalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<HorizontalDragGestureRecognizer>(
+          HorizontalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<
+              HorizontalDragGestureRecognizer>(
             () => HorizontalDragGestureRecognizer(),
             (instance) => instance
               ..onStart = handleDragStart

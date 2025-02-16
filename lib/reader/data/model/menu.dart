@@ -13,7 +13,8 @@ class MenuModel with _$MenuModel {
     @Default(false) bool sub,
     @Default(null) ReaderBottomSheet? subType,
   }) = _MenuModel;
-  factory MenuModel.fromJson(Map<String, dynamic> json) => _$MenuModelFromJson(json);
+  factory MenuModel.fromJson(Map<String, dynamic> json) =>
+      _$MenuModelFromJson(json);
   const MenuModel._();
 
   bool get none => !bottom && !top && !sub;

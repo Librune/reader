@@ -25,14 +25,18 @@ class SearchScreen extends HookConsumerWidget {
             autoFocus: true,
             controller: searchController,
             elevation: WidgetStatePropertyAll(0),
-            backgroundColor: WidgetStateProperty.all(colorScheme.inverseSurface.withAlpha(20)),
+            backgroundColor: WidgetStateProperty.all(
+                colorScheme.inverseSurface.withAlpha(20)),
             constraints: BoxConstraints(minHeight: 38),
             textStyle: WidgetStatePropertyAll(textTheme.bodyMedium),
-            padding: WidgetStatePropertyAll(EdgeInsets.only(right: 0, left: 10)),
+            padding:
+                WidgetStatePropertyAll(EdgeInsets.only(right: 0, left: 10)),
             leading: Padding(
               padding: EdgeInsets.only(left: 4),
               child: SvgPicture.asset("assets/svg/ic_topbar_search.svg",
-                  colorFilter: ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn), width: 16),
+                  colorFilter:
+                      ColorFilter.mode(colorScheme.onSurface, BlendMode.srcIn),
+                  width: 16),
             ),
             onSubmitted: (value) {
               ref.read(searchHistoryProvider.notifier).push(value);
@@ -60,10 +64,12 @@ class SearchScreen extends HookConsumerWidget {
                 constraints: BoxConstraints(maxHeight: 36),
                 child: TextButton(
                     onPressed: () {
-                      context.replace('/book_search_result/${searchController.text}');
+                      context.replace(
+                          '/book_search_result/${searchController.text}');
                     },
                     style: ButtonStyle(
-                      foregroundColor: WidgetStateProperty.all(colorScheme.onSurface),
+                      foregroundColor:
+                          WidgetStateProperty.all(colorScheme.onSurface),
                     ),
                     child: Text(
                       "搜索",

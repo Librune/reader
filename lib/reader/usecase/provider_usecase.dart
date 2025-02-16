@@ -14,9 +14,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 // ignore: invalid_use_of_internal_member
 typedef MenuProvider = AutoDisposeNotifierProviderImpl<Menu, MenuModel>;
 // ignore: invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
-typedef ThemeProvider = AsyncNotifierProviderImpl<ReaderTheme, List<ReaderThemeModel>>;
+typedef ThemeProvider
+    = AsyncNotifierProviderImpl<ReaderTheme, List<ReaderThemeModel>>;
 // ignore: invalid_use_of_internal_member
-typedef ExtraProvider = NotifierProviderImpl<ReaderExtraConfig, ReaderExtraModal>;
+typedef ExtraProvider
+    = NotifierProviderImpl<ReaderExtraConfig, ReaderExtraModal>;
 
 class ProviderUsecase {
   static ProviderUsecase? _instance;

@@ -15,9 +15,12 @@ class ReaderThemeModel with _$ReaderThemeModel {
     required ReaderThemeColorScheme dark,
   }) = _ReaderThemeModel;
   const ReaderThemeModel._();
-  factory ReaderThemeModel.fromJson(Map<String, dynamic> json) => _$ReaderThemeModelFromJson(json);
+  factory ReaderThemeModel.fromJson(Map<String, dynamic> json) =>
+      _$ReaderThemeModelFromJson(json);
 
-  ColorScheme get colorScheme => ColorScheme.fromSeed(seedColor: Color(int.parse(light.primary, radix: 16))).copyWith(
+  ColorScheme get colorScheme => ColorScheme.fromSeed(
+              seedColor: Color(int.parse(light.primary, radix: 16)))
+          .copyWith(
         surface: Color(int.parse(light.surface, radix: 16)),
         onSurface: Color(int.parse(light.onSurface, radix: 16)),
         primary: Color(int.parse(light.primary, radix: 16)),
@@ -26,8 +29,9 @@ class ReaderThemeModel with _$ReaderThemeModel {
         brightness: Brightness.light,
       );
 
-  ColorScheme get darkColorScheme =>
-      ColorScheme.fromSeed(seedColor: Color(int.parse(light.primary, radix: 16))).copyWith(
+  ColorScheme get darkColorScheme => ColorScheme.fromSeed(
+              seedColor: Color(int.parse(light.primary, radix: 16)))
+          .copyWith(
         surface: Color(int.parse(dark.surface, radix: 16)),
         onSurface: Color(int.parse(dark.onSurface, radix: 16)),
         primary: Color(int.parse(dark.primary, radix: 16)),
@@ -47,5 +51,6 @@ class ReaderThemeColorScheme with _$ReaderThemeColorScheme {
     required String tertiary,
   }) = _ReaderThemeColorScheme;
   const ReaderThemeColorScheme._();
-  factory ReaderThemeColorScheme.fromJson(Map<String, dynamic> json) => _$ReaderThemeColorSchemeFromJson(json);
+  factory ReaderThemeColorScheme.fromJson(Map<String, dynamic> json) =>
+      _$ReaderThemeColorSchemeFromJson(json);
 }

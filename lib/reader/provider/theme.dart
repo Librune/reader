@@ -18,7 +18,8 @@ class ReaderTheme extends _$ReaderTheme {
     final List<ReaderThemeModel> themes = [];
     for (var id in themeIds) {
       final themeDir = Directory(join(PathService().readerThemesPath, id));
-      final themeJson = await File(join(themeDir.path, 'index.json')).readAsString();
+      final themeJson =
+          await File(join(themeDir.path, 'index.json')).readAsString();
       try {
         themes.add(ReaderThemeModel.fromJson(jsonDecode(themeJson)));
       } catch (err) {

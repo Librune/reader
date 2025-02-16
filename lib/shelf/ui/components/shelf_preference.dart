@@ -11,7 +11,8 @@ class ShelfPreference extends HookConsumerWidget {
         children: [
           Text(
             "刺猬猫阅读",
-            style: textTheme.titleSmall?.copyWith(fontWeight: FontWeight.normal),
+            style:
+                textTheme.titleSmall?.copyWith(fontWeight: FontWeight.normal),
           ),
         ],
       ),

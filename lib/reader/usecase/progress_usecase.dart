@@ -18,7 +18,11 @@ class ProgressUsecase {
   init(CatalogModel catalog) async {
     Log.e('ProgressUsecase init');
     this.catalog = catalog;
-    final _progress = (await isar.progressModels.where().filter().bookIdEqualTo(catalog.bookId).findFirst());
+    final _progress = (await isar.progressModels
+        .where()
+        .filter()
+        .bookIdEqualTo(catalog.bookId)
+        .findFirst());
     if (_progress == null) {
       progress = ProgressModel(
           bookId: catalog.bookId,
@@ -41,7 +45,8 @@ class ProgressUsecase {
     }
     for (var page in pagePainters) {
       for (var painter in page.painters) {
-        if (painter.paraIndex == progress.paragraphIndex && progress.textLineIndex == painter.paraLineIndex) {
+        if (painter.paraIndex == progress.paragraphIndex &&
+            progress.textLineIndex == painter.paraLineIndex) {
           return page.pageIndex;
         }
       }
@@ -65,7 +70,8 @@ class ProgressUsecase {
   jumpChapter({required ChapterModel chapter}) {
     progress = progress.copyWith(
         chapterId: chapter.cid,
-        chapterIndex: catalog.flatChapterList.indexWhere((element) => element.cid == chapter.cid),
+        chapterIndex: catalog.flatChapterList
+            .indexWhere((element) => element.cid == chapter.cid),
         paragraphIndex: 0,
         textLineIndex: 0);
     _sync();

@@ -3,7 +3,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SvgBtn extends HookConsumerWidget {
-  const SvgBtn({super.key, required this.svgName, this.size = 18, this.color, this.style, this.onPressed});
+  const SvgBtn(
+      {super.key,
+      required this.svgName,
+      this.size = 18,
+      this.color,
+      this.style,
+      this.onPressed});
   final String svgName;
   final double size;
   final Color? color;

@@ -22,7 +22,8 @@ class BottomNav extends ConsumerWidget {
             selectedLabelStyle: TextStyle(fontSize: 10),
             unselectedLabelStyle: TextStyle(fontSize: 10),
             onTap: (value) {
-              navigationShell.goBranch(value, initialLocation: value == navigationShell.currentIndex);
+              navigationShell.goBranch(value,
+                  initialLocation: value == navigationShell.currentIndex);
             },
             items: items.mapIndexed((index, item) {
               return BottomNavigationBarItem(

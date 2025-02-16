@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nil/nil.dart';
 import 'package:reader/app/architecture/utils/enum.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/app/data/model/book.dart';
@@ -37,7 +36,10 @@ class BookSearchItem extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(4),
                 child: CachedNetworkImage(
                   imageUrl: book.cover,
-                  httpHeaders: {"user-agent": "Dalvik/2.1.0 (Linux; U; Android 11; IN2010 Build/RP1A.201005.001)"},
+                  httpHeaders: {
+                    "user-agent":
+                        "Dalvik/2.1.0 (Linux; U; Android 11; IN2010 Build/RP1A.201005.001)"
+                  },
                   width: 64,
                   height: 86,
                   fit: BoxFit.cover,
@@ -55,7 +57,10 @@ class BookSearchItem extends HookConsumerWidget {
                           Expanded(
                               child: Text(
                             book.name,
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, height: 1),
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                height: 1),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           )),
@@ -86,7 +91,10 @@ class BookSearchItem extends HookConsumerWidget {
                           textAlign: TextAlign.start,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 12, height: 1.2, color: colorScheme.secondary),
+                          style: TextStyle(
+                              fontSize: 12,
+                              height: 1.2,
+                              color: colorScheme.secondary),
                         ),
                       )),
                       Row(
@@ -94,33 +102,41 @@ class BookSearchItem extends HookConsumerWidget {
                         children: [
                           if (book.wordNum != null)
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 4, vertical: 2),
                               decoration: BoxDecoration(
                                 color: colorScheme.secondary.withAlpha(20),
                                 borderRadius: BorderRadius.circular(2),
                               ),
-                              child: Text(formatReadableNumber(book.wordNum!, "字"),
-                                  style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
+                              child: Text(
+                                  formatReadableNumber(book.wordNum!, "字"),
+                                  style: textTheme.bodySmall
+                                      ?.copyWith(color: colorScheme.secondary)),
                             ),
                           if (book.creationStatus != null)
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 4, vertical: 2),
                               decoration: BoxDecoration(
                                 color: colorScheme.secondary.withAlpha(20),
                                 borderRadius: BorderRadius.circular(2),
                               ),
-                              child: Text(getBookCreationStatus(book.creationStatus!),
-                                  style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
+                              child: Text(
+                                  getBookCreationStatus(book.creationStatus!),
+                                  style: textTheme.bodySmall
+                                      ?.copyWith(color: colorScheme.secondary)),
                             ),
                           if (book.tags != null && book.tags!.isNotEmpty)
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 4, vertical: 2),
                               decoration: BoxDecoration(
                                 color: colorScheme.secondary.withAlpha(20),
                                 borderRadius: BorderRadius.circular(2),
                               ),
-                              child: Text(book.tags!.first!,
-                                  style: textTheme.bodySmall?.copyWith(color: colorScheme.secondary)),
+                              child: Text(book.tags!.first,
+                                  style: textTheme.bodySmall
+                                      ?.copyWith(color: colorScheme.secondary)),
                             )
                         ],
                       )

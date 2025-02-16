@@ -7,7 +7,9 @@ bookToggleShelfUsecase(WidgetRef ref, BookModel book) {
   final BookModel? _book = ref
       .read(bookProviderProvider)
       .value!
-      .filter((element) => element.bookSourceId == book.bookSourceId && element.bookId == book.bookId)
+      .filter((element) =>
+          element.bookSourceId == book.bookSourceId &&
+          element.bookId == book.bookId)
       .firstOrNull;
   if (_book != null) {
     ref.read(bookProviderProvider.notifier).remove(_book);

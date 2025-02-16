@@ -1,43 +1,53 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:reader/app/architecture/utils/log.dart';
 
 Future<Map<String, dynamic>> dioFetch(dynamic args) async {
   Uri uri = Uri.parse(args['url']);
   Map options = args['options'];
-  Map<String, String> headers =
-      (options["headers"] as Map<dynamic, dynamic>).map((key, value) => MapEntry("$key", "$value"));
+  Map<String, String> headers = (options["headers"] as Map<dynamic, dynamic>)
+      .map((key, value) => MapEntry("$key", "$value"));
   late Response response;
   switch (options["method"].toString().toLowerCase()) {
     case "get":
-      response =
-          await Dio().get(uri.toString(), options: Options(headers: headers, contentType: options["contentType"]));
+      response = await Dio().get(uri.toString(),
+          options:
+              Options(headers: headers, contentType: options["contentType"]));
       break;
     case "post":
       response = await Dio().post(uri.toString(),
-          data: options["data"], options: Options(headers: headers, contentType: options["contentType"]));
+          data: options["data"],
+          options:
+              Options(headers: headers, contentType: options["contentType"]));
       break;
     case "put":
       response = await Dio().put(uri.toString(),
-          data: options["data"], options: Options(headers: headers, contentType: options["contentType"]));
+          data: options["data"],
+          options:
+              Options(headers: headers, contentType: options["contentType"]));
       break;
     case "delete":
-      response =
-          await Dio().delete(uri.toString(), options: Options(headers: headers, contentType: options["contentType"]));
+      response = await Dio().delete(uri.toString(),
+          options:
+              Options(headers: headers, contentType: options["contentType"]));
       break;
     default:
       throw Exception("Unsupported method: ${options["method"]}");
   }
 
   final json = {
-    "ok": response.statusCode != null && (response.statusCode! >= 200 && response.statusCode! < 300),
+    "ok": response.statusCode != null &&
+        (response.statusCode! >= 200 && response.statusCode! < 300),
     "status": response.statusCode,
     "statusText": response.statusMessage,
-    "headers": response.headers.map.map((key, value) => MapEntry(key, jsonEncode(value))),
+    "headers": response.headers.map
+        .map((key, value) => MapEntry(key, jsonEncode(value))),
     "body": response.data,
     "responseURL": response.requestOptions.uri.toString(),
-    "responseText": response.headers.value("content-type").toString().contains(Headers.jsonContentType)
+    "responseText": response.headers
+            .value("content-type")
+            .toString()
+            .contains(Headers.jsonContentType)
         ? jsonEncode(response.data)
         : response.data.toString()
   };

@@ -56,9 +56,11 @@ class PreferenceTap extends PereferenceItem {
     final colorScheme = Theme.of(context).colorScheme;
     final typography = Theme.of(context).textTheme;
     final bgColor = backgroundColor ?? const Color(0x00000000);
-    final titleStyle = this.titleStyle ?? const TextStyle(fontWeight: FontWeight.w600, fontSize: 14);
-    final subtitleStyle =
-        this.subtitleStyle ?? typography.bodySmall?.copyWith(color: colorScheme.onSurface.withOpacity(.6));
+    final titleStyle = this.titleStyle ??
+        const TextStyle(fontWeight: FontWeight.w600, fontSize: 14);
+    final subtitleStyle = this.subtitleStyle ??
+        typography.bodySmall
+            ?.copyWith(color: colorScheme.onSurface.withOpacity(.6));
     final icon = iconWidget ??
         (iconData != null
             ? Icon(
@@ -86,8 +88,9 @@ class PreferenceTap extends PereferenceItem {
             style: titleStyle,
           ),
         ),
-        subtitle:
-            Padding(padding: const EdgeInsets.only(top: 4, right: 8), child: Text(subtitle, style: subtitleStyle)),
+        subtitle: Padding(
+            padding: const EdgeInsets.only(top: 4, right: 8),
+            child: Text(subtitle, style: subtitleStyle)),
         onTap: onTap,
         trailing: suffixIcon);
   }
@@ -117,9 +120,11 @@ class PreferenceSwitch extends PereferenceItem {
     final colorScheme = Theme.of(context).colorScheme;
     final typography = Theme.of(context).textTheme;
     final bgColor = backgroundColor ?? const Color(0x00000000);
-    final titleStyle = this.titleStyle ?? const TextStyle(fontWeight: FontWeight.w600, fontSize: 14);
-    final subtitleStyle =
-        this.subtitleStyle ?? typography.bodySmall?.copyWith(color: colorScheme.onSurface.withOpacity(.6));
+    final titleStyle = this.titleStyle ??
+        const TextStyle(fontWeight: FontWeight.w600, fontSize: 14);
+    final subtitleStyle = this.subtitleStyle ??
+        typography.bodySmall
+            ?.copyWith(color: colorScheme.onSurface.withOpacity(.6));
     final icon = iconWidget ??
         (iconData != null
             ? Icon(
@@ -142,7 +147,9 @@ class PreferenceSwitch extends PereferenceItem {
           style: titleStyle,
         ),
       ),
-      subtitle: Padding(padding: const EdgeInsets.only(top: 4, right: 8), child: Text(subtitle, style: subtitleStyle)),
+      subtitle: Padding(
+          padding: const EdgeInsets.only(top: 4, right: 8),
+          child: Text(subtitle, style: subtitleStyle)),
       onTap: () {
         onChanged(!value);
       },

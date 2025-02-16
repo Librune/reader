@@ -12,8 +12,10 @@ import 'package:reader/book_source/provider/book_source_provider.dart';
 
 class BookSourceManageUsecase {
   static Future<File> _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowedExtensions: BookSourceFileType.values.map((e) => e.name).toList(), type: FileType.custom);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowedExtensions:
+            BookSourceFileType.values.map((e) => e.name).toList(),
+        type: FileType.custom);
     if (result != null) {
       return File(result.files.single.path!);
     } else {
@@ -28,7 +30,8 @@ class BookSourceManageUsecase {
     throw Exception('未选择任何文件');
   }
 
-  static _copyFile(File file, {required String uuid, String name = 'index.js'}) async {
+  static _copyFile(File file,
+      {required String uuid, String name = 'index.js'}) async {
     final dirPath = join(PathService().bookSourcePath, uuid);
     if (!Directory(dirPath).existsSync()) {
       Directory(dirPath).createSync(recursive: true);

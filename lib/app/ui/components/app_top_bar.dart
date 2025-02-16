@@ -24,8 +24,10 @@ class AppTopBar extends HookConsumerWidget implements PreferredSizeWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final _canPop = canPop ?? router.canPop();
-    final _title =
-        title is String ? Text(title, style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)) : title;
+    final _title = title is String
+        ? Text(title,
+            style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold))
+        : title;
     (actions)?.add(const SizedBox(width: 8));
     return AppBar(
       elevation: 0,
@@ -37,7 +39,9 @@ class AppTopBar extends HookConsumerWidget implements PreferredSizeWidget {
           statusBarColor: Colors.transparent,
           systemNavigationBarColor: Colors.transparent,
           statusBarIconBrightness:
-              Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light),
+              Theme.of(context).brightness == Brightness.light
+                  ? Brightness.dark
+                  : Brightness.light),
       title: Padding(
         padding: EdgeInsets.only(left: _canPop ? 8 : titleLeftPadding),
         child: _title,
@@ -46,7 +50,8 @@ class AppTopBar extends HookConsumerWidget implements PreferredSizeWidget {
           ? IconButton(
               style: ButtonStyle(
                 padding: WidgetStateProperty.all(EdgeInsets.zero),
-                backgroundColor: WidgetStateProperty.all(colorScheme.inverseSurface.withAlpha(20)),
+                backgroundColor: WidgetStateProperty.all(
+                    colorScheme.inverseSurface.withAlpha(20)),
                 minimumSize: WidgetStateProperty.all(const Size(36, 36)),
               ),
               icon: const Icon(
