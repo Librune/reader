@@ -5,11 +5,8 @@ import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/path.dart';
 import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
-import 'package:reader/book_source/usecase/bks_channel_usecase.dart';
-import 'package:reader/book_source/usecase/bks_libs_usecase.dart';
 import 'package:reader/src/rust/api/ecma.dart';
 import 'package:reader/src/rust/api/envs.dart';
-import 'package:uuid/uuid.dart';
 
 class BookSourceService {
   // jsRuntime实例
@@ -48,12 +45,15 @@ class BookSourceService {
       if (!bksManifest.existsSync()) {
         bksManifest.createSync(recursive: true);
       } else {
+        Log.e(bksManifest.path);
         final json = jsonDecode(bksManifest.readAsStringSync()) as List<dynamic>;
         json.where(((bks) => bks["enabled"] == true)).forEach((bks) {
           final uuid = bks["uuid"];
           final file = File(join(PathService().bookSourcePath, uuid, "index.js"));
           final js = file.readAsStringSync();
           bks[uuid] = js;
+          insertJsScript(uuid: uuid, code: js);
+          bookSourceList.add(getBookSourceInfo(uuid));
         });
         initJsScripts(scripts: bks);
       }
@@ -130,7 +130,18 @@ class BookSourceService {
   /// @param args 书源方法参数
   /// @return 书源方法返回值 —— 你应该知道自己需要的是什么类型，如果是可序列化的对象，那么会自动处理，否则请自行判断
   Future<dynamic> action({required String uuid, required String act, Map<String, dynamic>? args}) async {
-    return jsAction(uuid: uuid, method: act, args: jsonEncode(args ?? {}));
+    final res = await jsAction(uuid: uuid, method: act, args: jsonEncode(args ?? {}));
+    try {
+      var dynamicRes = jsonDecode(res);
+      if (dynamicRes is String) {
+        return jsonDecode(dynamicRes);
+      } else {
+        return dynamicRes;
+      }
+    } catch (e) {
+      return res;
+    }
+
     // runtime.executePendingJob();
     // final res = await runtime.evaluateAsync("""
     //    __BOOK_SOURCE_MAP__['$uuid'].action('$act', ${args != null ? jsonEncode(args) : ''});

@@ -7,15 +7,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path/path.dart';
 import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/app/architecture/service/path.dart';
+import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/book_source/data/model/book_source.dart';
 import 'package:reader/book_source/provider/book_source_provider.dart';
 
 class BookSourceManageUsecase {
   static Future<File> _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-        allowedExtensions:
-            BookSourceFileType.values.map((e) => e.name).toList(),
-        type: FileType.custom);
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(allowedExtensions: BookSourceFileType.values.map((e) => e.name).toList(), type: FileType.custom);
     if (result != null) {
       return File(result.files.single.path!);
     } else {
@@ -30,8 +29,7 @@ class BookSourceManageUsecase {
     throw Exception('未选择任何文件');
   }
 
-  static _copyFile(File file,
-      {required String uuid, String name = 'index.js'}) async {
+  static _copyFile(File file, {required String uuid, String name = 'index.js'}) async {
     final dirPath = join(PathService().bookSourcePath, uuid);
     if (!Directory(dirPath).existsSync()) {
       Directory(dirPath).createSync(recursive: true);
@@ -40,6 +38,7 @@ class BookSourceManageUsecase {
     if (await File(target).exists()) {
       await File(target).delete();
     }
+    Log.e('copy file to $target');
     return await file.copy(target);
   }
 

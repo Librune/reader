@@ -72,7 +72,7 @@ pub fn get_uuid(code: String) -> String {
     if let Err(_) = engine.eval(code) {
         return uuid::Uuid::new_v4().to_string();
     }
-    match engine.eval("uuid".to_string()) {
+    match engine.eval("id".to_string()) {
         Ok(value) => uuid::Uuid::parse_str(&value)
             .unwrap_or_else(|_| uuid::Uuid::new_v4())
             .to_string(),
