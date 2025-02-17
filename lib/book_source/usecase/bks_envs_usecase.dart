@@ -21,7 +21,9 @@ class BksEnvsUsecase {
         fontSize: 16.0);
   }
 
-  static read({required String uuid}) => jsonDecode(BookSourceFilesUsecase.getEnvFile(uuid).readAsStringSync());
+  static init({required String uuid}) {
+    return jsonDecode(BookSourceFilesUsecase.getEnvFile(uuid).readAsStringSync());
+  }
 
   static Future syncValueToJs(GlobalKey<FormBuilderState> key, {required String uuid}) async {
     key.currentState?.saveAndValidate();
