@@ -5,7 +5,7 @@ use boa_engine::{
     js_string,
     object::ObjectInitializer,
     property::{Attribute, PropertyKey},
-    Context, JsArgs, JsError, JsNativeError, JsResult, JsValue, NativeFunction,
+    Context, JsArgs, JsError, JsNativeError, JsObject, JsResult, JsValue, NativeFunction,
 };
 use reqwest::{
     header::{HeaderMap, HeaderName},
@@ -107,97 +107,6 @@ impl RequestConfig {
         }
 
         Ok(config)
-    }
-}
-
-// Response 结构体用于存储响应数据
-#[derive(Debug)]
-struct ResponseData {
-    status: u16,
-    status_text: String,
-    headers: HeaderMap,
-    url: String,
-    ok: bool,
-    body: String,
-    redirected: bool,
-    type_: String, // basic, cors, etc
-}
-
-impl ResponseData {
-    async fn from_response(response: Response) -> Result<Self, Box<dyn std::error::Error>> {
-        let url = response.url().to_string();
-        let status = response.status();
-        let headers = response.headers().clone();
-        let ok = status.is_success();
-        let redirected = response.status().is_redirection();
-        let body = response.text().await?;
-        Ok(ResponseData {
-            status: status.as_u16(),
-            status_text: status.canonical_reason().unwrap_or("").to_string(),
-            headers,
-            url,
-            ok,
-            body,
-            redirected,
-            type_: "basic".to_string(),
-        })
-    }
-
-    fn to_js_object(&self, ctx: &mut Context) -> JsResult<JsValue> {
-        let mut response = ObjectInitializer::new(ctx);
-        response
-            .property(
-                PropertyKey::String(js_string!("ok")),
-                self.ok,
-                Attribute::all(),
-            )
-            .property(
-                PropertyKey::String(js_string!("redirected")),
-                self.redirected,
-                Attribute::all(),
-            )
-            .property(
-                PropertyKey::String(js_string!("status")),
-                self.status,
-                Attribute::all(),
-            )
-            .property(
-                PropertyKey::String(js_string!("statusText")),
-                js_string!(self.status_text.clone()),
-                Attribute::all(),
-            )
-            .property(
-                PropertyKey::String(js_string!("type")),
-                js_string!(self.type_.clone()),
-                Attribute::all(),
-            )
-            .property(
-                PropertyKey::String(js_string!("url")),
-                js_string!(self.url.clone()),
-                Attribute::all(),
-            );
-        let mut headers_obj = ObjectInitializer::new(ctx);
-        for (key, value) in self.headers.iter() {
-            if let Ok(value_str) = value.to_str() {
-                headers_obj.property(
-                    PropertyKey::String(js_string!(key.as_str())),
-                    js_string!(value_str.to_string()),
-                    Attribute::all(),
-                );
-            }
-        }
-        let response = response.property(
-            PropertyKey::String(js_string!("headers")),
-            headers_obj.build(),
-            Attribute::all(),
-        );
-        let response = response.property(
-            PropertyKey::String(js_string!("text")),
-            js_string!(self.body.clone()),
-            Attribute::all(),
-        );
-
-        Ok(response.build().into())
     }
 }
 
