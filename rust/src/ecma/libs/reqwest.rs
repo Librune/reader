@@ -2,10 +2,8 @@ use lazy_static::lazy_static;
 use std::time::Duration;
 
 use boa_engine::{
-    js_string,
-    object::ObjectInitializer,
-    property::{Attribute, PropertyKey},
-    Context, JsArgs, JsError, JsNativeError, JsObject, JsResult, JsValue, NativeFunction,
+    js_string, object::ObjectInitializer, property::Attribute, Context, JsArgs, JsError,
+    JsNativeError, JsObject, JsResult, JsValue, NativeFunction,
 };
 use reqwest::{
     header::{HeaderMap, HeaderName},
@@ -110,12 +108,57 @@ impl RequestConfig {
     }
 }
 
+// 创建Headers对象
+fn create_headers_object(headers: &HeaderMap, ctx: &mut Context) -> JsResult<JsObject> {
+    let headers_obj = ObjectInitializer::new(ctx).build();
+
+    for (name, value) in headers.iter() {
+        if let Ok(value_str) = value.to_str() {
+            headers_obj.set(js_string!(name.as_str()), js_string!(value_str), true, ctx)?;
+        }
+    }
+
+    Ok(headers_obj)
+}
+
+// 创建Response对象
+async fn create_response_object(response: Response, ctx: &mut Context) -> JsResult<JsObject> {
+    let response_obj = ObjectInitializer::new(ctx).build();
+
+    // 设置基本属性
+    response_obj.set(js_string!("ok"), response.status().is_success(), true, ctx)?;
+    response_obj.set(js_string!("status"), response.status().as_u16(), true, ctx)?;
+    response_obj.set(
+        js_string!("statusText"),
+        js_string!(response.status().canonical_reason().unwrap_or("")),
+        true,
+        ctx,
+    )?;
+    response_obj.set(js_string!("type"), js_string!("default"), true, ctx)?;
+
+    // 设置headers
+    let headers_obj = create_headers_object(response.headers(), ctx)?;
+    response_obj.set(js_string!("headers"), headers_obj, true, ctx)?;
+
+    // 设置body相关方法
+    let body_text = response.text().await.unwrap_or_default();
+
+    response_obj.set(
+        js_string!("body"),
+        JsValue::new(js_string!(body_text)),
+        true,
+        ctx,
+    )?;
+
+    Ok(response_obj)
+}
+
 // 统一的请求处理函数
 async fn make_request(
     method: Method,
     url: String,
     config: RequestConfig,
-) -> Result<String, Box<dyn std::error::Error>> {
+) -> Result<Response, Box<dyn std::error::Error>> {
     let mut request_builder = HTTP_CLIENT.request(method, url);
 
     // 应用配置
@@ -135,8 +178,7 @@ async fn make_request(
         request_builder = request_builder.body(body);
     }
 
-    let response = request_builder.send().await?;
-    Ok(response.text().await?)
+    Ok(request_builder.send().await?)
 }
 
 // JS包装函数
@@ -160,7 +202,7 @@ fn handle_request(method: Method, args: &[JsValue], ctx: &mut Context) -> JsResu
         }
     };
 
-    let result = tokio::task::block_in_place(|| {
+    let response = tokio::task::block_in_place(|| {
         tokio::runtime::Handle::current().block_on(async {
             make_request(method, url, config).await.map_err(|e| {
                 JsError::from_opaque(js_string!(format!("Request failed: {}", e)).into())
@@ -168,7 +210,17 @@ fn handle_request(method: Method, args: &[JsValue], ctx: &mut Context) -> JsResu
         })
     })?;
 
-    Ok(JsValue::new(js_string!(result)))
+    let response_obj = tokio::task::block_in_place(|| {
+        tokio::runtime::Handle::current().block_on(async {
+            create_response_object(response, ctx).await.map_err(|e| {
+                JsError::from_opaque(
+                    js_string!(format!("Failed to create response object: {}", e)).into(),
+                )
+            })
+        })
+    })?;
+
+    Ok(response_obj.into())
 }
 
 // HTTP方法包装函数
