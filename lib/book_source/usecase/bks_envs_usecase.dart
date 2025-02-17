@@ -7,9 +7,15 @@ import 'package:reader/app/architecture/service/book_source.dart';
 import 'package:reader/book_source/usecase/bks_files_usecase.dart';
 
 class BksEnvsUsecase {
-  static save(GlobalKey<FormBuilderState> key, {required String uuid}) {
-    key.currentState?.saveAndValidate();
-    final data = key.currentState?.value;
+  static save(GlobalKey<FormBuilderState> key, {required String uuid, Map<String, dynamic>? value}) {
+    late final Map<String, dynamic>? data;
+    if (value != null) {
+      key.currentState!.patchValue(value);
+      data = value;
+    } else {
+      key.currentState?.saveAndValidate();
+      data = key.currentState?.value;
+    }
     if (data == null) return;
     BookSourceService().updateEnvs(uuid, data.map((key, value) => MapEntry(key, value.toString())));
     BookSourceFilesUsecase.getEnvFile(uuid).writeAsStringSync(jsonEncode(data));

@@ -98,6 +98,7 @@ class BookSourcePreference extends HookConsumerWidget {
                                     BksEnvsUsecase.syncValueToJs(_formKey, uuid: model.uuid).then((_) async {
                                       final res = await BookSourceService().action(uuid: model.uuid, act: ele.field);
                                       Log.e(res);
+                                      BksEnvsUsecase.save(_formKey, uuid: model.uuid, value: res);
                                     });
                                   },
                                 ),
