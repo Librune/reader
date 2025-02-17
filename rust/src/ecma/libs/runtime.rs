@@ -2,8 +2,8 @@ use boa_engine::{property::Attribute, Context};
 use boa_runtime::Console;
 
 use super::{
-    crypto::CryptoModule, modules::define_require, reqwest::define_rq, scraper::define_scraper,
-    string::extend_string, utils::define_utils,
+    crypto::CryptoModule, modules::define_require, object::extend_object, reqwest::define_rq,
+    scraper::define_scraper, string::extend_string, utils::define_utils,
 };
 
 /// Adds the custom runtime to the context.
@@ -18,4 +18,5 @@ pub fn add_runtime(context: &mut Context) {
     define_utils(context);
     CryptoModule::init(context).unwrap();
     extend_string(context);
+    extend_object(context);
 }
