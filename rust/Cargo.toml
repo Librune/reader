@@ -34,6 +34,7 @@ encoding_rs = "0.8.35"
 percent-encoding = "2.3.1"
 regex = "1.11.1"
 chardet = "0.2.4"
+boa_gc = "0.20.0"
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
