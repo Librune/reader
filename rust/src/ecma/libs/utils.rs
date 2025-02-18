@@ -1,6 +1,8 @@
 use std::io::Error;
 
 use boa_engine::{js_error, js_string, Context, JsArgs, JsValue, NativeFunction, Source};
+use quickxml_to_serde::{xml_string_to_json, Config, NullValue};
+use serde_json::json;
 use uuid::Uuid;
 
 fn add_uuid(context: &mut Context) {
@@ -51,8 +53,28 @@ fn get_storage(context: &mut Context) -> Result<(), Error> {
     Ok(())
 }
 
+fn xml_to_json(context: &mut Context) -> Result<(), Error> {
+    let function = NativeFunction::from_fn_ptr(|_this, args, context| {
+        let xml = args.get_or_undefined(0);
+        if xml.is_undefined() {
+            return Err(js_error!("XMLString is undefined"));
+        }
+        let xml_str = xml.to_string(context).unwrap().to_std_string_escaped();
+        let conf = Config::new_with_custom_values(false, "", "text", NullValue::Null);
+        let json = xml_string_to_json(xml_str.to_owned(), &conf).expect("Malformed XML");
+        let js_value = JsValue::from_json(&json, context)?;
+        let js_object = js_value.as_object().unwrap();
+        Ok(JsValue::Object(js_object.clone()))
+    });
+    context
+        .register_global_builtin_callable(js_string!("xml2Json"), 1, function)
+        .expect("Failed to register xmlToJson");
+    Ok(())
+}
+
 pub fn define_utils(context: &mut Context) {
     add_uuid(context);
     set_storage(context).expect("Failed to register setStorage");
     get_storage(context).expect("Failed to register getStorage");
+    xml_to_json(context).expect("Failed to register xml2Json");
 }

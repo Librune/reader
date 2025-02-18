@@ -29,6 +29,7 @@ cbc = "0.1.2"
 aes = "0.8.4"
 md5 = "0.7.0"
 hmac = "0.12.1"
+quickxml_to_serde = "0.6.0"
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
