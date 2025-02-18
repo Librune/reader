@@ -1,6 +1,7 @@
 use chardet::detect;
 use encoding_rs::{Encoding, UTF_8};
 use lazy_static::lazy_static;
+use percent_encoding::percent_encode;
 use regex::Regex;
 use std::time::Duration;
 
@@ -199,23 +200,93 @@ async fn make_request(
     url: String,
     config: RequestConfig,
 ) -> Result<Response, Box<dyn std::error::Error>> {
-    let mut request_builder = HTTP_CLIENT.request(method, url);
+    let use_gbk = config
+        .headers
+        .get("charset")
+        .and_then(|v| v.to_str().ok())
+        .map(|s| s.trim().to_lowercase() == "gbk")
+        .unwrap_or(false);
+
+    // 若使用 gbk 且存在 query，则手动序列化查询参数，按 gbk 编码后附加到 URL 上
+    let final_url = if use_gbk {
+        if let Some(query) = config.query.clone() {
+            let query_obj = query.as_object().ok_or("query 应为对象")?;
+            let mut query_vec = Vec::new();
+            for (key, value) in query_obj {
+                // 这里直接使用 value.to_string()，如果有引号可按需去除
+                let (encoded_key, _, _) = encoding_rs::GB18030.encode(key);
+                let value_string = value.as_str().unwrap();
+                let (encoded_value, _, _) = encoding_rs::GB18030.encode(&value_string);
+                query_vec.push(format!(
+                    "{}={}",
+                    percent_encode(&encoded_key, percent_encoding::NON_ALPHANUMERIC).to_string(),
+                    percent_encode(&encoded_value, percent_encoding::NON_ALPHANUMERIC).to_string()
+                ));
+            }
+            let query_str = query_vec.join("&");
+            // let (encoded, _, _) = encoding_rs::GBK.encode(&query_str);
+            // let encoded_query = String::from_utf8_lossy(&encoded);
+            if url.contains('?') {
+                format!("{}&{}", url, query_str)
+            } else {
+                format!("{}?{}", url, query_str)
+            }
+        } else {
+            url.clone()
+        }
+    } else {
+        url.clone()
+    };
+
+    let mut request_builder = HTTP_CLIENT.request(method, final_url);
 
     // 应用配置
     if !config.headers.is_empty() {
-        request_builder = request_builder.headers(config.headers);
+        request_builder = request_builder.headers(config.headers.clone());
     }
 
-    if let Some(query) = config.query {
-        request_builder = request_builder.query(&query);
+    // 如果非 gbk，则利用 reqwest 内置 query 构造
+    if !use_gbk {
+        if let Some(query) = config.query {
+            request_builder = request_builder.query(&query);
+        }
     }
 
     if let Some(json) = config.json {
-        request_builder = request_builder.json(&json);
+        if use_gbk {
+            let json_str = serde_json::to_string(&json)?;
+            let (encoded, _, _) = encoding_rs::GB18030.encode(&json_str);
+            request_builder = request_builder
+                .body(encoded.into_owned())
+                .header("Content-Type", "application/json; charset=gbk");
+        } else {
+            request_builder = request_builder.json(&json);
+        }
     } else if let Some(form) = config.form {
-        request_builder = request_builder.form(&form);
+        if use_gbk {
+            let form_obj = form.as_object().ok_or("form 应为对象")?;
+            let mut form_vec = Vec::new();
+            for (key, value) in form_obj {
+                form_vec.push(format!("{}={}", key, value.to_string()));
+            }
+            let form_str = form_vec.join("&");
+            let (encoded, _, _) = encoding_rs::GB18030.encode(&form_str);
+            request_builder = request_builder.body(encoded.into_owned()).header(
+                "Content-Type",
+                "application/x-www-form-urlencoded; charset=gbk",
+            );
+        } else {
+            request_builder = request_builder.form(&form);
+        }
     } else if let Some(body) = config.body {
-        request_builder = request_builder.body(body);
+        if use_gbk {
+            let (encoded, _, _) = encoding_rs::GB18030.encode(&body);
+            request_builder = request_builder
+                .body(encoded.into_owned())
+                .header("Content-Type", "text/plain; charset=gbk");
+        } else {
+            request_builder = request_builder.body(body);
+        }
     }
 
     Ok(request_builder.send().await?)
