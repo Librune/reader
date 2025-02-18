@@ -25,10 +25,15 @@ impl EcmaEngine {
             self.context
                 .eval(Source::from_bytes(code.as_bytes()))
                 .map(|value| {
-                    value
-                        .to_string(&mut self.context)
-                        .unwrap()
-                        .to_std_string_escaped()
+                    if value.is_object() {
+                        let j = value.to_json(&mut self.context).unwrap();
+                        j.to_string()
+                    } else {
+                        value
+                            .to_string(&mut self.context)
+                            .unwrap()
+                            .to_std_string_escaped()
+                    }
                 })
                 .map_err(|err| err.to_string())
         })
