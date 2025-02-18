@@ -595,6 +595,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "60b1af1c220855b6ceac025d3f6ecdd2b7c4894bfe9cd9bda4fbb4bc7c0d4cf0"
 
 [[package]]
+name = "encoding_rs"
+version = "0.8.35"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "75030f3c4f45dafd7586dd6780965a8c7e8e285a5ecb86713e63a79c5b2766f3"
+dependencies = [
+ "cfg-if",
+]
+
+[[package]]
 name = "env_logger"
 version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1858,6 +1867,7 @@ dependencies = [
  "boa_runtime",
  "bytemuck",
  "cbc",
+ "encoding_rs",
  "flutter_rust_bridge",
  "futures-util",
  "hex",
@@ -1865,6 +1875,7 @@ dependencies = [
  "lazy_static",
  "md5",
  "once_cell",
+ "percent-encoding",
  "quickxml_to_serde",
  "reqwest",
  "scraper",

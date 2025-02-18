@@ -6,7 +6,9 @@ use boa_engine::{
     property::{PropertyDescriptor, PropertyKey},
     Context, JsResult, JsValue, NativeFunction,
 };
+use encoding_rs::GBK;
 use hmac::{Hmac, Mac};
+use percent_encoding::percent_encode;
 use sha2::Sha256;
 
 fn register_to_md5(context: &mut Context) -> JsResult<JsValue> {
@@ -103,8 +105,36 @@ fn register_to_hmac_sha256_base64(context: &mut Context) -> JsResult<JsValue> {
     Ok(JsValue::undefined())
 }
 
+fn register_to_gbk(context: &mut Context) {
+    let string_proto = context.intrinsics().constructors().string().prototype();
+    let function = FunctionObjectBuilder::new(
+        context.realm(),
+        NativeFunction::from_fn_ptr(|this, _args, context| {
+            // 将调用对象转换为字符串
+            let this_str = this.to_string(context)?.to_std_string_escaped();
+            let (bytes, _encoding_used, _had_errors) = GBK.encode(this_str.as_str());
+            let encoded_param =
+                percent_encode(&bytes, percent_encoding::NON_ALPHANUMERIC).to_string();
+            Ok(JsValue::String(encoded_param.into()))
+        }),
+    )
+    .build();
+    string_proto
+        .define_property_or_throw(
+            PropertyKey::from(js_string!("toGBK")),
+            PropertyDescriptor::builder()
+                .value(function)
+                .writable(true)
+                .enumerable(false)
+                .configurable(true),
+            context,
+        )
+        .expect("Failed to define property");
+}
+
 pub fn extend_string(context: &mut Context) {
     register_to_md5(context).expect("Failed to register toMd5");
     register_to_base64(context).expect("Failed to register toBase64");
     register_to_hmac_sha256_base64(context).expect("Failed to register toHmacSha256Base64");
+    register_to_gbk(context);
 }
