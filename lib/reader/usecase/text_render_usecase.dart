@@ -72,7 +72,8 @@ class TextRenderUsecase {
   }
 
   Future _getContent(ChapterModel chapter) async {
-    return BookSourceService().action(uuid: book.bookSourceId!, act: "chapter", args: {"chapter_id": chapter.cid});
+    return BookSourceService()
+        .action(uuid: book.bookSourceId!, act: "chapter", args: {"chapter_id": chapter.cid, "book_id": book.bookId});
   }
 
   Future<List<PagePainter>> _getPagePainters({

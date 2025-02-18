@@ -1609,8 +1609,7 @@ dependencies = [
 [[package]]
 name = "quickxml_to_serde"
 version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "286b05c7a00b356ff6ac5218e10d628e0a3be02e777d067ca7286d353c3c407e"
+source = "git+https://github.com/zsakvo/quickxml_to_serde#110ef314ea2f803dd50fee8236172e51299d8dac"
 dependencies = [
  "minidom",
  "regex",

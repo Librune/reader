@@ -1,7 +1,7 @@
 use std::io::Error;
 
 use boa_engine::{js_error, js_string, Context, JsArgs, JsValue, NativeFunction, Source};
-use quickxml_to_serde::{xml_string_to_json, Config, NullValue};
+use quickxml_to_serde::{xml_string_to_json, Config, JsonArray, JsonType, NullValue};
 use serde_json::json;
 use uuid::Uuid;
 
