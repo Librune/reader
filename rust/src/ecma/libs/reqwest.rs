@@ -33,7 +33,7 @@ fn create_default_client() -> Client {
 struct RequestConfig {
     headers: HeaderMap,
     body: Option<String>,
-    query: Option<String>,
+    query: Option<Value>,
     timeout: Option<Duration>,
     form: Option<Value>,
     json: Option<Value>,
@@ -104,7 +104,7 @@ impl RequestConfig {
         // 处理 query string
         let query_value = obj.get(js_string!("query"), ctx)?;
         if !query_value.is_undefined() && !query_value.is_null() {
-            config.query = query_value.to_string(ctx).unwrap().to_std_string().ok();
+            config.query = query_value.to_json(ctx).ok();
         }
 
         Ok(config)
