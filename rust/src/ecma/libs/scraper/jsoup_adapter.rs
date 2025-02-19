@@ -1,118 +1,62 @@
-use super::scraper_adapter::{JsDocument, JsElement};
+use std::collections::HashMap;
+
 use boa_engine::{
-    js_error, js_string,
-    object::{JsPrototype, ObjectInitializer},
-    property::{PropertyDescriptor, PropertyDescriptorBuilder, PropertyKey},
-    Context, JsError, JsResult, JsValue, NativeFunction,
+    builtins::object,
+    class::{Class, ClassBuilder},
+    js_string, Context, JsArgs, JsData, JsNativeError, JsResult, JsValue, NativeFunction,
 };
+use boa_gc::{Finalize, Trace};
+use scraper::{ElementRef, Html, Node};
 
-// Document和Element的简单包装
-struct JsDocumentWrapper(JsDocument);
-struct JsElementWrapper(JsElement);
-
-pub fn init_jsoup(context: &mut Context) -> JsResult<()> {
-    // 注册全局parse函数
-    context.register_global_builtin_callable(
-        js_string!("parseHtml"),
-        1,
-        NativeFunction::from_fn_ptr(|_, args, context| {
-            let html = args
-                .get(0)
-                .and_then(|v| v.as_string())
-                .ok_or_else(|| js_error!("parseHtml requires HTML string"))?;
-
-            let doc = JsDocument::parse(&html.to_std_string_escaped());
-            // let obj = context.object_prototype();
-            let obj = context.intrinsics().constructors().object().prototype();
-
-            let function = FunctionObjectBuilder::new(
-              context.realm(),
-              NativeFunction::from_fn_ptr(|_, args, context| {
-                let selector = args
-                    .get(0)
-                    .and_then(|v| v.as_string())
-                    .ok_or_else(|| js_error!("Selector string required", context))?;
-
-                match doc.select(&selector) {
-                    Ok(elements) => {
-                        let array = context.array();
-                        for (i, elem) in elements.into_iter().enumerate() {
-                            let elem_obj = create_element_object(elem, context)?;
-                            array.set_index(i as u32, elem_obj)?;
-                        }
-                        Ok(array.into())
-                    }
-                    Err(e) => Err(js_error!("Failed to select elements: {}", e)),
-                }
-            });
-                  result.pop();
-                  Ok(JsValue::String(js_string!(result)))
-              }),
-          )
-          .build();
-
-            obj.define_property_or_throw(
-                PropertyKey::from(js_string!("select")),
-                PropertyDescriptor::builder()
-                    .value()
-                    .writable(true)
-                    .enumerable(false)
-                    .configurable(true),
-                context,
-            );
-
-            Ok(obj.into())
-        }),
-    )?;
-
-    Ok(())
+#[derive(Debug, Trace, Finalize, JsData)]
+struct JScraper {
+    html: String,
+    attrs: HashMap<String, String>,
 }
 
-fn create_element_object(element: JsElement, context: &mut Context) -> JsResult<JsValue> {
-    let obj = context.intrinsics().constructors().object().prototype();
-
-    // attr方法
-    obj.set_method("attr", 1, move |_, args, context| {
-        let name = args
-            .get(0)
-            .and_then(|v| v.as_string())
-            .ok_or_else(|| js_error!("Attribute name required"))?;
-
-        Ok(match element.attr(&name) {
-            Some(value) => JsValue::String(value.into()),
-            None => JsValue::Null,
-        })
-    })?;
-
-    // text方法
-    obj.set_method("text", 0, move |_, _, _| {
-        Ok(JsValue::String(element.text().into()))
-    })?;
-
-    // html方法
-    obj.set_method("html", 0, move |_, _, _| {
-        Ok(JsValue::String(element.html().into()))
-    })?;
-
-    // select方法
-    obj.set_method("select", 1, move |_, args, context| {
-        let selector = args
-            .get(0)
-            .and_then(|v| v.as_string())
-            .ok_or_else(|| js_error!("Selector string required"))?;
-
-        match element.select(&selector) {
-            Ok(elements) => {
-                let array = context.array();
-                for (i, elem) in elements.into_iter().enumerate() {
-                    let elem_obj = create_element_object(elem, context)?;
-                    array.set_index(i as u32, elem_obj)?;
-                }
-                Ok(array.into())
+impl JScraper {
+    fn text(this: &JsValue, _args: &[JsValue], _context: &mut Context) -> JsResult<JsValue> {
+        if let Some(object) = this.as_object() {
+            if let Some(scraper) = object.downcast_ref::<JScraper>() {
+                let document = Html::parse_document(&scraper.html);
+                let text = document.root_element().text().collect::<String>();
+                return Ok(JsValue::String(text.into()));
             }
-            Err(e) => Err(js_error!("Failed to select elements: {}", e)),
         }
-    })?;
+        Err(JsNativeError::typ()
+            .with_message("Invalid this value")
+            .into())
+    }
+}
 
-    Ok(obj.into())
+impl Class for JScraper {
+    const NAME: &'static str = "Scraper";
+    const LENGTH: usize = 1;
+    fn data_constructor(
+        _this: &JsValue,
+        args: &[JsValue],
+        context: &mut Context,
+    ) -> JsResult<Self> {
+        let html = args.get_or_undefined(0).to_string(context)?;
+        let scraper = JScraper {
+            html: html.to_std_string_escaped(),
+            attrs: HashMap::new(),
+        };
+        Ok(scraper)
+    }
+
+    fn init(class: &mut ClassBuilder<'_>) -> JsResult<()> {
+        class.method(
+            js_string!("text"),
+            0,
+            NativeFunction::from_fn_ptr(Self::text),
+        );
+        Ok(())
+    }
+}
+
+pub fn add_scraper(context: &mut Context) {
+    context
+        .register_global_class::<JScraper>()
+        .expect("the JScraper builtin shouldn't exist");
 }
