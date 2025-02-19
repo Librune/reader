@@ -1,12 +1,11 @@
 use std::collections::HashMap;
 
 use boa_engine::{
-    builtins::object,
     class::{Class, ClassBuilder},
     js_string, Context, JsArgs, JsData, JsNativeError, JsResult, JsValue, NativeFunction,
 };
 use boa_gc::{Finalize, Trace};
-use scraper::{ElementRef, Html, Node};
+use scraper::Html;
 
 #[derive(Debug, Trace, Finalize, JsData)]
 struct JScraper {
