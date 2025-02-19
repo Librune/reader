@@ -1,7 +1,9 @@
 use super::scraper_adapter::{JsDocument, JsElement};
 use boa_engine::{
-    js_error, js_string, object::ObjectInitializer, Context, JsError, JsResult, JsValue,
-    NativeFunction,
+    js_error, js_string,
+    object::{JsPrototype, ObjectInitializer},
+    property::{PropertyDescriptor, PropertyDescriptorBuilder, PropertyKey},
+    Context, JsError, JsResult, JsValue, NativeFunction,
 };
 
 // Document和Element的简单包装
@@ -23,8 +25,9 @@ pub fn init_jsoup(context: &mut Context) -> JsResult<()> {
             // let obj = context.object_prototype();
             let obj = context.intrinsics().constructors().object().prototype();
 
-            // 添加select方法
-            obj.set_method("select", 1, |_, args, context| {
+            let function = FunctionObjectBuilder::new(
+              context.realm(),
+              NativeFunction::from_fn_ptr(|_, args, context| {
                 let selector = args
                     .get(0)
                     .and_then(|v| v.as_string())
@@ -41,7 +44,22 @@ pub fn init_jsoup(context: &mut Context) -> JsResult<()> {
                     }
                     Err(e) => Err(js_error!("Failed to select elements: {}", e)),
                 }
-            })?;
+            });
+                  result.pop();
+                  Ok(JsValue::String(js_string!(result)))
+              }),
+          )
+          .build();
+
+            obj.define_property_or_throw(
+                PropertyKey::from(js_string!("select")),
+                PropertyDescriptor::builder()
+                    .value()
+                    .writable(true)
+                    .enumerable(false)
+                    .configurable(true),
+                context,
+            );
 
             Ok(obj.into())
         }),
