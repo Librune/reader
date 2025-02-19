@@ -19,8 +19,9 @@ pub fn init_jsoup(context: &mut Context) -> JsResult<()> {
                 .and_then(|v| v.as_string())
                 .ok_or_else(|| js_error!("parseHtml requires HTML string"))?;
 
-            let doc = JsDocument::parse(html.to_std_string_escaped().clone());
-            let obj = context.object_prototype();
+            let doc = JsDocument::parse(&html.to_std_string_escaped());
+            // let obj = context.object_prototype();
+            let obj = context.intrinsics().constructors().object().prototype();
 
             // 添加select方法
             obj.set_method("select", 1, |_, args, context| {
