@@ -32,15 +32,17 @@ fn register_to_query(context: &mut Context) -> Result<(), Error> {
         }),
     )
     .build();
-    object_proto.define_property_or_throw(
-        PropertyKey::from(js_string!("toQuery")),
-        PropertyDescriptor::builder()
-            .value(function)
-            .writable(true)
-            .enumerable(false)
-            .configurable(true),
-        context,
-    );
+    object_proto
+        .define_property_or_throw(
+            PropertyKey::from(js_string!("toQuery")),
+            PropertyDescriptor::builder()
+                .value(function)
+                .writable(true)
+                .enumerable(false)
+                .configurable(true),
+            context,
+        )
+        .map_err(|e| Error::new(std::io::ErrorKind::Other, e.to_string()))?;
     Ok(())
 }
 
