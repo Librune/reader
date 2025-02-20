@@ -1,8 +1,11 @@
 use std::collections::HashMap;
 
+use aes::cipher::generic_array::arr;
 use boa_engine::{
     class::{Class, ClassBuilder},
-    js_string, Context, JsArgs, JsData, JsNativeError, JsResult, JsValue, NativeFunction,
+    js_string,
+    object::{self, builtins::JsArray, Object, ObjectInitializer},
+    Context, JsArgs, JsData, JsNativeError, JsResult, JsValue, NativeFunction, NativeObject,
 };
 use boa_gc::{Finalize, Trace};
 use scraper::{selector, Html, Selector};
@@ -27,15 +30,32 @@ impl JScraper {
             .into())
     }
 
-    fn select(this: &JsValue, _args: &[JsValue], _context: &mut Context) -> JsResult<JsValue> {
+    fn select(this: &JsValue, _args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
         let select_str = _args
             .get_or_undefined(0)
-            .to_string(_context)?
+            .to_string(context)?
             .to_std_string_escaped();
         let selector = Selector::parse(&select_str)
             .map_err(|e| JsNativeError::typ().with_message(format!("Invalid selector: {}", e)))?;
         if let Some(object) = this.as_object() {
-            if let Some(scraper) = object.downcast_ref::<JScraper>() {}
+            if let Some(scraper) = object.downcast_ref::<JScraper>() {
+                let document = Html::parse_document(&scraper.html);
+                let elements = document.select(&selector);
+                let array = JsArray::new(context);
+                for element in elements {
+                    let mut attrs = HashMap::new();
+                    for (k, v) in element.value().attrs.iter() {
+                        attrs.insert(k.local.to_string(), v.to_string());
+                    }
+                    let js_element = JScraper {
+                        html: element.html(),
+                        attrs,
+                    };
+                    let t = Class::from_data(js_element, context)?;
+                    array.push(JsValue::from(t), context)?;
+                }
+                return Ok(JsValue::new(array));
+            }
         }
         return Ok(JsValue::undefined());
     }
@@ -58,11 +78,17 @@ impl Class for JScraper {
     }
 
     fn init(class: &mut ClassBuilder<'_>) -> JsResult<()> {
-        class.method(
-            js_string!("text"),
-            0,
-            NativeFunction::from_fn_ptr(Self::text),
-        );
+        class
+            .method(
+                js_string!("text"),
+                0,
+                NativeFunction::from_fn_ptr(Self::text),
+            )
+            .method(
+                js_string!("select"),
+                1,
+                NativeFunction::from_fn_ptr(Self::select),
+            );
         Ok(())
     }
 }
