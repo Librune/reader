@@ -5,7 +5,7 @@ use boa_engine::{
     js_string, Context, JsArgs, JsData, JsNativeError, JsResult, JsValue, NativeFunction,
 };
 use boa_gc::{Finalize, Trace};
-use scraper::Html;
+use scraper::{selector, Html, Selector};
 
 #[derive(Debug, Trace, Finalize, JsData)]
 struct JScraper {
@@ -25,6 +25,19 @@ impl JScraper {
         Err(JsNativeError::typ()
             .with_message("Invalid this value")
             .into())
+    }
+
+    fn select(this: &JsValue, _args: &[JsValue], _context: &mut Context) -> JsResult<JsValue> {
+        let select_str = _args
+            .get_or_undefined(0)
+            .to_string(_context)?
+            .to_std_string_escaped();
+        let selector = Selector::parse(&select_str)
+            .map_err(|e| JsNativeError::typ().with_message(format!("Invalid selector: {}", e)))?;
+        if let Some(object) = this.as_object() {
+            if let Some(scraper) = object.downcast_ref::<JScraper>() {}
+        }
+        return Ok(JsValue::undefined());
     }
 }
 
