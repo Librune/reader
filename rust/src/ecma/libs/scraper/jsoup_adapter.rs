@@ -59,6 +59,26 @@ impl JScraper {
         }
         return Ok(JsValue::undefined());
     }
+
+    fn attr(this: &JsValue, _args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
+        let attr_str = _args
+            .get_or_undefined(0)
+            .to_string(context)?
+            .to_std_string_escaped();
+        if let Some(object) = this.as_object() {
+            if let Some(object) = object.downcast_ref::<JScraper>() {
+                if let Some(attr) = object.attrs.get(&attr_str) {
+                    return Ok(JsValue::String(attr.clone().into()));
+                }
+                return Err(JsNativeError::typ()
+                    .with_message(format!("Attribute {} not found", attr_str))
+                    .into());
+            }
+        }
+        Err(JsNativeError::typ()
+            .with_message("Invalid this value")
+            .into())
+    }
 }
 
 impl Class for JScraper {
@@ -88,6 +108,11 @@ impl Class for JScraper {
                 js_string!("select"),
                 1,
                 NativeFunction::from_fn_ptr(Self::select),
+            )
+            .method(
+                js_string!("attr"),
+                1,
+                NativeFunction::from_fn_ptr(Self::attr),
             );
         Ok(())
     }
