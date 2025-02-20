@@ -60,6 +60,47 @@ impl JScraper {
         return Ok(JsValue::undefined());
     }
 
+    fn selectFirst(this: &JsValue, _args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
+        let select_str = _args
+            .get_or_undefined(0)
+            .to_string(context)?
+            .to_std_string_escaped();
+        let selector = Selector::parse(&select_str)
+            .map_err(|e| JsNativeError::typ().with_message(format!("Invalid selector: {}", e)))?;
+        if let Some(object) = this.as_object() {
+            if let Some(scraper) = object.downcast_ref::<JScraper>() {
+                let document = Html::parse_document(&scraper.html);
+                let elements = document.select(&selector);
+                if let Some(element) = elements.into_iter().next() {
+                    let mut attrs = HashMap::new();
+                    for (k, v) in element.value().attrs.iter() {
+                        attrs.insert(k.local.to_string(), v.to_string());
+                    }
+                    let js_element = JScraper {
+                        html: element.html(),
+                        attrs,
+                    };
+                    let t = Class::from_data(js_element, context)?;
+                    return Ok(JsValue::from(t));
+                }
+                // let array = JsArray::new(context);
+                // for element in elements {
+                //     let mut attrs = HashMap::new();
+                //     for (k, v) in element.value().attrs.iter() {
+                //         attrs.insert(k.local.to_string(), v.to_string());
+                //     }
+                //     let js_element = JScraper {
+                //         html: element.html(),
+                //         attrs,
+                //     };
+                //     let t = Class::from_data(js_element, context)?;
+                //     array.push(JsValue::from(t), context)?;
+                // }
+            }
+        }
+        return Ok(JsValue::undefined());
+    }
+
     fn attr(this: &JsValue, _args: &[JsValue], context: &mut Context) -> JsResult<JsValue> {
         let attr_str = _args
             .get_or_undefined(0)
@@ -108,6 +149,11 @@ impl Class for JScraper {
                 js_string!("select"),
                 1,
                 NativeFunction::from_fn_ptr(Self::select),
+            )
+            .method(
+                js_string!("selectFirst"),
+                1,
+                NativeFunction::from_fn_ptr(Self::selectFirst),
             )
             .method(
                 js_string!("attr"),
