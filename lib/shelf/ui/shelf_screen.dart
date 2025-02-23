@@ -8,6 +8,7 @@ import 'package:reader/app/ui/components/app_top_bar.dart';
 import 'package:reader/shelf/provider/book_provider.dart';
 import 'package:reader/shelf/ui/components/last_read.dart';
 import 'package:reader/shelf/ui/components/shelf_grid.dart';
+import 'package:reader/shelf/ui/components/switch_shelf.dart';
 
 class ShelfScreen extends StatefulHookConsumerWidget {
   const ShelfScreen({super.key});
@@ -61,7 +62,8 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
           SliverPadding(
             padding: EdgeInsets.only(left: 0, right: 0, bottom: 20, top: 4),
             sliver: SliverToBoxAdapter(
-              child: LastRead(),
+              // child: LastRead(),
+              child: SwitchShelf(),
               // child: ShelfSwitcher(),
             ),
           ),

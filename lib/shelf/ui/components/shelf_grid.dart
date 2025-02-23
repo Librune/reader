@@ -17,12 +17,13 @@ class _ShelfGridState extends ConsumerState<ShelfGrid> {
   Widget build(BuildContext context) {
     return GridView.builder(
       shrinkWrap: true,
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: 24),
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 112,
-          crossAxisSpacing: 32,
-          mainAxisSpacing: 10,
-          childAspectRatio: .58),
+        maxCrossAxisExtent: 112,
+        crossAxisSpacing: 32,
+        mainAxisSpacing: 10,
+        childAspectRatio: .58,
+      ),
       itemBuilder: (context, index) {
         return Container(
             decoration: BoxDecoration(
