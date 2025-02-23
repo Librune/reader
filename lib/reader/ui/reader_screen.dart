@@ -22,6 +22,7 @@ import 'package:reader/reader/ui/components/top_bar.dart';
 import 'package:reader/reader/usecase/menu_sheet_usecase.dart';
 import 'package:reader/reader/usecase/provider_usecase.dart';
 
+import 'components/pages/render.dart';
 import 'components/render.dart';
 
 class ReaderScreen extends StatefulHookConsumerWidget {
@@ -94,7 +95,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                                               )
                                             : null,
                                       ),
-                                      child: ReaderPage(pagePainter: value[index], context: context),
+                                      child: TextPageRender(pagePainter: value[index]),
                                     );
                                   },
                                   controller: ref.read(ProviderUsecase().reader.notifier).pageSliderController,

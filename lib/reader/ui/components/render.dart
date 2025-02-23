@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader/app/architecture/utils/log.dart';
 import 'package:reader/reader/provider/battery.dart';
 import 'package:reader/reader/provider/extra.dart';
 import 'package:reader/reader/provider/time.dart';
@@ -30,6 +31,7 @@ class ReaderPage extends HookConsumerWidget {
       }),
       children: [
         ...pagePainter.painters.mapIndexed((index, painter) {
+          Log.e(painter, index.toString());
           double posY = painter.posY;
           double posX = painter.posX;
           if (index > 0) {
