@@ -6,6 +6,9 @@ packages:
   - apps/**
 
 scripts:
+  generate:
+    run: melos exec -c 1 --depends-on build_runner -- dart run build_runner build
+
   analyze:
     run: melos exec -- "flutter analyze"
     description: Run Flutter analyze in all packages
