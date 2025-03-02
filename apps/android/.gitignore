@@ -43,10 +43,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-# 屏蔽序列化产物
-*.g.dart
-# 屏蔽 freeze 产物
-*.freezed.dart
-
-pubspec_overrides.yaml

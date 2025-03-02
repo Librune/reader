@@ -1,0 +1,33 @@
+name: reader
+repository: https://github.com/zsakvo/reader
+
+packages:
+  - packages/**
+  - apps/**
+
+scripts:
+  analyze:
+    run: melos exec -- "flutter analyze"
+    description: Run Flutter analyze in all packages
+
+  format:
+    run: melos exec -- "dart format . --fix"
+    description: Format all code
+
+  build:all:
+    run: melos run build:android && melos run build:ios && melos run build:macos && melos run build:windows && melos run build:linux
+    description: Build all platform apps
+
+  build:android:
+    run: |
+      cd apps/android && flutter build apk --release --target-platform=android-arm64
+    description: Build arm64 Android app
+
+  build:macos:
+    run: |
+      cd apps/macos && flutter build macos --release
+    description: Build macOS app
+
+  test:
+    run: melos exec -- "flutter test"
+    description: Run tests in all packages
