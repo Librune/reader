@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:reader/booksource_editor/booksource_editor_screen.dart';
 
 class HomeScreen extends StatefulHookConsumerWidget {
   const HomeScreen({super.key});
@@ -60,7 +61,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           );
         },
       ),
-      child: const Center(child: Text('Hello World')),
+      endSidebar: Sidebar(
+        startWidth: 200,
+        minWidth: 200,
+        maxWidth: 300,
+        shownByDefault: false,
+        builder: (context, _) {
+          return const Center(child: Text('End Sidebar'));
+        },
+      ),
+      child: BooksourceEditorScreen(),
     );
   }
 }
