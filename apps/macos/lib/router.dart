@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:macos_ui/macos_ui.dart';
 import 'package:reader/app/app_entry.dart';
 import 'package:reader/booksource_editor/booksource_editor_screen.dart';
 
@@ -19,6 +18,7 @@ final router = GoRouter(
             MacosSidebarItem(label: '图书', section: true),
             MacosSidebarItem(label: '全部', icon: 'ic_books'),
             MacosSidebarItem(label: '探索', section: true),
+            MacosSidebarItem(label: '书源列表', icon: 'ic_booksource'),
             MacosSidebarItem(label: "刺猬猫", icon: 'ic_discover'),
             MacosSidebarItem(label: "起点", icon: 'ic_discover'),
             MacosSidebarItem(label: "红袖添香", icon: 'ic_discover'),
