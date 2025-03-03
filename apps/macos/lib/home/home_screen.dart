@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
-import 'package:reader/home/components/sidebar.dart';
 
 class HomeScreen extends StatefulHookConsumerWidget {
   const HomeScreen({super.key});
@@ -14,6 +14,21 @@ class HomeScreen extends StatefulHookConsumerWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final currentSidebarItem = useState(0);
+    final createSidebarItem = useCallback(({required String label, required String icon, bool selected = false}) {
+      return SidebarItem(
+        selectedColor: MacosColors.gridColor.withValues(alpha: .8),
+        leading: SvgPicture.asset(
+          "assets/svg/$icon.svg",
+          width: 18,
+          colorFilter: ColorFilter.mode(
+            selected ? MacosColors.white.withValues(alpha: .8) : MacosColors.black.withValues(alpha: .4),
+            BlendMode.srcIn,
+          ),
+        ),
+        label: Text(label, style: TextStyle(fontSize: 12)),
+      );
+    }, []);
     return MacosWindow(
       sidebar: Sidebar(
         minWidth: 200,
@@ -27,16 +42,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         builder: (context, scrollController) {
           return SidebarItems(
-            currentIndex: 0,
-            onChanged: (index) {},
+            currentIndex: currentSidebarItem.value,
+            onChanged: (index) {
+              currentSidebarItem.value = index;
+            },
             items: [
               SidebarItem(label: Text('图书'), section: true),
-              MacosSidebarItem(labelText: '全部', iconName: 'ic_books'),
+              createSidebarItem(label: '全部', icon: 'ic_books', selected: currentSidebarItem.value == 0),
               SidebarItem(label: Text('探索'), section: true),
-              MacosSidebarItem(labelText: "刺猬猫", iconName: 'ic_discover'),
-              MacosSidebarItem(labelText: "起点", iconName: 'ic_discover'),
-              MacosSidebarItem(labelText: "红袖添香", iconName: 'ic_discover'),
-              MacosSidebarItem(labelText: "微信读书", iconName: 'ic_discover'),
+              createSidebarItem(label: "刺猬猫", icon: 'ic_discover', selected: currentSidebarItem.value == 1),
+              createSidebarItem(label: "起点", icon: 'ic_discover', selected: currentSidebarItem.value == 2),
+              createSidebarItem(label: "红袖添香", icon: 'ic_discover', selected: currentSidebarItem.value == 3),
+              createSidebarItem(label: "微信读书", icon: 'ic_discover', selected: currentSidebarItem.value == 4),
+              SidebarItem(label: Text('工具'), section: true),
+              createSidebarItem(label: '编辑书源', icon: 'ic_booksource', selected: currentSidebarItem.value == 5),
             ],
           );
         },

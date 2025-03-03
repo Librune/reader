@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/Users/zsakvo/fvm/versions/stable"
-export "FLUTTER_APPLICATION_PATH=/Users/zsakvo/Project/reader/apps/reader"
+export "FLUTTER_APPLICATION_PATH=/Users/zsakvo/Project/reader/apps/macos"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
