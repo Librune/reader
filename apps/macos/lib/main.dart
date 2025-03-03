@@ -4,7 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
-import 'package:reader/home/home_screen.dart';
+
+import 'router.dart';
 
 void main() async {
   if (!kIsWeb) {
@@ -26,11 +27,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MacosApp(
+    return MacosApp.router(
       theme: MacosThemeData.light(),
       darkTheme: MacosThemeData.dark(),
       themeMode: ThemeMode.system,
-      home: HomeScreen(),
+      routerConfig: router,
     );
   }
 }
