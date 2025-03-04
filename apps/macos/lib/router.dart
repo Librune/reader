@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reader/app/app_entry.dart';
+import 'package:reader/book_source_list/book_source_list_screen.dart';
 import 'package:reader/booksource_editor/booksource_editor_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -31,7 +32,7 @@ final router = GoRouter(
       branches: [
         StatefulShellBranch(routes: [GoRoute(path: '/home', builder: (context, state) => BooksourceEditorScreen())]),
         StatefulShellBranch(
-          routes: [GoRoute(path: '/book_source_editor', builder: (context, state) => const BooksourceEditorScreen())],
+          routes: [GoRoute(path: '/book_source_list', builder: (context, state) => const BookSourceListScreen())],
         ),
       ],
     ),
