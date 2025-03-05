@@ -12,15 +12,15 @@ import 'frb_generated.io.dart'
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// Main entrypoint of the Rust API
-class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
+class EcmaLib extends BaseEntrypoint<EcmaLibApi, EcmaLibApiImpl, EcmaLibWire> {
   @internal
-  static final instance = RustLib._();
+  static final instance = EcmaLib._();
 
-  RustLib._();
+  EcmaLib._();
 
   /// Initialize flutter_rust_bridge
   static Future<void> init({
-    RustLibApi? api,
+    EcmaLibApi? api,
     BaseHandler? handler,
     ExternalLibrary? externalLibrary,
   }) async {
@@ -33,7 +33,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 
   /// Initialize flutter_rust_bridge in mock mode.
   /// No libraries for FFI are loaded.
-  static void initMock({required RustLibApi api}) {
+  static void initMock({required EcmaLibApi api}) {
     instance.initMockImpl(api: api);
   }
 
@@ -44,12 +44,12 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   static void dispose() => instance.disposeImpl();
 
   @override
-  ApiImplConstructor<RustLibApiImpl, RustLibWire> get apiImplConstructor =>
-      RustLibApiImpl.new;
+  ApiImplConstructor<EcmaLibApiImpl, EcmaLibWire> get apiImplConstructor =>
+      EcmaLibApiImpl.new;
 
   @override
-  WireConstructor<RustLibWire> get wireConstructor =>
-      RustLibWire.fromExternalLibrary;
+  WireConstructor<EcmaLibWire> get wireConstructor =>
+      EcmaLibWire.fromExternalLibrary;
 
   @override
   Future<void> executeRustInitializers() async {
@@ -74,14 +74,14 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
       );
 }
 
-abstract class RustLibApi extends BaseApi {
+abstract class EcmaLibApi extends BaseApi {
   String crateApiSimpleGreet({required String name});
 
   Future<void> crateApiSimpleInitApp();
 }
 
-class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
-  RustLibApiImpl({
+class EcmaLibApiImpl extends EcmaLibApiImplPlatform implements EcmaLibApi {
+  EcmaLibApiImpl({
     required super.handler,
     required super.wire,
     required super.generalizedFrbRustBinding,
