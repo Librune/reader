@@ -1,9 +1,9 @@
 import 'package:core/core.dart';
+import 'package:core/src/interfaces/use_case.dart';
 import 'package:uuid/uuid.dart';
-import '../../interfaces/use_case.dart';
 
-class BookSourceUuidUseCase implements UseCase<BookSourceModel, BookSourceModel> {
-  const BookSourceUuidUseCase();
+class BookSourceWithUuidUseCase implements UseCase<BookSourceModel, BookSourceModel> {
+  const BookSourceWithUuidUseCase();
 
   @override
   BookSourceModel call(BookSourceModel bookSource) {
