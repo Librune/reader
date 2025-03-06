@@ -3,7 +3,8 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
-import 'api/simple.dart';
+import 'api/ecma.dart';
+import 'api/envs.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
@@ -51,7 +52,7 @@ class Rc extends BaseEntrypoint<RcApi, RcApiImpl, RcWire> {
 
   @override
   Future<void> executeRustInitializers() async {
-    await api.crateApiSimpleInitApp();
+    await api.crateApiInitInitApp();
   }
 
   @override
@@ -62,7 +63,7 @@ class Rc extends BaseEntrypoint<RcApi, RcApiImpl, RcWire> {
   String get codegenVersion => '2.7.1';
 
   @override
-  int get rustContentHash => -1918914929;
+  int get rustContentHash => 244741565;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -73,9 +74,44 @@ class Rc extends BaseEntrypoint<RcApi, RcApiImpl, RcWire> {
 }
 
 abstract class RcApi extends BaseApi {
-  String crateApiSimpleGreet({required String name});
+  Map<String, String> crateApiEnvsGetEnv({required String uuid});
 
-  Future<void> crateApiSimpleInitApp();
+  String crateApiEcmaGetUuid({required String code});
+
+  Future<void> crateApiInitInitApp();
+
+  void crateApiEcmaInitJsScripts({required Map<String, String> scripts});
+
+  void crateApiEcmaInsertJsScript({required String uuid, required String code});
+
+  Future<String> crateApiEcmaJsAction({
+    required String uuid,
+    required String method,
+    required String args,
+  });
+
+  String crateApiEcmaJsEval({required String code});
+
+  Future<String> crateApiEcmaJsEvalAsync({required String code});
+
+  Future<String> crateApiEcmaJsEvalAuto({required String code});
+
+  String crateApiEcmaJsGetAttribute({
+    required String uuid,
+    required String key,
+  });
+
+  Map<String, String> crateApiEcmaJsGetAttributes({
+    required String uuid,
+    required List<String> keys,
+  });
+
+  void crateApiEcmaRemoveJsScript({required String uuid});
+
+  void crateApiEnvsSetEnv({
+    required String uuid,
+    required Map<String, String> value,
+  });
 }
 
 class RcApiImpl extends RcApiImplPlatform implements RcApi {
@@ -87,30 +123,53 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   });
 
   @override
-  String crateApiSimpleGreet({required String name}) {
+  Map<String, String> crateApiEnvsGetEnv({required String uuid}) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_String(name, serializer);
+          sse_encode_String(uuid, serializer);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
+          decodeSuccessData: sse_decode_Map_String_String,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiSimpleGreetConstMeta,
-        argValues: [name],
+        constMeta: kCrateApiEnvsGetEnvConstMeta,
+        argValues: [uuid],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiSimpleGreetConstMeta =>
-      const TaskConstMeta(debugName: "greet", argNames: ["name"]);
+  TaskConstMeta get kCrateApiEnvsGetEnvConstMeta =>
+      const TaskConstMeta(debugName: "get_env", argNames: ["uuid"]);
 
   @override
-  Future<void> crateApiSimpleInitApp() {
+  String crateApiEcmaGetUuid({required String code}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(code, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiEcmaGetUuidConstMeta,
+        argValues: [code],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEcmaGetUuidConstMeta =>
+      const TaskConstMeta(debugName: "get_uuid", argNames: ["code"]);
+
+  @override
+  Future<void> crateApiInitInitApp() {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -118,7 +177,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 2,
+            funcId: 3,
             port: port_,
           );
         },
@@ -126,15 +185,301 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
           decodeSuccessData: sse_decode_unit,
           decodeErrorData: null,
         ),
-        constMeta: kCrateApiSimpleInitAppConstMeta,
+        constMeta: kCrateApiInitInitAppConstMeta,
         argValues: [],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiSimpleInitAppConstMeta =>
+  TaskConstMeta get kCrateApiInitInitAppConstMeta =>
       const TaskConstMeta(debugName: "init_app", argNames: []);
+
+  @override
+  void crateApiEcmaInitJsScripts({required Map<String, String> scripts}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Map_String_String(scripts, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiEcmaInitJsScriptsConstMeta,
+        argValues: [scripts],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEcmaInitJsScriptsConstMeta =>
+      const TaskConstMeta(debugName: "init_js_scripts", argNames: ["scripts"]);
+
+  @override
+  void crateApiEcmaInsertJsScript({
+    required String uuid,
+    required String code,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(uuid, serializer);
+          sse_encode_String(code, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiEcmaInsertJsScriptConstMeta,
+        argValues: [uuid, code],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEcmaInsertJsScriptConstMeta => const TaskConstMeta(
+    debugName: "insert_js_script",
+    argNames: ["uuid", "code"],
+  );
+
+  @override
+  Future<String> crateApiEcmaJsAction({
+    required String uuid,
+    required String method,
+    required String args,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(uuid, serializer);
+          sse_encode_String(method, serializer);
+          sse_encode_String(args, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 6,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiEcmaJsActionConstMeta,
+        argValues: [uuid, method, args],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEcmaJsActionConstMeta => const TaskConstMeta(
+    debugName: "js_action",
+    argNames: ["uuid", "method", "args"],
+  );
+
+  @override
+  String crateApiEcmaJsEval({required String code}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(code, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiEcmaJsEvalConstMeta,
+        argValues: [code],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEcmaJsEvalConstMeta =>
+      const TaskConstMeta(debugName: "js_eval", argNames: ["code"]);
+
+  @override
+  Future<String> crateApiEcmaJsEvalAsync({required String code}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(code, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 8,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiEcmaJsEvalAsyncConstMeta,
+        argValues: [code],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEcmaJsEvalAsyncConstMeta =>
+      const TaskConstMeta(debugName: "js_eval_async", argNames: ["code"]);
+
+  @override
+  Future<String> crateApiEcmaJsEvalAuto({required String code}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(code, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 9,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiEcmaJsEvalAutoConstMeta,
+        argValues: [code],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEcmaJsEvalAutoConstMeta =>
+      const TaskConstMeta(debugName: "js_eval_auto", argNames: ["code"]);
+
+  @override
+  String crateApiEcmaJsGetAttribute({
+    required String uuid,
+    required String key,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(uuid, serializer);
+          sse_encode_String(key, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiEcmaJsGetAttributeConstMeta,
+        argValues: [uuid, key],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEcmaJsGetAttributeConstMeta => const TaskConstMeta(
+    debugName: "js_get_attribute",
+    argNames: ["uuid", "key"],
+  );
+
+  @override
+  Map<String, String> crateApiEcmaJsGetAttributes({
+    required String uuid,
+    required List<String> keys,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(uuid, serializer);
+          sse_encode_list_String(keys, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_Map_String_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiEcmaJsGetAttributesConstMeta,
+        argValues: [uuid, keys],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEcmaJsGetAttributesConstMeta =>
+      const TaskConstMeta(
+        debugName: "js_get_attributes",
+        argNames: ["uuid", "keys"],
+      );
+
+  @override
+  void crateApiEcmaRemoveJsScript({required String uuid}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(uuid, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiEcmaRemoveJsScriptConstMeta,
+        argValues: [uuid],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEcmaRemoveJsScriptConstMeta =>
+      const TaskConstMeta(debugName: "remove_js_script", argNames: ["uuid"]);
+
+  @override
+  void crateApiEnvsSetEnv({
+    required String uuid,
+    required Map<String, String> value,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(uuid, serializer);
+          sse_encode_Map_String_String(value, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiEnvsSetEnvConstMeta,
+        argValues: [uuid, value],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEnvsSetEnvConstMeta =>
+      const TaskConstMeta(debugName: "set_env", argNames: ["uuid", "value"]);
+
+  @protected
+  Map<String, String> dco_decode_Map_String_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(
+      dco_decode_list_record_string_string(
+        raw,
+      ).map((e) => MapEntry(e.$1, e.$2)),
+    );
+  }
 
   @protected
   String dco_decode_String(dynamic raw) {
@@ -143,9 +488,31 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   }
 
   @protected
+  List<String> dco_decode_list_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_String).toList();
+  }
+
+  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
+  }
+
+  @protected
+  List<(String, String)> dco_decode_list_record_string_string(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_record_string_string).toList();
+  }
+
+  @protected
+  (String, String) dco_decode_record_string_string(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (dco_decode_String(arr[0]), dco_decode_String(arr[1]));
   }
 
   @protected
@@ -161,6 +528,15 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   }
 
   @protected
+  Map<String, String> sse_decode_Map_String_String(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_record_string_string(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
   String sse_decode_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_prim_u_8_strict(deserializer);
@@ -168,10 +544,46 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   }
 
   @protected
+  List<String> sse_decode_list_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <String>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_String(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  List<(String, String)> sse_decode_list_record_string_string(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(String, String)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_string_string(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  (String, String) sse_decode_record_string_string(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_String(deserializer);
+    var var_field1 = sse_decode_String(deserializer);
+    return (var_field0, var_field1);
   }
 
   @protected
@@ -198,9 +610,30 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   }
 
   @protected
+  void sse_encode_Map_String_String(
+    Map<String, String> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_string_string(
+      self.entries.map((e) => (e.key, e.value)).toList(),
+      serializer,
+    );
+  }
+
+  @protected
   void sse_encode_String(String self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
+  }
+
+  @protected
+  void sse_encode_list_String(List<String> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_String(item, serializer);
+    }
   }
 
   @protected
@@ -211,6 +644,28 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     serializer.buffer.putUint8List(self);
+  }
+
+  @protected
+  void sse_encode_list_record_string_string(
+    List<(String, String)> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_string_string(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_record_string_string(
+    (String, String) self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.$1, serializer);
+    sse_encode_String(self.$2, serializer);
   }
 
   @protected

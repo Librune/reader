@@ -6,5 +6,8 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-String greet({required String name}) =>
-    Rc.instance.api.crateApiSimpleGreet(name: name);
+Map<String, String> getEnv({required String uuid}) =>
+    Rc.instance.api.crateApiEnvsGetEnv(uuid: uuid);
+
+void setEnv({required String uuid, required Map<String, String> value}) =>
+    Rc.instance.api.crateApiEnvsSetEnv(uuid: uuid, value: value);
