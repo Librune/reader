@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/Users/zsakvo/fvm/versions/stable"
-export "FLUTTER_APPLICATION_PATH=/Users/zsakvo/Temp/plugin_test/rc"
+export "FLUTTER_APPLICATION_PATH=/Users/zsakvo/Project/reader/packages/rc"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=0.0.1"

@@ -199,7 +199,7 @@ packages:
       path: "../../packages/core"
       relative: true
     source: path
-    version: "1.0.0+1"
+    version: "0.0.1"
   cross_file:
     dependency: transitive
     description:
@@ -717,7 +717,7 @@ packages:
       path: "../../packages/rc"
       relative: true
     source: path
-    version: "1.0.0+1"
+    version: "0.0.1"
   re_editor:
     dependency: "direct main"
     description:
