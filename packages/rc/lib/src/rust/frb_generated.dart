@@ -67,7 +67,7 @@ class Rc extends BaseEntrypoint<RcApi, RcApiImpl, RcWire> {
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
-        stem: 'ecma',
+        stem: 'rc',
         ioDirectory: 'rust/target/release/',
         webPrefix: 'pkg/',
       );

@@ -589,40 +589,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ecma"
-version = "0.1.0"
-dependencies = [
- "aes",
- "aes-gcm",
- "anyhow",
- "base64",
- "boa_engine",
- "boa_gc",
- "boa_runtime",
- "bytemuck",
- "cbc",
- "chardet",
- "encoding_rs",
- "flutter_rust_bridge",
- "futures-util",
- "hex",
- "hmac",
- "lazy_static",
- "md5",
- "once_cell",
- "percent-encoding",
- "quickxml_to_serde",
- "regex",
- "reqwest",
- "scraper",
- "serde",
- "serde_json",
- "sha2",
- "tokio",
- "uuid",
-]
-
-[[package]]
 name = "ego-tree"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1786,6 +1752,40 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "99d9a13982dcf210057a8a78572b2217b667c3beacbf3a0d8b454f6f82837d38"
 dependencies = [
  "getrandom 0.3.1",
+]
+
+[[package]]
+name = "rc"
+version = "0.1.0"
+dependencies = [
+ "aes",
+ "aes-gcm",
+ "anyhow",
+ "base64",
+ "boa_engine",
+ "boa_gc",
+ "boa_runtime",
+ "bytemuck",
+ "cbc",
+ "chardet",
+ "encoding_rs",
+ "flutter_rust_bridge",
+ "futures-util",
+ "hex",
+ "hmac",
+ "lazy_static",
+ "md5",
+ "once_cell",
+ "percent-encoding",
+ "quickxml_to_serde",
+ "regex",
+ "reqwest",
+ "scraper",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tokio",
+ "uuid",
 ]
 
 [[package]]
