@@ -1,5 +1,5 @@
-name: ecma
-description: 'Ecma env for book source.'
+name: rc
+description: 'rust-core for book source.'
 publish_to: none
 
 version: 1.0.0+1

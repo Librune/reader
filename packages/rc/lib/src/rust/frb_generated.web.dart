@@ -12,8 +12,8 @@ import 'dart:convert';
 import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
 
-abstract class EcmaLibApiImplPlatform extends BaseApiImpl<EcmaLibWire> {
-  EcmaLibApiImplPlatform({
+abstract class RcApiImplPlatform extends BaseApiImpl<RcWire> {
+  RcApiImplPlatform({
     required super.handler,
     required super.wire,
     required super.generalizedFrbRustBinding,
@@ -74,13 +74,13 @@ abstract class EcmaLibApiImplPlatform extends BaseApiImpl<EcmaLibWire> {
 
 // Section: wire_class
 
-class EcmaLibWire implements BaseWire {
-  EcmaLibWire.fromExternalLibrary(ExternalLibrary lib);
+class RcWire implements BaseWire {
+  RcWire.fromExternalLibrary(ExternalLibrary lib);
 }
 
 @JS('wasm_bindgen')
-external EcmaLibWasmModule get wasmModule;
+external RcWasmModule get wasmModule;
 
 @JS()
 @anonymous
-extension type EcmaLibWasmModule._(JSObject _) implements JSObject {}
+extension type RcWasmModule._(JSObject _) implements JSObject {}

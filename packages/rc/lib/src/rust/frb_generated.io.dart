@@ -10,8 +10,8 @@ import 'dart:ffi' as ffi;
 import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_io.dart';
 
-abstract class EcmaLibApiImplPlatform extends BaseApiImpl<EcmaLibWire> {
-  EcmaLibApiImplPlatform({
+abstract class RcApiImplPlatform extends BaseApiImpl<RcWire> {
+  RcApiImplPlatform({
     required super.handler,
     required super.wire,
     required super.generalizedFrbRustBinding,
@@ -72,15 +72,14 @@ abstract class EcmaLibApiImplPlatform extends BaseApiImpl<EcmaLibWire> {
 
 // Section: wire_class
 
-class EcmaLibWire implements BaseWire {
-  factory EcmaLibWire.fromExternalLibrary(ExternalLibrary lib) =>
-      EcmaLibWire(lib.ffiDynamicLibrary);
+class RcWire implements BaseWire {
+  factory RcWire.fromExternalLibrary(ExternalLibrary lib) =>
+      RcWire(lib.ffiDynamicLibrary);
 
   /// Holds the symbol lookup function.
   final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
   _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
-  EcmaLibWire(ffi.DynamicLibrary dynamicLibrary)
-    : _lookup = dynamicLibrary.lookup;
+  RcWire(ffi.DynamicLibrary dynamicLibrary) : _lookup = dynamicLibrary.lookup;
 }

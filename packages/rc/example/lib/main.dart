@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ecma/ecma.dart';
+import 'package:rc/rc.dart';
 
 Future<void> main() async {
-  await EcmaLib.init();
+  await Rc.init();
   runApp(const MyApp());
 }
 

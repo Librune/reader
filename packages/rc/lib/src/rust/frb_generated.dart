@@ -12,15 +12,15 @@ import 'frb_generated.io.dart'
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// Main entrypoint of the Rust API
-class EcmaLib extends BaseEntrypoint<EcmaLibApi, EcmaLibApiImpl, EcmaLibWire> {
+class Rc extends BaseEntrypoint<RcApi, RcApiImpl, RcWire> {
   @internal
-  static final instance = EcmaLib._();
+  static final instance = Rc._();
 
-  EcmaLib._();
+  Rc._();
 
   /// Initialize flutter_rust_bridge
   static Future<void> init({
-    EcmaLibApi? api,
+    RcApi? api,
     BaseHandler? handler,
     ExternalLibrary? externalLibrary,
   }) async {
@@ -33,7 +33,7 @@ class EcmaLib extends BaseEntrypoint<EcmaLibApi, EcmaLibApiImpl, EcmaLibWire> {
 
   /// Initialize flutter_rust_bridge in mock mode.
   /// No libraries for FFI are loaded.
-  static void initMock({required EcmaLibApi api}) {
+  static void initMock({required RcApi api}) {
     instance.initMockImpl(api: api);
   }
 
@@ -44,12 +44,10 @@ class EcmaLib extends BaseEntrypoint<EcmaLibApi, EcmaLibApiImpl, EcmaLibWire> {
   static void dispose() => instance.disposeImpl();
 
   @override
-  ApiImplConstructor<EcmaLibApiImpl, EcmaLibWire> get apiImplConstructor =>
-      EcmaLibApiImpl.new;
+  ApiImplConstructor<RcApiImpl, RcWire> get apiImplConstructor => RcApiImpl.new;
 
   @override
-  WireConstructor<EcmaLibWire> get wireConstructor =>
-      EcmaLibWire.fromExternalLibrary;
+  WireConstructor<RcWire> get wireConstructor => RcWire.fromExternalLibrary;
 
   @override
   Future<void> executeRustInitializers() async {
@@ -74,14 +72,14 @@ class EcmaLib extends BaseEntrypoint<EcmaLibApi, EcmaLibApiImpl, EcmaLibWire> {
       );
 }
 
-abstract class EcmaLibApi extends BaseApi {
+abstract class RcApi extends BaseApi {
   String crateApiSimpleGreet({required String name});
 
   Future<void> crateApiSimpleInitApp();
 }
 
-class EcmaLibApiImpl extends EcmaLibApiImplPlatform implements EcmaLibApi {
-  EcmaLibApiImpl({
+class RcApiImpl extends RcApiImplPlatform implements RcApi {
+  RcApiImpl({
     required super.handler,
     required super.wire,
     required super.generalizedFrbRustBinding,
