@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:core/core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -13,6 +14,7 @@ void main() async {
       await _configureMacosWindowUtils();
     }
   }
+  await initCoreServices();
   runApp(ProviderScope(child: const MyApp()));
 }
 
