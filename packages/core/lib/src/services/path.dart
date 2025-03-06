@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -34,6 +36,10 @@ class PathService {
     cache = (await getApplicationCacheDirectory()).path;
     app = (await getApplicationSupportDirectory()).path;
     bookSourceDir = join(app, 'book_source');
+    // 如果不存在则创建
+    if (!Directory(bookSourceDir).existsSync()) {
+      Directory(bookSourceDir).createSync(recursive: true);
+    }
   }
 
   // Directory getBookCacheDir(BookModel book) {

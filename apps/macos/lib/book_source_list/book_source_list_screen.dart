@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:macos_ui/macos_ui.dart';
@@ -33,7 +34,9 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
         actions: [
           ToolBarIconButton(
             icon: const MacosIcon(CupertinoIcons.add_circled),
-            onPressed: () => debugPrint('New Folder...'),
+            onPressed: () {
+              ref.read(bookSourceProvider.notifier).addFromFile();
+            },
             label: 'New Folder',
             showLabel: false,
             tooltipMessage: 'This is a beautiful tooltip',

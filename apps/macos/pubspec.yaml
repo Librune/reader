@@ -41,6 +41,8 @@ dependencies:
   flutter_svg: ^2.0.17
   re_editor: ^0.6.0
   go_router: ^14.8.1
+  core:
+    path: ../../packages/core
 
 dev_dependencies:
   flutter_test:
