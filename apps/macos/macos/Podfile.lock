@@ -11,6 +11,8 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - rc (0.0.1):
+    - FlutterMacOS
 
 DEPENDENCIES:
   - appkit_ui_element_colors (from `Flutter/ephemeral/.symlinks/plugins/appkit_ui_element_colors/macos`)
@@ -19,6 +21,7 @@ DEPENDENCIES:
   - macos_ui (from `Flutter/ephemeral/.symlinks/plugins/macos_ui/macos`)
   - macos_window_utils (from `Flutter/ephemeral/.symlinks/plugins/macos_window_utils/macos`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
+  - rc (from `Flutter/ephemeral/.symlinks/plugins/rc/macos`)
 
 EXTERNAL SOURCES:
   appkit_ui_element_colors:
@@ -33,6 +36,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/macos_window_utils/macos
   path_provider_foundation:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
+  rc:
+    :path: Flutter/ephemeral/.symlinks/plugins/rc/macos
 
 SPEC CHECKSUMS:
   appkit_ui_element_colors: 711e7a2aa027790964e6fd90c78a666efe631432
@@ -41,6 +46,7 @@ SPEC CHECKSUMS:
   macos_ui: 2047a8e6536a80491ef10684c53ca500e04f1bcf
   macos_window_utils: 3bca8603c2a1cf2257351dfe6bbccc9accf739fd
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  rc: 669e6c77b4a74afada844b41e63e249ec6da5795
 
 PODFILE CHECKSUM: 697626e4a82795ef7421316ee78583ab553fc809
 
