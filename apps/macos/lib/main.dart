@@ -9,6 +9,7 @@ import 'package:macos_ui/macos_ui.dart';
 import 'router.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   if (!kIsWeb) {
     if (Platform.isMacOS) {
       await _configureMacosWindowUtils();
@@ -21,6 +22,7 @@ void main() async {
 Future<void> _configureMacosWindowUtils() async {
   const config = MacosWindowUtilsConfig();
   await config.apply();
+  await WindowManipulator.setMaterial(NSVisualEffectViewMaterial.sidebar);
 }
 
 class MyApp extends StatelessWidget {
@@ -29,11 +31,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MacosApp.router(
+    //next tick
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // MacosWindowUtils.setSidebarWidth(200);
+
+      // WindowManipulator.setMaterial(NSVisualEffectViewMaterial.sidebar);
+    });
+    return MacosApp(
       theme: MacosThemeData.light(),
       darkTheme: MacosThemeData.dark(),
       themeMode: ThemeMode.system,
-      routerConfig: router,
+      // routerConfig: router,
     );
   }
 }
