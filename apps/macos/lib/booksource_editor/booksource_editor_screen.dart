@@ -12,7 +12,8 @@ class BooksourceEditorScreen extends StatefulHookConsumerWidget {
 class _BooksourceEditorScreenState extends ConsumerState<BooksourceEditorScreen> {
   @override
   Widget build(BuildContext context) {
-    return MacosScaffold(
+    return Container(decoration: BoxDecoration(color: MacosColors.white));
+    MacosScaffold(
       toolBar: ToolBar(
         title: const Text('编辑书源'),
         leading: MacosTooltip(
