@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:macos_ui/macos_ui.dart';
-import 'package:reader/app/transparent_app.dart';
 
 class AppEntry extends StatefulHookConsumerWidget {
   const AppEntry(this.navigationShell, {super.key, required this.items});
@@ -46,7 +44,7 @@ class _AppEntryState extends ConsumerState<AppEntry> {
                             decoration: BoxDecoration(
                               color:
                                   (i == widget.navigationShell.currentIndex && item.section != true)
-                                      ? MacosColors.systemGrayColor.withValues(alpha: .16)
+                                      ? CupertinoColors.systemGrey.withValues(alpha: .16)
                                       : null,
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -58,7 +56,7 @@ class _AppEntryState extends ConsumerState<AppEntry> {
                                       "assets/svg/${item.icon}.svg",
                                       width: 18,
                                       colorFilter: ColorFilter.mode(
-                                        MacosColors.black.withValues(alpha: .4),
+                                        CupertinoColors.black.withValues(alpha: .4),
                                         BlendMode.srcIn,
                                       ),
                                     ),
@@ -68,7 +66,7 @@ class _AppEntryState extends ConsumerState<AppEntry> {
                                   item.label,
                                   style:
                                       item.section
-                                          ? TextStyle(fontSize: 12, color: MacosColors.systemGrayColor)
+                                          ? TextStyle(fontSize: 12, color: CupertinoColors.systemGrey)
                                           : TextStyle(fontSize: 13),
                                 ),
                               ],

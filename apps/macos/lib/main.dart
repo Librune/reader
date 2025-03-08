@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:macos_ui/macos_ui.dart';
+import 'package:macos_window_utils/macos_window_utils.dart';
 import 'package:reader/app/transparent_app.dart';
 
 import 'router.dart';
@@ -22,9 +22,15 @@ void main() async {
 }
 
 Future<void> _configureMacosWindowUtils() async {
-  const config = MacosWindowUtilsConfig(toolbarStyle: NSWindowToolbarStyle.expanded);
-  await config.apply();
+  // const config = MacosWindowUtilsConfig(toolbarStyle: NSWindowToolbarStyle.expanded);
+  // await config.apply();
+  // await WindowManipulator.setMaterial(NSVisualEffectViewMaterial.titlebar);
+  await WindowManipulator.initialize(enableWindowDelegate: true);
   await WindowManipulator.setMaterial(NSVisualEffectViewMaterial.titlebar);
+  await WindowManipulator.enableFullSizeContentView();
+  await WindowManipulator.makeTitlebarTransparent();
+  await WindowManipulator.hideTitle();
+  await WindowManipulator.setToolbarStyle(toolbarStyle: NSWindowToolbarStyle.unifiedCompact);
 }
 
 class MyApp extends StatelessWidget {
@@ -42,7 +48,7 @@ class MyApp extends StatelessWidget {
     return CupertinoApp.router(
       theme: const CupertinoThemeData(
         brightness: Brightness.light,
-        primaryColor: MacosColors.systemBlueColor,
+        primaryColor: CupertinoColors.systemBlue,
         scaffoldBackgroundColor: CupertinoColors.white,
       ),
       routerConfig: router,
