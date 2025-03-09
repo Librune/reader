@@ -13,6 +13,9 @@ class PathService {
   late final String cache;
   late final String app;
 
+  // 应用日志文件夹
+  String get logsDir => join(app, 'logs');
+
   // 书源文件夹
   late final String bookSourceDir;
 

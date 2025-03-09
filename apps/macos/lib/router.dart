@@ -1,13 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:core/core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reader/app/app_entry.dart';
 import 'package:reader/book_source_list/book_source_list_screen.dart';
 import 'package:reader/booksource_editor/booksource_editor_screen.dart';
 
-final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
-
 final router = GoRouter(
-  navigatorKey: rootNavigatorKey,
+  navigatorKey: navigatorKey,
   initialLocation: "/home",
   routes: <RouteBase>[
     StatefulShellRoute.indexedStack(

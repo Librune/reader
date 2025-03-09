@@ -45,6 +45,7 @@ dependencies:
   core:
     path: ../../packages/core
   macos_window_utils: ^1.6.1
+  shadcn_ui: ^0.22.5
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/svg/
+    - assets/png/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

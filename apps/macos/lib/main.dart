@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:macos_window_utils/macos_window_utils.dart';
-import 'package:reader/app/transparent_app.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'router.dart';
 
@@ -45,13 +45,15 @@ class MyApp extends StatelessWidget {
 
       // WindowManipulator.setMaterial(NSVisualEffectViewMaterial.sidebar);
     });
-    return CupertinoApp.router(
-      theme: const CupertinoThemeData(
-        brightness: Brightness.light,
-        primaryColor: CupertinoColors.systemBlue,
-        scaffoldBackgroundColor: CupertinoColors.white,
-      ),
+    return ShadApp.cupertinoRouter(
+      theme: ShadThemeData(brightness: Brightness.light, colorScheme: ShadColorScheme.fromName('blue')),
       routerConfig: router,
+      builder:
+          (context, child) => Overlay(
+            initialEntries: [
+              if (child != null) ...[OverlayEntry(builder: (context) => child)],
+            ],
+          ),
     );
   }
 }
