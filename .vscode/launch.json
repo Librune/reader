@@ -6,120 +6,105 @@
       "request": "launch",
       "type": "dart",
       "program": "apps/macos/lib/main.dart",
-      "flutterMode": "debug",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "debug"
     },
     {
       "name": "macos (profile)",
       "request": "launch",
       "type": "dart",
       "program": "apps/macos/lib/main.dart",
-      "flutterMode": "profile",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "profile"
     },
     {
       "name": "macos (release)",
       "request": "launch",
       "type": "dart",
       "program": "apps/macos/lib/main.dart",
-      "flutterMode": "release",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "release"
     },
     {
       "name": "ios (debug)",
       "request": "launch",
       "type": "dart",
       "program": "apps/ios/lib/main.dart",
-      "flutterMode": "debug",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "debug"
     },
     {
       "name": "ios (profile)",
       "request": "launch",
       "type": "dart",
       "program": "apps/ios/lib/main.dart",
-      "flutterMode": "profile",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "profile"
     },
     {
       "name": "ios (release)",
       "request": "launch",
       "type": "dart",
       "program": "apps/ios/lib/main.dart",
-      "flutterMode": "release",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "release"
     },
     {
       "name": "linux (debug)",
       "request": "launch",
       "type": "dart",
       "program": "apps/linux/lib/main.dart",
-      "flutterMode": "debug",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "debug"
     },
     {
       "name": "linux (profile)",
       "request": "launch",
       "type": "dart",
       "program": "apps/linux/lib/main.dart",
-      "flutterMode": "profile",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "profile"
     },
     {
       "name": "linux (release)",
       "request": "launch",
       "type": "dart",
       "program": "apps/linux/lib/main.dart",
-      "flutterMode": "release",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "release"
     },
     {
       "name": "android (debug)",
       "request": "launch",
       "type": "dart",
       "program": "apps/android/lib/main.dart",
-      "flutterMode": "debug",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "debug"
     },
     {
       "name": "android (profile)",
       "request": "launch",
       "type": "dart",
       "program": "apps/android/lib/main.dart",
-      "flutterMode": "profile",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "profile"
     },
     {
       "name": "android (release)",
       "request": "launch",
       "type": "dart",
       "program": "apps/android/lib/main.dart",
-      "flutterMode": "release",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "release"
     },
     {
       "name": "windows (debug)",
       "request": "launch",
       "type": "dart",
       "program": "apps/windows/lib/main.dart",
-      "flutterMode": "debug",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "debug"
     },
     {
       "name": "windows (profile)",
       "request": "launch",
       "type": "dart",
       "program": "apps/windows/lib/main.dart",
-      "flutterMode": "profile",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "profile"
     },
     {
       "name": "windows (release)",
       "request": "launch",
       "type": "dart",
       "program": "apps/windows/lib/main.dart",
-      "flutterMode": "release",
-      "preLaunchTask": "flutter: pub get all"
+      "flutterMode": "release"
     }
   ]
 }

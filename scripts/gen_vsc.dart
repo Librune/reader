@@ -15,7 +15,6 @@ void main() async {
   final melosYaml = loadYaml(melosConfig);
 
   final String projectName = melosYaml['name'] ?? 'flutter_monorepo';
-  final List<String> packagePatterns = (melosYaml['packages'] as YamlList).cast<String>();
   final Map<String, dynamic> melosScripts =
       melosYaml['scripts'] is Map ? Map<String, dynamic>.from(melosYaml['scripts']) : {};
 
@@ -149,7 +148,6 @@ Future<void> _generateLaunchJson(List<Map<String, String>> apps) async {
       'type': 'dart',
       'program': mainDart,
       'flutterMode': 'debug',
-      'preLaunchTask': 'flutter: pub get all'
     });
 
     // 添加profile模式
@@ -159,7 +157,6 @@ Future<void> _generateLaunchJson(List<Map<String, String>> apps) async {
       'type': 'dart',
       'program': mainDart,
       'flutterMode': 'profile',
-      'preLaunchTask': 'flutter: pub get all'
     });
 
     // 添加release模式
@@ -169,7 +166,6 @@ Future<void> _generateLaunchJson(List<Map<String, String>> apps) async {
       'type': 'dart',
       'program': mainDart,
       'flutterMode': 'release',
-      'preLaunchTask': 'flutter: pub get all'
     });
   }
 
