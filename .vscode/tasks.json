@@ -1,0 +1,246 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "melos: bootstrap",
+      "type": "shell",
+      "command": "melos bootstrap",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "melos: generate",
+      "type": "shell",
+      "command": "melos run generate",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": ""
+    },
+    {
+      "label": "melos: analyze",
+      "type": "shell",
+      "command": "melos run analyze",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Run Flutter analyze in all packages"
+    },
+    {
+      "label": "melos: format",
+      "type": "shell",
+      "command": "melos run format",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Format all code"
+    },
+    {
+      "label": "melos: build:all",
+      "type": "shell",
+      "command": "melos run build:all",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Build all platform apps"
+    },
+    {
+      "label": "melos: build:android",
+      "type": "shell",
+      "command": "melos run build:android",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Build arm64 Android app"
+    },
+    {
+      "label": "melos: build:macos",
+      "type": "shell",
+      "command": "melos run build:macos",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Build macOS app"
+    },
+    {
+      "label": "melos: test",
+      "type": "shell",
+      "command": "melos run test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": [],
+      "detail": "Run tests in all packages"
+    },
+    {
+      "label": "flutter: run macos",
+      "type": "shell",
+      "command": "cd apps/macos && flutter run",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: build macos (debug)",
+      "type": "shell",
+      "command": "cd apps/macos && flutter build apk --debug",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: build macos (release)",
+      "type": "shell",
+      "command": "cd apps/macos && flutter build apk --release",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: run ios",
+      "type": "shell",
+      "command": "cd apps/ios && flutter run",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: build ios (debug)",
+      "type": "shell",
+      "command": "cd apps/ios && flutter build apk --debug",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: build ios (release)",
+      "type": "shell",
+      "command": "cd apps/ios && flutter build apk --release",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: run linux",
+      "type": "shell",
+      "command": "cd apps/linux && flutter run",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: build linux (debug)",
+      "type": "shell",
+      "command": "cd apps/linux && flutter build apk --debug",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: build linux (release)",
+      "type": "shell",
+      "command": "cd apps/linux && flutter build apk --release",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: run android",
+      "type": "shell",
+      "command": "cd apps/android && flutter run",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: build android (debug)",
+      "type": "shell",
+      "command": "cd apps/android && flutter build apk --debug",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: build android (release)",
+      "type": "shell",
+      "command": "cd apps/android && flutter build apk --release",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: run windows",
+      "type": "shell",
+      "command": "cd apps/windows && flutter run",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: build windows (debug)",
+      "type": "shell",
+      "command": "cd apps/windows && flutter build apk --debug",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "flutter: build windows (release)",
+      "type": "shell",
+      "command": "cd apps/windows && flutter build apk --release",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

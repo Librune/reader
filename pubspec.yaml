@@ -4,3 +4,10 @@ environment:
   sdk: ^3.6.0
 dev_dependencies:
   melos: ^6.3.2
+  yaml: ^3.1.3
+
+categories:
+  apps:
+    - apps/*
+  packages:
+    - packages/*

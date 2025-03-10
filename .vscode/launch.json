@@ -1,27 +1,125 @@
 {
-  // 使用 IntelliSense 了解相关属性。
-  // 悬停以查看现有属性的描述。
-  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "reader",
+      "name": "macos (debug)",
       "request": "launch",
       "type": "dart",
-      "args": ["--no-enable-impeller"]
+      "program": "apps/macos/lib/main.dart",
+      "flutterMode": "debug",
+      "preLaunchTask": "flutter: pub get all"
     },
     {
-      "name": "reader (profile mode)",
+      "name": "macos (profile)",
       "request": "launch",
       "type": "dart",
+      "program": "apps/macos/lib/main.dart",
       "flutterMode": "profile",
-      "args": ["--no-enable-impeller"]
+      "preLaunchTask": "flutter: pub get all"
     },
     {
-      "name": "reader (release mode)",
+      "name": "macos (release)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release"
+      "program": "apps/macos/lib/main.dart",
+      "flutterMode": "release",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "ios (debug)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/ios/lib/main.dart",
+      "flutterMode": "debug",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "ios (profile)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/ios/lib/main.dart",
+      "flutterMode": "profile",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "ios (release)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/ios/lib/main.dart",
+      "flutterMode": "release",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "linux (debug)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/linux/lib/main.dart",
+      "flutterMode": "debug",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "linux (profile)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/linux/lib/main.dart",
+      "flutterMode": "profile",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "linux (release)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/linux/lib/main.dart",
+      "flutterMode": "release",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "android (debug)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/android/lib/main.dart",
+      "flutterMode": "debug",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "android (profile)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/android/lib/main.dart",
+      "flutterMode": "profile",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "android (release)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/android/lib/main.dart",
+      "flutterMode": "release",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "windows (debug)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/windows/lib/main.dart",
+      "flutterMode": "debug",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "windows (profile)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/windows/lib/main.dart",
+      "flutterMode": "profile",
+      "preLaunchTask": "flutter: pub get all"
+    },
+    {
+      "name": "windows (release)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/windows/lib/main.dart",
+      "flutterMode": "release",
+      "preLaunchTask": "flutter: pub get all"
     }
   ]
 }
