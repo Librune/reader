@@ -9,9 +9,10 @@ ide:
   intellij:
     enabled: false
 
-bootstrap:
-  hooks:
-    post: generate
+command:
+  bootstrap:
+    hooks:
+      post: melos run generate
 
 scripts:
   generate: >
