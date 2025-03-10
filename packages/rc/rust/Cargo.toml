@@ -38,3 +38,9 @@ boa_gc = "0.20.0"
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
+
+[profile.release]
+opt-level = 'z'
+lto = true
+panic = 'abort'
+codegen-units = 1
