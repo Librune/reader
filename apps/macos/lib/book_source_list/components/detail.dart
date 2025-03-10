@@ -1,9 +1,11 @@
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class BookSourceDetail extends StatefulHookConsumerWidget {
-  const BookSourceDetail({super.key});
+  const BookSourceDetail({super.key, required this.model});
+  final BookSourceModel model;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _BookSourceDetailState();
@@ -14,6 +16,7 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final model = widget.model;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 6,
@@ -30,7 +33,7 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("轻小说文库-r", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text(model.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     Text("适配新版 boa 运行时的 wenku8 插件", style: TextStyle(fontSize: 12, color: CupertinoColors.systemGrey2)),
                   ],
                 ),
@@ -49,7 +52,7 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                   style: TextStyle(fontSize: 12, color: CupertinoColors.black, fontWeight: FontWeight.bold),
                 ),
                 TextSpan(
-                  text: "MeowX",
+                  text: model.author,
                   style: TextStyle(fontSize: 12, color: CupertinoColors.black.withValues(alpha: .5)),
                 ),
               ],
@@ -66,7 +69,7 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                   style: TextStyle(fontSize: 12, color: CupertinoColors.black, fontWeight: FontWeight.bold),
                 ),
                 TextSpan(
-                  text: "1236744-7887483-77832783-278782",
+                  text: model.uuid!,
                   style: TextStyle(fontSize: 12, color: CupertinoColors.black.withValues(alpha: .5)),
                 ),
               ],
@@ -147,7 +150,7 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                   ),
                 ),
               ),
-              ShadSwitch(width: 36, height: 20, value: true, onChanged: (value) {}),
+              ShadSwitch(width: 36, height: 20, value: model.enabled, onChanged: (value) {}),
             ],
           ),
         ),

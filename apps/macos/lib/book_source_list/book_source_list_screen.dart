@@ -23,6 +23,7 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
   Widget build(BuildContext context) {
     final booksourceList = ref.watch(bookSourceProvider);
     final netDev = useState(false);
+    final currentBookSourceModel = useState<BookSourceModel?>(null);
     return ContentArea(
       title: "书源",
       subtitle: "本机安装的全部书源",
@@ -75,7 +76,13 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
               child: switch (booksourceList) {
                 AsyncData(:final value) => ListView.separated(
                   itemBuilder: (context, index) {
-                    return BookSourceItem(checked: index == 0, model: value[index]);
+                    final model = value[index];
+                    return GestureDetector(
+                      child: BookSourceItem(checked: currentBookSourceModel.value?.uuid == model.uuid, model: model),
+                      onTap: () {
+                        currentBookSourceModel.value = model;
+                      },
+                    );
                   },
                   separatorBuilder: (context, index) {
                     return Container(height: 1);
@@ -85,7 +92,9 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
                 _ => const Center(child: Text('没有书源')),
               },
             ),
-            Expanded(flex: 1, child: BookSourceDetail()),
+            currentBookSourceModel.value == null
+                ? Spacer()
+                : Expanded(flex: 1, child: BookSourceDetail(model: currentBookSourceModel.value!)),
           ],
         ),
       ),

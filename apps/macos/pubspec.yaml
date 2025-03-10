@@ -46,6 +46,7 @@ dependencies:
     path: ../../packages/core
   macos_window_utils: ^1.6.1
   shadcn_ui: ^0.22.5
+  nil: ^1.1.1
 
 dev_dependencies:
   flutter_test:
