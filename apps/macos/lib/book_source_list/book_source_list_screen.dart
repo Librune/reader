@@ -21,6 +21,7 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
   final log = Logger('book_source_list_screen');
   @override
   Widget build(BuildContext context) {
+    final booksourceList = ref.watch(bookSourceProvider);
     final netDev = useState(false);
     return ContentArea(
       title: "书源",
@@ -71,15 +72,18 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
           children: [
             Expanded(
               flex: 1,
-              child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return BookSourceItem(checked: index == 0);
-                },
-                separatorBuilder: (context, index) {
-                  return Container(height: 1);
-                },
-                itemCount: 1,
-              ),
+              child: switch (booksourceList) {
+                AsyncData(:final value) => ListView.separated(
+                  itemBuilder: (context, index) {
+                    return BookSourceItem(checked: index == 0, model: value[index]);
+                  },
+                  separatorBuilder: (context, index) {
+                    return Container(height: 1);
+                  },
+                  itemCount: value.length,
+                ),
+                _ => const Center(child: Text('没有书源')),
+              },
             ),
             Expanded(flex: 1, child: BookSourceDetail()),
           ],

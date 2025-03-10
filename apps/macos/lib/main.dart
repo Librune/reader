@@ -33,18 +33,11 @@ Future<void> _configureMacosWindowUtils() async {
   await WindowManipulator.setToolbarStyle(toolbarStyle: NSWindowToolbarStyle.unifiedCompact);
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    //next tick
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // MacosWindowUtils.setSidebarWidth(200);
-
-      // WindowManipulator.setMaterial(NSVisualEffectViewMaterial.sidebar);
-    });
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(bookSourceProvider);
     return ShadApp.cupertinoRouter(
       theme: ShadThemeData(brightness: Brightness.light, colorScheme: ShadColorScheme.fromName('blue')),
       routerConfig: router,
