@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader_macos/app/components/content_area.dart';
 import 'package:reader_macos/app/components/toast.dart';
@@ -17,9 +18,10 @@ class BookSourceListScreen extends StatefulHookConsumerWidget {
 }
 
 class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
-  final log = Logger('a_context');
+  final log = Logger('book_source_list_screen');
   @override
   Widget build(BuildContext context) {
+    final netDev = useState(false);
     return ContentArea(
       title: "书源",
       subtitle: "本机安装的全部书源",
@@ -43,7 +45,23 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
               log.info('网络导入');
             },
           ),
-          ShadButton.secondary(height: 28, child: const Text('在线调试', style: TextStyle(fontSize: 12)), onPressed: () {}),
+          netDev.value
+              ? ShadButton.secondary(
+                height: 28,
+                child: const Text('在线调试', style: TextStyle(fontSize: 12)),
+                onPressed: () {
+                  netDev.value = !netDev.value;
+                  log.info('在线调试');
+                },
+              )
+              : ShadButton(
+                height: 28,
+                child: const Text('在线调试', style: TextStyle(fontSize: 12)),
+                onPressed: () {
+                  netDev.value = !netDev.value;
+                  log.info('在线调试');
+                },
+              ),
         ],
       ),
       child: Container(
@@ -63,7 +81,7 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
                 itemCount: 1,
               ),
             ),
-            Expanded(child: BookSourceDetail(), flex: 1),
+            Expanded(flex: 1, child: BookSourceDetail()),
           ],
         ),
       ),
