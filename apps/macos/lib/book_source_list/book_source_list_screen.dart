@@ -2,9 +2,9 @@ import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/app/components/content_area.dart';
-import 'package:reader/app/components/toast.dart';
-import 'package:reader/book_source_list/components/detail.dart';
+import 'package:reader_macos/app/components/content_area.dart';
+import 'package:reader_macos/app/components/toast.dart';
+import 'package:reader_macos/book_source_list/components/detail.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'components/item.dart';

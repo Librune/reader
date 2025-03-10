@@ -1,8 +1,8 @@
 import 'package:core/core.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reader/app/app_entry.dart';
-import 'package:reader/book_source_list/book_source_list_screen.dart';
-import 'package:reader/booksource_editor/booksource_editor_screen.dart';
+import 'package:reader_macos/app/app_entry.dart';
+import 'package:reader_macos/book_source_list/book_source_list_screen.dart';
+import 'package:reader_macos/booksource_editor/booksource_editor_screen.dart';
 
 final router = GoRouter(
   navigatorKey: navigatorKey,

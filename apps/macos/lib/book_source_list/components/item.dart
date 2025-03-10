@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:reader/book_source_list/components/status.dart';
+import 'package:reader_macos/book_source_list/components/status.dart';
 
 class BookSourceItem extends StatefulHookConsumerWidget {
   const BookSourceItem({super.key, this.checked = false});

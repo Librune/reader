@@ -5,9 +5,18 @@ packages:
   - packages/**
   - apps/**
 
+ide:
+  intellij:
+    enabled: false
+
+bootstrap:
+  hooks:
+    post: generate
+
 scripts:
-  generate:
-    run: melos exec -c 1 --depends-on build_runner -- dart run build_runner build
+  generate: >
+    melos exec -c 1 --fail-fast --depends-on=build_runner --order-dependents -- \
+      dart run build_runner build --delete-conflicting-outputs
 
   analyze:
     run: melos exec -- "flutter analyze"
