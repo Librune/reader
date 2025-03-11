@@ -1,6 +1,8 @@
+import 'package:contextual_menu/contextual_menu.dart';
 import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader_macos/book_source_list/components/form_group.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class BookSourceDetail extends StatefulHookConsumerWidget {
@@ -13,6 +15,28 @@ class BookSourceDetail extends StatefulHookConsumerWidget {
 
 class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
   final formKey = GlobalKey<ShadFormState>();
+
+  Menu menu = Menu(
+    items: [
+      MenuItem(
+        label: 'Copy',
+        onClick: (_) {
+          print('Clicked Copy');
+        },
+      ),
+      MenuItem(label: 'Disabled item', disabled: true),
+      MenuItem.checkbox(
+        key: 'checkbox1',
+        label: 'Checkbox1',
+        checked: true,
+        onClick: (menuItem) {
+          print('Clicked Checkbox1');
+          menuItem.checked = !(menuItem.checked == true);
+        },
+      ),
+      MenuItem.separator(),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +62,8 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                   ],
                 ),
               ),
+              Spacer(),
+              popUpContextualMenu(_menu!, placement: Placement.bottomLeft),
             ],
           ),
         ),
@@ -154,71 +180,73 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
             ],
           ),
         ),
-        DivideredTag(label: "表单信息", color: CupertinoColors.systemIndigo, padding: EdgeInsets.only(top: 10, bottom: 0)),
-        Transform.translate(
-          offset: Offset(-4, 0),
-          child: Padding(
-            padding: EdgeInsets.only(top: 4),
-            child: ShadForm(
-              key: formKey,
-              child: Column(
-                spacing: 6,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ShadInputFormField(
-                    id: '用户名',
-                    // label: const Text('用户名'),
-                    placeholder: const Text('输入用户名'),
-                    style: TextStyle(fontSize: 12),
-                    placeholderStyle: TextStyle(fontSize: 12),
-                    cursorHeight: 13,
-                    decoration: ShadDecoration(
-                      secondaryFocusedBorder: ShadBorder.fromBorderSide(
-                        ShadBorderSide(color: CupertinoColors.transparent),
-                      ),
-                      border: ShadBorder.fromBorderSide(ShadBorderSide(color: CupertinoColors.systemGrey5)),
-                    ),
-                  ),
-                  ShadInputFormField(
-                    id: '用户名',
-                    placeholder: const Text('输入密码'),
-                    style: TextStyle(fontSize: 12),
-                    placeholderStyle: TextStyle(fontSize: 12),
-                    cursorHeight: 13,
-                    decoration: ShadDecoration(
-                      secondaryFocusedBorder: ShadBorder.fromBorderSide(
-                        ShadBorderSide(color: CupertinoColors.transparent),
-                      ),
-                      border: ShadBorder.fromBorderSide(ShadBorderSide(color: CupertinoColors.systemGrey5)),
-                    ),
-                  ),
-                  ShadInputFormField(
-                    id: '用户名',
-                    placeholder: const Text('输入Cookies'),
-                    style: TextStyle(fontSize: 12),
-                    placeholderStyle: TextStyle(fontSize: 12),
-                    cursorHeight: 13,
-                    decoration: ShadDecoration(
-                      secondaryFocusedBorder: ShadBorder.fromBorderSide(
-                        ShadBorderSide(color: CupertinoColors.transparent),
-                      ),
-                      border: ShadBorder.fromBorderSide(ShadBorderSide(color: CupertinoColors.systemGrey5)),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 6),
-                    child: ShadButton(
-                      height: 32,
-                      child: const Text('登录账号', style: TextStyle(fontSize: 12)),
-                      onPressed: () {},
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+        // DivideredTag(label: "表单信息", color: CupertinoColors.systemIndigo, padding: EdgeInsets.only(top: 10, bottom: 0)),
+        BookSourceFormGroup(groups: model.forms),
+
+        // Transform.translate(
+        //   offset: Offset(-4, 0),
+        //   child: Padding(
+        //     padding: EdgeInsets.only(top: 4),
+        //     child: ShadForm(
+        //       key: formKey,
+        //       child: Column(
+        //         spacing: 6,
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         mainAxisSize: MainAxisSize.min,
+        //         children: [
+        //           ShadInputFormField(
+        //             id: '用户名',
+        //             // label: const Text('用户名'),
+        //             placeholder: const Text('输入用户名'),
+        //             style: TextStyle(fontSize: 12),
+        //             placeholderStyle: TextStyle(fontSize: 12),
+        //             cursorHeight: 13,
+        //             decoration: ShadDecoration(
+        //               secondaryFocusedBorder: ShadBorder.fromBorderSide(
+        //                 ShadBorderSide(color: CupertinoColors.transparent),
+        //               ),
+        //               border: ShadBorder.fromBorderSide(ShadBorderSide(color: CupertinoColors.systemGrey5)),
+        //             ),
+        //           ),
+        //           ShadInputFormField(
+        //             id: '用户名',
+        //             placeholder: const Text('输入密码'),
+        //             style: TextStyle(fontSize: 12),
+        //             placeholderStyle: TextStyle(fontSize: 12),
+        //             cursorHeight: 13,
+        //             decoration: ShadDecoration(
+        //               secondaryFocusedBorder: ShadBorder.fromBorderSide(
+        //                 ShadBorderSide(color: CupertinoColors.transparent),
+        //               ),
+        //               border: ShadBorder.fromBorderSide(ShadBorderSide(color: CupertinoColors.systemGrey5)),
+        //             ),
+        //           ),
+        //           ShadInputFormField(
+        //             id: '用户名',
+        //             placeholder: const Text('输入Cookies'),
+        //             style: TextStyle(fontSize: 12),
+        //             placeholderStyle: TextStyle(fontSize: 12),
+        //             cursorHeight: 13,
+        //             decoration: ShadDecoration(
+        //               secondaryFocusedBorder: ShadBorder.fromBorderSide(
+        //                 ShadBorderSide(color: CupertinoColors.transparent),
+        //               ),
+        //               border: ShadBorder.fromBorderSide(ShadBorderSide(color: CupertinoColors.systemGrey5)),
+        //             ),
+        //           ),
+        //           Padding(
+        //             padding: EdgeInsets.only(top: 6),
+        //             child: ShadButton(
+        //               height: 32,
+        //               child: const Text('登录账号', style: TextStyle(fontSize: 12)),
+        //               onPressed: () {},
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
