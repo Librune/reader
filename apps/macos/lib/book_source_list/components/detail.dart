@@ -1,9 +1,11 @@
-import 'package:contextual_menu/contextual_menu.dart';
 import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart' show ListTile, ScaffoldMessenger, SnackBar;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader_macos/book_source_list/components/form_group.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:super_context_menu/super_context_menu.dart';
 
 class BookSourceDetail extends StatefulHookConsumerWidget {
   const BookSourceDetail({super.key, required this.model});
@@ -15,28 +17,7 @@ class BookSourceDetail extends StatefulHookConsumerWidget {
 
 class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
   final formKey = GlobalKey<ShadFormState>();
-
-  Menu menu = Menu(
-    items: [
-      MenuItem(
-        label: 'Copy',
-        onClick: (_) {
-          print('Clicked Copy');
-        },
-      ),
-      MenuItem(label: 'Disabled item', disabled: true),
-      MenuItem.checkbox(
-        key: 'checkbox1',
-        label: 'Checkbox1',
-        checked: true,
-        onClick: (menuItem) {
-          print('Clicked Checkbox1');
-          menuItem.checked = !(menuItem.checked == true);
-        },
-      ),
-      MenuItem.separator(),
-    ],
-  );
+  final GlobalKey _menuKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +44,38 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                 ),
               ),
               Spacer(),
-              popUpContextualMenu(_menu!, placement: Placement.bottomLeft),
+              GestureDetector(
+                child: ContextMenuWidget(
+                  key: _menuKey,
+                  child: Icon(CupertinoIcons.ellipsis_circle_fill, color: CupertinoColors.systemGrey, size: 18),
+                  menuProvider: (request) {
+                    return _menu;
+                  },
+                ),
+                onTap: () {
+                  // 获取icon的RenderBox
+                  final RenderBox renderBox = _menuKey.currentContext!.findRenderObject() as RenderBox;
+                  final position = renderBox.localToGlobal(Offset.zero);
+
+                  // 模拟右键点击事件
+                  final RenderObject? object = _menuKey.currentContext?.findRenderObject();
+                  if (object != null) {
+                    // 创建鼠标右键按下事件
+                    final PointerDownEvent event = PointerDownEvent(
+                      position: position,
+                      kind: PointerDeviceKind.mouse,
+                      buttons: kSecondaryMouseButton,
+                    );
+
+                    // 创建 HitTestResult 并添加目标对象
+                    final HitTestResult result = HitTestResult();
+                    result.add(HitTestEntry(object));
+
+                    // 分发事件
+                    GestureBinding.instance.dispatchEvent(event, result);
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -247,6 +259,32 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
         //     ),
         //   ),
         // ),
+      ],
+    );
+  }
+
+  Menu get _menu {
+    return Menu(
+      children: [
+        MenuAction(
+          image: MenuImage.icon(CupertinoIcons.delete),
+          callback: () {},
+          title: "保存数据",
+          attributes: MenuActionAttributes(destructive: true),
+        ),
+        MenuSeparator(),
+        MenuAction(
+          image: MenuImage.icon(CupertinoIcons.doc_person),
+          callback: () {},
+          title: "清空数据",
+          attributes: MenuActionAttributes(destructive: true),
+        ),
+        MenuAction(
+          image: MenuImage.icon(CupertinoIcons.delete),
+          callback: () {},
+          title: "删除书源",
+          attributes: MenuActionAttributes(destructive: true),
+        ),
       ],
     );
   }

@@ -1,4 +1,6 @@
 PODS:
+  - contextual_menu (0.0.1):
+    - FlutterMacOS
   - device_info_plus (0.0.1):
     - FlutterMacOS
   - file_picker (0.0.1):
@@ -17,6 +19,7 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - contextual_menu (from `Flutter/ephemeral/.symlinks/plugins/contextual_menu/macos`)
   - device_info_plus (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos`)
   - file_picker (from `Flutter/ephemeral/.symlinks/plugins/file_picker/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
@@ -27,6 +30,8 @@ DEPENDENCIES:
   - super_native_extensions (from `Flutter/ephemeral/.symlinks/plugins/super_native_extensions/macos`)
 
 EXTERNAL SOURCES:
+  contextual_menu:
+    :path: Flutter/ephemeral/.symlinks/plugins/contextual_menu/macos
   device_info_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos
   file_picker:
@@ -45,6 +50,7 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/super_native_extensions/macos
 
 SPEC CHECKSUMS:
+  contextual_menu: a9f44b08995741528ad306dd095e24c9d5028688
   device_info_plus: a56e6e74dbbd2bb92f2da12c64ddd4f67a749041
   file_picker: 7584aae6fa07a041af2b36a2655122d42f578c1a
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
