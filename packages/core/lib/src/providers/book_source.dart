@@ -18,7 +18,6 @@ class BookSource extends _$BookSource {
   }
 
   addFromFile() async {
-    state = AsyncLoading();
     final res = await BookSourceAddFromFileUseCase().call();
     if (res != null) {
       state = AsyncData([res, ...(state.value ?? [])]);

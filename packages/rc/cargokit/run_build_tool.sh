@@ -21,7 +21,7 @@ else
 fi
 
 cat << EOF > "pubspec.yaml"
-name: build_tool_runner
+name: rc_build_tool_runner
 version: 1.0.0
 publish_to: none
 

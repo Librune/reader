@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader_macos/app/components/content_area.dart';
@@ -11,6 +12,7 @@ class SearchScreen extends StatefulHookConsumerWidget {
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
+  final log = Logger('search_screen');
   @override
   Widget build(BuildContext context) {
     return ContentArea(
@@ -27,8 +29,16 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 secondaryFocusedBorder: ShadBorder.all(width: 0, padding: EdgeInsets.zero),
                 // descriptionPadding: EdgeInsets.zero,
               ),
+              style: TextStyle(fontSize: 13),
+              placeholderStyle: TextStyle(fontSize: 13),
+              cursorHeight: 14,
               placeholder: Text('搜索书籍或作者'),
+              cursorColor: CupertinoColors.systemGrey,
               keyboardType: TextInputType.name,
+              leading: Icon(CupertinoIcons.search, size: 16, color: CupertinoColors.systemGrey),
+              onSubmitted: (value) {
+                log.info('搜索', value);
+              },
             ),
           ),
         ],
