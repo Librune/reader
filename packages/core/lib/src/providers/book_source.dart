@@ -32,6 +32,17 @@ class BookSource extends _$BookSource {
     }
   }
 
+  toggleEnabled(String uuid) async {
+    final index = state.value!.indexWhere((element) => element.uuid == uuid);
+    if (index == -1) return;
+    final newList = [...state.value!];
+    final bookSource = state.value![index];
+    final newBookSource = bookSource.copyWith(enabled: !bookSource.enabled);
+    newList[index] = newBookSource;
+    log.info(newList);
+    state = AsyncData(newList);
+  }
+
   onSelfChange(AsyncValue<List<BookSourceModel>>? oldValue, AsyncValue<List<BookSourceModel>> newValue) {
     BookSourceUpdateManifestUseCase().call(newValue.value ?? []);
   }

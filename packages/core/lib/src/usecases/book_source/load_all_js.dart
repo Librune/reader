@@ -15,8 +15,7 @@ class BookSourceLoadAllJs implements NoParamUseCase<Future<List<BookSourceModel>
     final bookSourceList = <BookSourceModel>[];
     if (!bookSourceManifest.existsSync()) bookSourceManifest.createSync(recursive: true);
     final json = jsonDecode(bookSourceManifest.readAsStringSync()) as List<dynamic>;
-    log.info(json);
-    for (var bookSource in json.where(((bookSource) => bookSource["enabled"] == true))) {
+    for (var bookSource in json) {
       final uuid = bookSource["uuid"];
       final file = File(join(PathService().bookSourceDir, uuid, "index.js"));
       final jsCode = await file.readAsString();

@@ -24,13 +24,7 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
   Widget build(BuildContext context) {
     final booksourceList = ref.watch(bookSourceProvider);
     final netDev = useState(false);
-    final currentBookSourceModel = useState<BookSourceModel?>(null);
-    useEffect(() {
-      if (booksourceList.value?.isNotEmpty == true && currentBookSourceModel.value == null) {
-        currentBookSourceModel.value = booksourceList.value?.first;
-      }
-      return null;
-    }, [booksourceList.value]);
+    final currentBookSourceIndex = useState(0);
     return ContentArea(
       title: "书源",
       subtitle: "本机安装的全部书源",
@@ -88,12 +82,10 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
                         itemBuilder: (context, index) {
                           final model = value[index];
                           return GestureDetector(
-                            child: BookSourceItem(
-                              checked: currentBookSourceModel.value?.uuid == model.uuid,
-                              model: model,
-                            ),
+                            child: BookSourceItem(checked: currentBookSourceIndex.value == index, model: model),
                             onTap: () {
-                              currentBookSourceModel.value = model;
+                              // currentBookSourceModel.value = model;
+                              currentBookSourceIndex.value = index;
                             },
                           );
                         },
@@ -105,9 +97,12 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
                 _ => const Center(child: NoBookSource()),
               },
             ),
-            currentBookSourceModel.value == null
+            booksourceList.value == null
                 ? SizedBox.shrink()
-                : Expanded(flex: 1, child: BookSourceDetail(model: currentBookSourceModel.value!)),
+                : Expanded(
+                  flex: 1,
+                  child: BookSourceDetail(model: booksourceList.value![currentBookSourceIndex.value]),
+                ),
           ],
         ),
       ),

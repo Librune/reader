@@ -188,7 +188,14 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                   ),
                 ),
               ),
-              ShadSwitch(width: 36, height: 20, value: model.enabled, onChanged: (value) {}),
+              ShadSwitch(
+                width: 36,
+                height: 20,
+                value: model.enabled,
+                onChanged: (value) {
+                  ref.read(bookSourceProvider.notifier).toggleEnabled(model.uuid!);
+                },
+              ),
             ],
           ),
         ),
