@@ -68,7 +68,7 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
         ],
       ),
       child: Container(
-        margin: EdgeInsets.only(left: 18, right: 24, bottom: 12, top: 8),
+        margin: EdgeInsets.only(left: 18, right: 24, bottom: 12, top: 0),
         child: Row(
           spacing: 20,
           children: [

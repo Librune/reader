@@ -21,26 +21,45 @@ class _ContentAreaState extends ConsumerState<ContentArea> {
         spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: 24, top: 26, right: 24),
-            child: Row(
+          SizedBox(
+            height: 86,
+            child: Stack(
               children: [
-                Text(
-                  widget.title,
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: CupertinoColors.black, height: 1),
+                Positioned(
+                  left: 24,
+                  right: 24,
+                  top: 24,
+                  child: Row(
+                    children: [
+                      Text(
+                        widget.title,
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: CupertinoColors.black,
+                          height: 1,
+                        ),
+                      ),
+                      if (widget.action != null) Expanded(child: widget.action!),
+                    ],
+                  ),
                 ),
-                if (widget.action != null) Expanded(child: widget.action!),
+                if (widget.subtitle != null)
+                  Positioned(
+                    left: 24,
+                    bottom: 12,
+                    child: Text(
+                      widget.subtitle!,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: CupertinoColors.systemGrey.withValues(alpha: .8),
+                        height: 1,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
-          if (widget.subtitle != null)
-            Padding(
-              padding: EdgeInsets.only(left: 24, right: 24),
-              child: Text(
-                widget.subtitle!,
-                style: TextStyle(fontSize: 11, color: CupertinoColors.systemGrey.withValues(alpha: .8), height: 1),
-              ),
-            ),
           Expanded(child: widget.child),
         ],
       ),

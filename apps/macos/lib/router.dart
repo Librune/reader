@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:reader_macos/app/app_entry.dart';
 import 'package:reader_macos/book_source_list/book_source_list_screen.dart';
 import 'package:reader_macos/booksource_editor/booksource_editor_screen.dart';
+import 'package:reader_macos/search/search_screen.dart';
 
 final router = GoRouter(
   navigatorKey: navigatorKey,
@@ -16,6 +17,7 @@ final router = GoRouter(
           items: [
             MacosSidebarItem(label: '图书', section: true),
             MacosSidebarItem(label: '全部', icon: 'ic_books'),
+            MacosSidebarItem(label: '搜索', icon: 'ic_search'),
             MacosSidebarItem(label: '探索', section: true),
             MacosSidebarItem(label: '书源列表', icon: 'ic_booksource'),
             MacosSidebarItem(label: "刺猬猫", icon: 'ic_discover'),
@@ -29,6 +31,7 @@ final router = GoRouter(
       },
       branches: [
         StatefulShellBranch(routes: [GoRoute(path: '/home', builder: (context, state) => BooksourceEditorScreen())]),
+        StatefulShellBranch(routes: [GoRoute(path: '/search', builder: (context, state) => SearchScreen())]),
         StatefulShellBranch(
           routes: [GoRoute(path: '/book_source_list', builder: (context, state) => const BookSourceListScreen())],
         ),
