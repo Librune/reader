@@ -1,8 +1,9 @@
 import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'package:reader_macos/app/components/content_area.dart';
 import 'package:reader_macos/app/components/toast.dart';
 import 'package:reader_macos/book_source_list/components/detail.dart';
@@ -24,6 +25,12 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
     final booksourceList = ref.watch(bookSourceProvider);
     final netDev = useState(false);
     final currentBookSourceModel = useState<BookSourceModel?>(null);
+    useEffect(() {
+      if (booksourceList.value?.isNotEmpty == true && currentBookSourceModel.value == null) {
+        currentBookSourceModel.value = booksourceList.value?.first;
+      }
+      return null;
+    }, [booksourceList.value]);
     return ContentArea(
       title: "书源",
       subtitle: "本机安装的全部书源",
@@ -74,29 +81,55 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
             Expanded(
               flex: 1,
               child: switch (booksourceList) {
-                AsyncData(:final value) => ListView.separated(
-                  itemBuilder: (context, index) {
-                    final model = value[index];
-                    return GestureDetector(
-                      child: BookSourceItem(checked: currentBookSourceModel.value?.uuid == model.uuid, model: model),
-                      onTap: () {
-                        currentBookSourceModel.value = model;
-                      },
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Container(height: 1);
-                  },
-                  itemCount: value.length,
-                ),
-                _ => const Center(child: Text('没有书源')),
+                AsyncData(:final value) =>
+                  value.isEmpty
+                      ? NoBookSource()
+                      : ListView.separated(
+                        itemBuilder: (context, index) {
+                          final model = value[index];
+                          return GestureDetector(
+                            child: BookSourceItem(
+                              checked: currentBookSourceModel.value?.uuid == model.uuid,
+                              model: model,
+                            ),
+                            onTap: () {
+                              currentBookSourceModel.value = model;
+                            },
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return Container(height: 1);
+                        },
+                        itemCount: value.length,
+                      ),
+                _ => const Center(child: NoBookSource()),
               },
             ),
             currentBookSourceModel.value == null
-                ? Spacer()
+                ? SizedBox.shrink()
                 : Expanded(flex: 1, child: BookSourceDetail(model: currentBookSourceModel.value!)),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class NoBookSource extends StatelessWidget {
+  const NoBookSource({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: 48),
+      child: Column(
+        children: [
+          SvgPicture.asset("assets/svg/il_empty.svg"),
+          Transform.translate(
+            offset: Offset(0, -56),
+            child: Text("暂无书源，请先添加", style: TextStyle(color: CupertinoColors.systemGrey, fontSize: 14)),
+          ),
+        ],
       ),
     );
   }

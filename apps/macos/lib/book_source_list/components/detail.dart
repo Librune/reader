@@ -1,7 +1,6 @@
 import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart' show ListTile, ScaffoldMessenger, SnackBar;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader_macos/book_source_list/components/form_group.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -16,6 +15,7 @@ class BookSourceDetail extends StatefulHookConsumerWidget {
 }
 
 class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
+  final Logger log = Logger("BookSourceDetail");
   final formKey = GlobalKey<ShadFormState>();
   final GlobalKey _menuKey = GlobalKey();
 
@@ -281,7 +281,9 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
         ),
         MenuAction(
           image: MenuImage.icon(CupertinoIcons.delete),
-          callback: () {},
+          callback: () async {
+            ref.read(bookSourceProvider.notifier).delete(widget.model.uuid!);
+          },
           title: "删除书源",
           attributes: MenuActionAttributes(destructive: true),
         ),

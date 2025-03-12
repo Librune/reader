@@ -30,33 +30,6 @@ class _ContentAreaState extends ConsumerState<ContentArea> {
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: CupertinoColors.black, height: 1),
                 ),
                 if (widget.action != null) Expanded(child: widget.action!),
-                // RichText(
-                //   textAlign: TextAlign.left,
-                //   text: TextSpan(
-                //     children: [
-                //       TextSpan(
-                //         text: widget.title,
-                //         style: TextStyle(
-                //           fontSize: 26,
-                //           fontWeight: FontWeight.bold,
-                //           color: CupertinoColors.black,
-                //           height: 1,
-                //         ),
-                //       ),
-                //       if (widget.action != null) WidgetSpan(child: Expanded(child: widget.action!)),
-                //       if (widget.subtitle != null) TextSpan(text: "\n\n", style: TextStyle(height: 10, fontSize: 1)),
-                //       if (widget.subtitle != null)
-                //         TextSpan(
-                //           text: widget.subtitle,
-                //           style: TextStyle(
-                //             fontSize: 11,
-                //             color: CupertinoColors.systemGrey.withValues(alpha: .8),
-                //             height: 1,
-                //           ),
-                //         ),
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),
