@@ -2,6 +2,8 @@ import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'detail.dart';
+
 class BookSourceFormGroup extends StatefulHookConsumerWidget {
   const BookSourceFormGroup({super.key, required this.groups});
   final List<BookSourceFormModel> groups;
@@ -13,6 +15,23 @@ class BookSourceFormGroup extends StatefulHookConsumerWidget {
 class _BookSourceFormGroupState extends ConsumerState<BookSourceFormGroup> {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Column(children: [for (final group in widget.groups) Container()]));
+    return Container(
+      child: Column(
+        children: [
+          for (final group in widget.groups)
+            Container(
+              child: Column(
+                children: [
+                  DivideredTag(
+                    label: group.title,
+                    color: CupertinoColors.systemIndigo,
+                    padding: EdgeInsets.only(top: 10, bottom: 0),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }

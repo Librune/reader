@@ -13,6 +13,13 @@ class BookSourceGetInfoUsecase implements UseCase<String, BookSourceModel> {
             .map<BookSourceFormModel>((e) => BookSourceFormModel.fromJson(e))
             .toList();
     final actions = (jsonDecode(envs["actions"] ?? "[]") as List);
-    return BookSourceModel(uuid: uuid, name: envs["name"]!, author: envs["author"]!, forms: forms, actions: actions);
+    return BookSourceModel(
+      uuid: uuid,
+      name: envs["name"]!,
+      author: envs["author"]!,
+      forms: forms,
+      actions: actions,
+      description: envs["description"],
+    );
   }
 }

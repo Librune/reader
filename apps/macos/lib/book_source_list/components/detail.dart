@@ -39,7 +39,10 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(model.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                    Text("适配新版 boa 运行时的 wenku8 插件", style: TextStyle(fontSize: 12, color: CupertinoColors.systemGrey2)),
+                    Text(
+                      model.description ?? "暂无描述",
+                      style: TextStyle(fontSize: 12, color: CupertinoColors.systemGrey2),
+                    ),
                   ],
                 ),
               ),
