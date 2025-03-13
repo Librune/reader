@@ -37,7 +37,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               keyboardType: TextInputType.name,
               leading: Icon(CupertinoIcons.search, size: 16, color: CupertinoColors.systemGrey),
               onSubmitted: (value) {
-                log.info('搜索', value);
+                ref.read(searchBooksProvider.notifier).searchByKeyword(value);
               },
             ),
           ),

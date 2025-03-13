@@ -10,13 +10,18 @@ class BookSourceExecActionOptions {
   final Map<String, dynamic>? params;
 
   BookSourceExecActionOptions({required this.uuid, required this.action, this.params});
+
+  @override
+  String toString() {
+    return 'BookSourceExecActionOptions{uuid: $uuid, action: $action, params: $params}';
+  }
 }
 
 class BookSourceExecAction<T extends dynamic> implements UseCase<BookSourceExecActionOptions, Future<T>> {
   final log = Logger('book_source_exec_action');
   @override
   Future<T> call(BookSourceExecActionOptions params) async {
-    log.info("执行书源操作");
+    log.info("执行书源操作", params);
     final uuid = params.uuid;
     final action = params.action;
     final actionParams = jsonEncode(params.params ?? {});

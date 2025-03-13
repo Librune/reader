@@ -3,6 +3,8 @@ use std::collections::HashMap;
 use boa_engine::{Context, Source};
 use tokio::runtime::Runtime;
 
+use crate::ecma::libs::runtime::add_runtime;
+
 // use crate::ecma::libs::runtime::add_runtime;
 
 pub struct EcmaEngine {
@@ -15,7 +17,7 @@ impl EcmaEngine {
             context: Context::default(),
         };
         println!("EcmaEngine::new()");
-        // add_runtime(&mut engine.context);
+        add_runtime(&mut engine.context);
         engine
     }
 

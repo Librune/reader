@@ -97,7 +97,7 @@ class _BookSourceListScreenState extends ConsumerState<BookSourceListScreen> {
                 _ => const Center(child: NoBookSource()),
               },
             ),
-            booksourceList.value == null
+            booksourceList.value == null || booksourceList.value!.isEmpty
                 ? SizedBox.shrink()
                 : Expanded(
                   flex: 1,
