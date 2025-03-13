@@ -17,7 +17,7 @@ class SearchBooks extends _$SearchBooks {
     log.info("搜索关键字", key);
     final enabledBookSourceUuids =
         ref.read(bookSourceProvider).value?.where((element) => element.enabled).map((e) => e.uuid!).toList() ?? [];
-    final res = await BookSourceExecActionAll().call(
+    final res = await BookSourceExecActionAllUseCase().call(
       BookSourceExecActionAllOptions(
         uuids: enabledBookSourceUuids,
         action: "search",

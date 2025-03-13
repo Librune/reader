@@ -274,9 +274,11 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
     return Menu(
       children: [
         MenuAction(
-          image: MenuImage.icon(CupertinoIcons.delete),
-          callback: () {},
-          title: "保存数据",
+          image: MenuImage.icon(CupertinoIcons.chevron_left_slash_chevron_right),
+          callback: () {
+            BookSourceExecActionUseCase().call(BookSourceExecActionOptions(uuid: widget.model.uuid!, action: "test"));
+          },
+          title: "测试书源",
           attributes: MenuActionAttributes(destructive: true),
         ),
         MenuSeparator(),

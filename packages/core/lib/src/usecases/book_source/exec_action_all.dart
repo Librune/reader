@@ -9,13 +9,14 @@ class BookSourceExecActionAllOptions {
   BookSourceExecActionAllOptions({required this.uuids, required this.action, this.params});
 }
 
-class BookSourceExecActionAll<T extends dynamic> implements UseCase<BookSourceExecActionAllOptions, Future<List<T>>> {
+class BookSourceExecActionAllUseCase<T extends dynamic>
+    implements UseCase<BookSourceExecActionAllOptions, Future<List<T>>> {
   @override
   Future<List<T>> call(BookSourceExecActionAllOptions input) async {
     final List<T> result = [];
     for (var uuid in input.uuids) {
       result.add(
-        await BookSourceExecAction<T>().call(
+        await BookSourceExecActionUseCase<T>().call(
           BookSourceExecActionOptions(uuid: uuid, action: input.action, params: input.params),
         ),
       );

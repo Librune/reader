@@ -11,6 +11,7 @@ abstract class BookSourceModel with _$BookSourceModel {
     required String? uuid,
     required String name,
     required String author,
+    required String? description,
     @Default(true) bool enabled,
     @Default([]) List<dynamic> actions,
     @Default([]) List<BookSourceFormModel> forms,

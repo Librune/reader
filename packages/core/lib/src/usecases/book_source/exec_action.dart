@@ -17,7 +17,7 @@ class BookSourceExecActionOptions {
   }
 }
 
-class BookSourceExecAction<T extends dynamic> implements UseCase<BookSourceExecActionOptions, Future<T>> {
+class BookSourceExecActionUseCase<T extends dynamic> implements UseCase<BookSourceExecActionOptions, Future<T>> {
   final log = Logger('book_source_exec_action');
   @override
   Future<T> call(BookSourceExecActionOptions params) async {
