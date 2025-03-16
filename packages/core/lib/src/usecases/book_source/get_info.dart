@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:core/src/interfaces/use_case.dart';
 import 'package:core/src/models/book_source.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:rc/rc.dart';
 
 class BookSourceGetInfoUsecase implements UseCase<String, BookSourceModel> {
@@ -19,6 +20,8 @@ class BookSourceGetInfoUsecase implements UseCase<String, BookSourceModel> {
       author: envs["author"]!,
       forms: forms,
       actions: actions,
+      userAgent: envs["userAgent"],
+      updateDate: Jiffy.now().format(pattern: "yyyy-MM-dd HH:mm:ss"),
       description: envs["description"],
     );
   }

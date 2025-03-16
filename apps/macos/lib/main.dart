@@ -39,7 +39,11 @@ class MyApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(bookSourceProvider);
     return ShadApp.cupertinoRouter(
-      theme: ShadThemeData(brightness: Brightness.light, colorScheme: ShadColorScheme.fromName('blue')),
+      theme: ShadThemeData(
+        brightness: Brightness.light,
+        colorScheme: ShadColorScheme.fromName('blue'),
+        disableSecondaryBorder: true,
+      ),
       routerConfig: router,
       builder:
           (context, child) => Overlay(

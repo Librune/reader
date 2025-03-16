@@ -127,7 +127,7 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                   style: TextStyle(fontSize: 12, color: CupertinoColors.black, fontWeight: FontWeight.bold),
                 ),
                 TextSpan(
-                  text: "2025-03-15",
+                  text: model.updateDate,
                   style: TextStyle(fontSize: 12, color: CupertinoColors.black.withValues(alpha: .5)),
                 ),
               ],
@@ -161,8 +161,7 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                   style: TextStyle(fontSize: 12, color: CupertinoColors.black, fontWeight: FontWeight.bold),
                 ),
                 TextSpan(
-                  text:
-                      "Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.181 Mobile Safari/537.36",
+                  text: model.userAgent,
                   style: TextStyle(fontSize: 12, color: CupertinoColors.black.withValues(alpha: .5)),
                 ),
               ],

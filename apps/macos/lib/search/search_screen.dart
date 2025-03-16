@@ -24,11 +24,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 280),
             child: ShadInput(
-              decoration: ShadDecoration(
-                secondaryBorder: ShadBorder.all(color: CupertinoColors.systemGrey3, padding: EdgeInsets.zero),
-                secondaryFocusedBorder: ShadBorder.all(width: 0, padding: EdgeInsets.zero),
-                // descriptionPadding: EdgeInsets.zero,
-              ),
               style: TextStyle(fontSize: 13),
               placeholderStyle: TextStyle(fontSize: 13),
               cursorHeight: 14,

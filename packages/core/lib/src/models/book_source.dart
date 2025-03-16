@@ -12,6 +12,11 @@ abstract class BookSourceModel with _$BookSourceModel {
     required String name,
     required String author,
     required String? description,
+    required String updateDate,
+    @Default(
+      "Mozilla/5.0 (Linux; Android 14; Google Pixel 9 Pro XL; 3854511) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Mobile Safari/537.36",
+    )
+    String? userAgent,
     @Default(true) bool enabled,
     @Default([]) List<dynamic> actions,
     @Default([]) List<BookSourceFormModel> forms,
