@@ -43,6 +43,6 @@ class BookSource extends _$BookSource {
   }
 
   onSelfChange(AsyncValue<List<BookSourceModel>>? oldValue, AsyncValue<List<BookSourceModel>> newValue) {
-    BookSourceUpdateManifestUseCase().call(newValue.value ?? []);
+    // BookSourceUpdateManifestUseCase().call(newValue.value ?? []);
   }
 }

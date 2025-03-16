@@ -33,6 +33,12 @@ Map<String, String> jsGetAttributes({
   required List<String> keys,
 }) => Rc.instance.api.crateApiEcmaJsGetAttributes(uuid: uuid, keys: keys);
 
+Map<String, String> jsGetAttributesFromCode({
+  required String code,
+  required List<String> keys,
+}) =>
+    Rc.instance.api.crateApiEcmaJsGetAttributesFromCode(code: code, keys: keys);
+
 void initJsScripts({required Map<String, String> scripts}) =>
     Rc.instance.api.crateApiEcmaInitJsScripts(scripts: scripts);
 

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:core/core.dart';
@@ -7,6 +8,7 @@ import 'package:core/src/usecases/book_source/get_info.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import 'package:rc/rc.dart';
+import 'package:uuid/uuid.dart';
 
 class BookSourceAddFromFileUseCase implements NoParamUseCase<Future<BookSourceModel?>> {
   final log = Logger('book_source_add_from_file_use_case');
@@ -22,7 +24,11 @@ class BookSourceAddFromFileUseCase implements NoParamUseCase<Future<BookSourceMo
     }
     final file = File(result.files.single.path!);
     final text = await file.readAsString();
-    final uuid = getUuid(code: text);
+    final attrs = jsGetAttributesFromCode(
+      code: text,
+      keys: ["name", "author", "description", "version", "uuid", "baseUrl", "userAgent", "forms", "actions"],
+    );
+    final uuid = attrs["uuid"] ?? Uuid().v4();
     insertJsScript(uuid: uuid, code: text);
     final bookSource = BookSourceGetInfoUsecase().call(uuid);
     // 拷贝书源文件
@@ -32,11 +38,17 @@ class BookSourceAddFromFileUseCase implements NoParamUseCase<Future<BookSourceMo
       Directory(dirPath).createSync();
     }
     final jsPath = join(PathService().bookSourceDir, uuid, 'index.js');
+    final envFile = File(join(PathService().bookSourceDir, uuid, 'env.json'));
+    final String envStr = envFile.existsSync() ? envFile.readAsStringSync() : "{}";
+    if (!envFile.existsSync()) envFile.createSync();
     // 如果存在则删除
     if (File(jsPath).existsSync()) {
       File(jsPath).deleteSync();
     }
     await file.copy(jsPath);
+    // 写入env.json
+    final envs = {...(jsonDecode(envStr) as Map<String, dynamic>), ...attrs};
+    envFile.writeAsStringSync(jsonEncode(envs));
     return bookSource;
   }
 }

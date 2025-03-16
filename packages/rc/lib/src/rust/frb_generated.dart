@@ -63,7 +63,7 @@ class Rc extends BaseEntrypoint<RcApi, RcApiImpl, RcWire> {
   String get codegenVersion => '2.7.1';
 
   @override
-  int get rustContentHash => 244741565;
+  int get rustContentHash => 1221711806;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -103,6 +103,11 @@ abstract class RcApi extends BaseApi {
 
   Map<String, String> crateApiEcmaJsGetAttributes({
     required String uuid,
+    required List<String> keys,
+  });
+
+  Map<String, String> crateApiEcmaJsGetAttributesFromCode({
+    required String code,
     required List<String> keys,
   });
 
@@ -422,13 +427,43 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
       );
 
   @override
+  Map<String, String> crateApiEcmaJsGetAttributesFromCode({
+    required String code,
+    required List<String> keys,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(code, serializer);
+          sse_encode_list_String(keys, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_Map_String_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiEcmaJsGetAttributesFromCodeConstMeta,
+        argValues: [code, keys],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiEcmaJsGetAttributesFromCodeConstMeta =>
+      const TaskConstMeta(
+        debugName: "js_get_attributes_from_code",
+        argNames: ["code", "keys"],
+      );
+
+  @override
   void crateApiEcmaRemoveJsScript({required String uuid}) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(uuid, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -455,7 +490,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(uuid, serializer);
           sse_encode_Map_String_String(value, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,

@@ -20,7 +20,7 @@ class PathService {
   late final String bookSourceDir;
 
   // 书源清单文件路径
-  String get bookSourceManifest => join(bookSourceDir, 'manifest.json');
+  // String get bookSourceManifest => join(bookSourceDir, 'manifest.json');
 
   // 阅读器配置文件路径
   String get readerConfig => join(app, 'reader_config.json');

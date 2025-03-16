@@ -13,17 +13,37 @@ class BookSourceLoadAllJs implements NoParamUseCase<Future<List<BookSourceModel>
   @override
   Future<List<BookSourceModel>> call() async {
     final bookSourceList = <BookSourceModel>[];
-    if (!bookSourceManifest.existsSync()) bookSourceManifest.createSync(recursive: true);
-    final json = jsonDecode(bookSourceManifest.readAsStringSync()) as List<dynamic>;
-    for (var bookSource in json) {
-      final uuid = bookSource["uuid"];
-      final file = File(join(PathService().bookSourceDir, uuid, "index.js"));
-      final jsCode = await file.readAsString();
-      insertJsScript(uuid: uuid, code: jsCode);
-      bookSourceList.add(BookSourceGetInfoUsecase().call(uuid));
+    final Directory bookSourceDir = Directory(PathService().bookSourceDir);
+    for (var dir in bookSourceDir.listSync()) {
+      if (dir is Directory) {
+        final File file = File(join(dir.path, "index.js"));
+        if (file.existsSync()) {
+          try {
+            final jsCode = await file.readAsString();
+            final attrs = jsGetAttributesFromCode(
+              code: jsCode,
+              keys: ["name", "author", "description", "version", "id", "baseUrl", "userAgent"],
+            );
+            final uuid = attrs["id"]!;
+            insertJsScript(uuid: uuid, code: jsCode);
+            bookSourceList.add(BookSourceGetInfoUsecase().call(uuid));
+          } catch (e) {
+            log.error("加载书源失败", e);
+          }
+        }
+      }
     }
+    // if (!bookSourceManifest.existsSync()) bookSourceManifest.createSync(recursive: true);
+    // final json = jsonDecode(bookSourceManifest.readAsStringSync()) as List<dynamic>;
+    // for (var bookSource in json) {
+    //   final uuid = bookSource["uuid"];
+    //   final file = File(join(PathService().bookSourceDir, uuid, "index.js"));
+    //   final jsCode = await file.readAsString();
+    //   insertJsScript(uuid: uuid, code: jsCode);
+    //   bookSourceList.add(BookSourceGetInfoUsecase().call(uuid));
+    // }
     return bookSourceList;
   }
 
-  File get bookSourceManifest => File(PathService().bookSourceManifest);
+  // File get bookSourceManifest => File(PathService().bookSourceManifest);
 }

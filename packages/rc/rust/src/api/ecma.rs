@@ -50,6 +50,15 @@ pub fn js_get_attributes(
 }
 
 #[frb(sync)]
+pub fn js_get_attributes_from_code(
+    code: String,
+    keys: Vec<String>,
+) -> Result<HashMap<String, String>, String> {
+    let mut engine = EcmaEngine::new();
+    engine.get_attributes(code, keys)
+}
+
+#[frb(sync)]
 pub fn init_js_scripts(scripts: HashMap<String, String>) {
     for (key, value) in scripts {
         insert_ecma_script(key, value);

@@ -100,7 +100,7 @@ impl EcmaEngine {
         self.eval(code)?;
         let mut result = HashMap::new();
         for key in keys {
-            let _code = format!("JSON.stringify({})", key);
+            let _code = format!("JSON.stringify(__ENVS__.{}??{})", key, key);
             let value = self.eval(_code)?;
             result.insert(key, value);
         }
