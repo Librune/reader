@@ -3,6 +3,7 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'api.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
@@ -59,7 +60,7 @@ class Rc extends BaseEntrypoint<RcApi, RcApiImpl, RcWire> {
   String get codegenVersion => '2.7.1';
 
   @override
-  int get rustContentHash => -291292710;
+  int get rustContentHash => -2032182982;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -69,7 +70,101 @@ class Rc extends BaseEntrypoint<RcApi, RcApiImpl, RcWire> {
       );
 }
 
-abstract class RcApi extends BaseApi {}
+abstract class RcApi extends BaseApi {
+  Future<JsResultJsValue> crateApiBookCoreCallFunc({
+    required BookCore that,
+    required String func,
+    required List<Value> args,
+  });
+
+  Future<void> crateApiBookCoreClearEnvs({required BookCore that});
+
+  Future<String> crateApiBookCoreEval({
+    required BookCore that,
+    required String code,
+  });
+
+  Future<String> crateApiBookCoreGetActions({required BookCore that});
+
+  Future<Value> crateApiBookCoreGetBookDetail({
+    required BookCore that,
+    required String bid,
+  });
+
+  Future<Value> crateApiBookCoreGetCatalog({
+    required BookCore that,
+    required String bid,
+  });
+
+  Future<Value> crateApiBookCoreGetChapter({
+    required BookCore that,
+    required String bid,
+    required String cid,
+  });
+
+  Future<Value> crateApiBookCoreGetEnv({
+    required BookCore that,
+    required String key,
+  });
+
+  Future<Value> crateApiBookCoreGetEnvs({required BookCore that});
+
+  Future<String> crateApiBookCoreGetForms({required BookCore that});
+
+  Future<String> crateApiBookCoreGetMetadata({required BookCore that});
+
+  Future<BookCore> crateApiBookCoreInit({required String code});
+
+  Future<String> crateApiBookCoreRunAction({
+    required BookCore that,
+    required String action,
+  });
+
+  Future<Value> crateApiBookCoreSearchBooks({
+    required BookCore that,
+    required String keyword,
+    required int page,
+    required int count,
+  });
+
+  Future<void> crateApiBookCoreSetEnv({
+    required BookCore that,
+    required String key,
+    required Value value,
+  });
+
+  Future<void> crateApiBookCoreSetEnvs({
+    required BookCore that,
+    required Value envs,
+  });
+
+  Future<void> crateApiHelloWorld();
+
+  Future<BookCore> crateApiInitBookCore({required String code});
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_BookCore;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_BookCore;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_BookCorePtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_JsResultJsValue;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_JsResultJsValue;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_JsResultJsValuePtr;
+
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Value;
+
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Value;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ValuePtr;
+}
 
 class RcApiImpl extends RcApiImplPlatform implements RcApi {
   RcApiImpl({
@@ -78,6 +173,911 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
     required super.generalizedFrbRustBinding,
     required super.portManager,
   });
+
+  @override
+  Future<JsResultJsValue> crateApiBookCoreCallFunc({
+    required BookCore that,
+    required String func,
+    required List<Value> args,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          sse_encode_String(func, serializer);
+          sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+            args,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 1,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJsResultJsValue,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiBookCoreCallFuncConstMeta,
+        argValues: [that, func, args],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreCallFuncConstMeta => const TaskConstMeta(
+    debugName: "BookCore_call_func",
+    argNames: ["that", "func", "args"],
+  );
+
+  @override
+  Future<void> crateApiBookCoreClearEnvs({required BookCore that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 2,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiBookCoreClearEnvsConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreClearEnvsConstMeta =>
+      const TaskConstMeta(debugName: "BookCore_clear_envs", argNames: ["that"]);
+
+  @override
+  Future<String> crateApiBookCoreEval({
+    required BookCore that,
+    required String code,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          sse_encode_String(code, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 3,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreEvalConstMeta,
+        argValues: [that, code],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreEvalConstMeta => const TaskConstMeta(
+    debugName: "BookCore_eval",
+    argNames: ["that", "code"],
+  );
+
+  @override
+  Future<String> crateApiBookCoreGetActions({required BookCore that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 4,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreGetActionsConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreGetActionsConstMeta => const TaskConstMeta(
+    debugName: "BookCore_get_actions",
+    argNames: ["that"],
+  );
+
+  @override
+  Future<Value> crateApiBookCoreGetBookDetail({
+    required BookCore that,
+    required String bid,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          sse_encode_String(bid, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 5,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreGetBookDetailConstMeta,
+        argValues: [that, bid],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreGetBookDetailConstMeta =>
+      const TaskConstMeta(
+        debugName: "BookCore_get_book_detail",
+        argNames: ["that", "bid"],
+      );
+
+  @override
+  Future<Value> crateApiBookCoreGetCatalog({
+    required BookCore that,
+    required String bid,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          sse_encode_String(bid, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 6,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreGetCatalogConstMeta,
+        argValues: [that, bid],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreGetCatalogConstMeta => const TaskConstMeta(
+    debugName: "BookCore_get_catalog",
+    argNames: ["that", "bid"],
+  );
+
+  @override
+  Future<Value> crateApiBookCoreGetChapter({
+    required BookCore that,
+    required String bid,
+    required String cid,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          sse_encode_String(bid, serializer);
+          sse_encode_String(cid, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 7,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreGetChapterConstMeta,
+        argValues: [that, bid, cid],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreGetChapterConstMeta => const TaskConstMeta(
+    debugName: "BookCore_get_chapter",
+    argNames: ["that", "bid", "cid"],
+  );
+
+  @override
+  Future<Value> crateApiBookCoreGetEnv({
+    required BookCore that,
+    required String key,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          sse_encode_String(key, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 8,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreGetEnvConstMeta,
+        argValues: [that, key],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreGetEnvConstMeta => const TaskConstMeta(
+    debugName: "BookCore_get_env",
+    argNames: ["that", "key"],
+  );
+
+  @override
+  Future<Value> crateApiBookCoreGetEnvs({required BookCore that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 9,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreGetEnvsConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreGetEnvsConstMeta =>
+      const TaskConstMeta(debugName: "BookCore_get_envs", argNames: ["that"]);
+
+  @override
+  Future<String> crateApiBookCoreGetForms({required BookCore that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 10,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreGetFormsConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreGetFormsConstMeta =>
+      const TaskConstMeta(debugName: "BookCore_get_forms", argNames: ["that"]);
+
+  @override
+  Future<String> crateApiBookCoreGetMetadata({required BookCore that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 11,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreGetMetadataConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreGetMetadataConstMeta =>
+      const TaskConstMeta(
+        debugName: "BookCore_get_metadata",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<BookCore> crateApiBookCoreInit({required String code}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(code, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 12,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiBookCoreInitConstMeta,
+        argValues: [code],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreInitConstMeta =>
+      const TaskConstMeta(debugName: "BookCore_init", argNames: ["code"]);
+
+  @override
+  Future<String> crateApiBookCoreRunAction({
+    required BookCore that,
+    required String action,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          sse_encode_String(action, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 13,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreRunActionConstMeta,
+        argValues: [that, action],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreRunActionConstMeta => const TaskConstMeta(
+    debugName: "BookCore_run_action",
+    argNames: ["that", "action"],
+  );
+
+  @override
+  Future<Value> crateApiBookCoreSearchBooks({
+    required BookCore that,
+    required String keyword,
+    required int page,
+    required int count,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          sse_encode_String(keyword, serializer);
+          sse_encode_u_8(page, serializer);
+          sse_encode_u_8(count, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 14,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreSearchBooksConstMeta,
+        argValues: [that, keyword, page, count],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreSearchBooksConstMeta =>
+      const TaskConstMeta(
+        debugName: "BookCore_search_books",
+        argNames: ["that", "keyword", "page", "count"],
+      );
+
+  @override
+  Future<void> crateApiBookCoreSetEnv({
+    required BookCore that,
+    required String key,
+    required Value value,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          sse_encode_String(key, serializer);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+            value,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 15,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreSetEnvConstMeta,
+        argValues: [that, key, value],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreSetEnvConstMeta => const TaskConstMeta(
+    debugName: "BookCore_set_env",
+    argNames: ["that", "key", "value"],
+  );
+
+  @override
+  Future<void> crateApiBookCoreSetEnvs({
+    required BookCore that,
+    required Value envs,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+            envs,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 16,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiBookCoreSetEnvsConstMeta,
+        argValues: [that, envs],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiBookCoreSetEnvsConstMeta => const TaskConstMeta(
+    debugName: "BookCore_set_envs",
+    argNames: ["that", "envs"],
+  );
+
+  @override
+  Future<void> crateApiHelloWorld() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 17,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiHelloWorldConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiHelloWorldConstMeta =>
+      const TaskConstMeta(debugName: "hello_world", argNames: []);
+
+  @override
+  Future<BookCore> crateApiInitBookCore({required String code}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(code, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 18,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiInitBookCoreConstMeta,
+        argValues: [code],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiInitBookCoreConstMeta =>
+      const TaskConstMeta(debugName: "init_book_core", argNames: ["code"]);
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_BookCore =>
+      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_BookCore =>
+      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_JsResultJsValue =>
+      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJsResultJsValue;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_JsResultJsValue =>
+      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJsResultJsValue;
+
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Value =>
+      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue;
+
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Value =>
+      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue;
+
+  @protected
+  BookCore
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return BookCoreImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  JsResultJsValue
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJsResultJsValue(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return JsResultJsValueImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Value
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ValueImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  BookCore
+  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return BookCoreImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  BookCore
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return BookCoreImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  JsResultJsValue
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJsResultJsValue(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return JsResultJsValueImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Value
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ValueImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  String dco_decode_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as String;
+  }
+
+  @protected
+  List<Value>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+        )
+        .toList();
+  }
+
+  @protected
+  Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as Uint8List;
+  }
+
+  @protected
+  int dco_decode_u_8(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
+  void dco_decode_unit(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return;
+  }
+
+  @protected
+  BigInt dco_decode_usize(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dcoDecodeU64(raw);
+  }
+
+  @protected
+  BookCore
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return BookCoreImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  JsResultJsValue
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJsResultJsValue(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return JsResultJsValueImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Value
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ValueImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  BookCore
+  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return BookCoreImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  BookCore
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return BookCoreImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  JsResultJsValue
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJsResultJsValue(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return JsResultJsValueImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Value
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ValueImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  String sse_decode_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_prim_u_8_strict(deserializer);
+    return utf8.decoder.convert(inner);
+  }
+
+  @protected
+  List<Value>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Value>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+          deserializer,
+        ),
+      );
+    }
+    return ans_;
+  }
+
+  @protected
+  Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var len_ = sse_decode_i_32(deserializer);
+    return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  int sse_decode_u_8(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint8();
+  }
+
+  @protected
+  void sse_decode_unit(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+  }
+
+  @protected
+  BigInt sse_decode_usize(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getBigUint64();
+  }
 
   @protected
   int sse_decode_i_32(SseDeserializer deserializer) {
@@ -92,6 +1092,146 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   }
 
   @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+    BookCore self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as BookCoreImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJsResultJsValue(
+    JsResultJsValue self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as JsResultJsValueImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+    Value self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ValueImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+    BookCore self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as BookCoreImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBookCore(
+    BookCore self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as BookCoreImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJsResultJsValue(
+    JsResultJsValue self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as JsResultJsValueImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+    Value self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ValueImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_String(String self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
+  }
+
+  @protected
+  void
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+    List<Value> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
+        item,
+        serializer,
+      );
+    }
+  }
+
+  @protected
+  void sse_encode_list_prim_u_8_strict(
+    Uint8List self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    serializer.buffer.putUint8List(self);
+  }
+
+  @protected
+  void sse_encode_u_8(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint8(self);
+  }
+
+  @protected
+  void sse_encode_unit(void self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+  }
+
+  @protected
+  void sse_encode_usize(BigInt self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putBigUint64(self);
+  }
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
@@ -102,4 +1242,127 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self ? 1 : 0);
   }
+}
+
+@sealed
+class BookCoreImpl extends RustOpaque implements BookCore {
+  // Not to be used by end users
+  BookCoreImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  BookCoreImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        Rc.instance.api.rust_arc_increment_strong_count_BookCore,
+    rustArcDecrementStrongCount:
+        Rc.instance.api.rust_arc_decrement_strong_count_BookCore,
+    rustArcDecrementStrongCountPtr:
+        Rc.instance.api.rust_arc_decrement_strong_count_BookCorePtr,
+  );
+
+  Future<JsResultJsValue> callFunc({
+    required String func,
+    required List<Value> args,
+  }) => Rc.instance.api.crateApiBookCoreCallFunc(
+    that: this,
+    func: func,
+    args: args,
+  );
+
+  Future<void> clearEnvs() =>
+      Rc.instance.api.crateApiBookCoreClearEnvs(that: this);
+
+  Future<String> eval({required String code}) =>
+      Rc.instance.api.crateApiBookCoreEval(that: this, code: code);
+
+  Future<String> getActions() =>
+      Rc.instance.api.crateApiBookCoreGetActions(that: this);
+
+  Future<Value> getBookDetail({required String bid}) =>
+      Rc.instance.api.crateApiBookCoreGetBookDetail(that: this, bid: bid);
+
+  Future<Value> getCatalog({required String bid}) =>
+      Rc.instance.api.crateApiBookCoreGetCatalog(that: this, bid: bid);
+
+  Future<Value> getChapter({required String bid, required String cid}) => Rc
+      .instance
+      .api
+      .crateApiBookCoreGetChapter(that: this, bid: bid, cid: cid);
+
+  Future<Value> getEnv({required String key}) =>
+      Rc.instance.api.crateApiBookCoreGetEnv(that: this, key: key);
+
+  Future<Value> getEnvs() =>
+      Rc.instance.api.crateApiBookCoreGetEnvs(that: this);
+
+  Future<String> getForms() =>
+      Rc.instance.api.crateApiBookCoreGetForms(that: this);
+
+  Future<String> getMetadata() =>
+      Rc.instance.api.crateApiBookCoreGetMetadata(that: this);
+
+  Future<String> runAction({required String action}) =>
+      Rc.instance.api.crateApiBookCoreRunAction(that: this, action: action);
+
+  Future<Value> searchBooks({
+    required String keyword,
+    required int page,
+    required int count,
+  }) => Rc.instance.api.crateApiBookCoreSearchBooks(
+    that: this,
+    keyword: keyword,
+    page: page,
+    count: count,
+  );
+
+  Future<void> setEnv({required String key, required Value value}) => Rc
+      .instance
+      .api
+      .crateApiBookCoreSetEnv(that: this, key: key, value: value);
+
+  Future<void> setEnvs({required Value envs}) =>
+      Rc.instance.api.crateApiBookCoreSetEnvs(that: this, envs: envs);
+}
+
+@sealed
+class JsResultJsValueImpl extends RustOpaque implements JsResultJsValue {
+  // Not to be used by end users
+  JsResultJsValueImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  JsResultJsValueImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        Rc.instance.api.rust_arc_increment_strong_count_JsResultJsValue,
+    rustArcDecrementStrongCount:
+        Rc.instance.api.rust_arc_decrement_strong_count_JsResultJsValue,
+    rustArcDecrementStrongCountPtr:
+        Rc.instance.api.rust_arc_decrement_strong_count_JsResultJsValuePtr,
+  );
+}
+
+@sealed
+class ValueImpl extends RustOpaque implements Value {
+  // Not to be used by end users
+  ValueImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  ValueImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        Rc.instance.api.rust_arc_increment_strong_count_Value,
+    rustArcDecrementStrongCount:
+        Rc.instance.api.rust_arc_decrement_strong_count_Value,
+    rustArcDecrementStrongCountPtr:
+        Rc.instance.api.rust_arc_decrement_strong_count_ValuePtr,
+  );
 }

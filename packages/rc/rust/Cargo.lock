@@ -1718,8 +1718,13 @@ dependencies = [
 name = "rc"
 version = "0.1.0"
 dependencies = [
+ "boa_engine",
+ "boa_gc",
+ "boa_runtime",
  "book_core",
  "flutter_rust_bridge",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
