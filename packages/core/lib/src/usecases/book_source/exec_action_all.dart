@@ -1,4 +1,5 @@
 import 'package:core/src/interfaces/use_case.dart';
+import 'package:core/src/models/book_source.dart';
 import 'package:core/src/usecases/book_source/exec_action.dart';
 
 class BookSourceExecActionAllOptions {
@@ -6,7 +7,11 @@ class BookSourceExecActionAllOptions {
   final String action;
   final Map<String, dynamic>? params;
 
-  BookSourceExecActionAllOptions({required this.uuids, required this.action, this.params});
+  BookSourceExecActionAllOptions({
+    required this.uuids,
+    required this.action,
+    this.params,
+  });
 }
 
 class BookSourceExecActionAllUseCase<T extends dynamic>
@@ -17,7 +22,11 @@ class BookSourceExecActionAllUseCase<T extends dynamic>
     for (var uuid in input.uuids) {
       result.add(
         await BookSourceExecActionUseCase<T>().call(
-          BookSourceExecActionOptions(uuid: uuid, action: input.action, params: input.params),
+          BookSourceActionOptions(
+            uuid: uuid,
+            action: input.action,
+            params: input.params,
+          ),
         ),
       );
     }

@@ -1,4 +1,6 @@
-import 'package:core/src/services/wk8.dart';
+import 'dart:convert';
+
+import 'package:core/core.dart';
 import 'package:rc/rc.dart';
 
 class BookSourceService {
@@ -6,16 +8,23 @@ class BookSourceService {
   factory BookSourceService() => _instance;
   BookSourceService._internal();
 
-  late final List<BookCore> bookCores;
+  final Map<String, Map<String, dynamic>> bookCores = {};
 
-  init() async {
-    BookCore core = await initBookCore(code: wk8);
-    bookCores = [core];
-  }
+  init() async {}
 
   add(String code) async {
-    BookCore core = await initBookCore(code: code);
-    bookCores.add(core);
-    return await core.getMetadata();
+    var metadata = await getCodeMetadata(code: code);
+    return jsonDecode(metadata);
+  }
+
+  runAction(BookSourceActionOptions options) async {
+    var uuid = options.uuid;
+    String code = bookCores[uuid]!['code'];
+    var res = await runCoreAction(
+      code: code,
+      action: options.action,
+      envs: options.params,
+    );
+    return res.toString();
   }
 }

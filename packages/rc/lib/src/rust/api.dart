@@ -8,54 +8,42 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 Future<void> helloWorld() => Rc.instance.api.crateApiHelloWorld();
 
-Future<BookCore> initBookCore({required String code}) =>
-    Rc.instance.api.crateApiInitBookCore(code: code);
+Future<String> getCodeMetadata({required String code}) =>
+    Rc.instance.api.crateApiGetCodeMetadata(code: code);
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<BookCore>>
-abstract class BookCore implements RustOpaqueInterface {
-  Future<JsResultJsValue> callFunc({
-    required String func,
-    required List<Value> args,
-  });
+Future<Value> runCoreAction({
+  required String code,
+  required String action,
+  required Value envs,
+}) => Rc.instance.api.crateApiRunCoreAction(
+  code: code,
+  action: action,
+  envs: envs,
+);
 
-  Future<void> clearEnvs();
+Future<Value> coreSearchBooks({
+  required String code,
+  required String keyword,
+  required int page,
+  required int count,
+}) => Rc.instance.api.crateApiCoreSearchBooks(
+  code: code,
+  keyword: keyword,
+  page: page,
+  count: count,
+);
 
-  Future<String> eval({required String code});
+Future<Value> coreBookDetail({required String code, required String bid}) =>
+    Rc.instance.api.crateApiCoreBookDetail(code: code, bid: bid);
 
-  Future<String> getActions();
+Future<Value> coreCatalog({required String code, required String bid}) =>
+    Rc.instance.api.crateApiCoreCatalog(code: code, bid: bid);
 
-  Future<Value> getBookDetail({required String bid});
-
-  Future<Value> getCatalog({required String bid});
-
-  Future<Value> getChapter({required String bid, required String cid});
-
-  Future<Value> getEnv({required String key});
-
-  Future<Value> getEnvs();
-
-  Future<String> getForms();
-
-  Future<String> getMetadata();
-
-  static Future<BookCore> init({required String code}) =>
-      Rc.instance.api.crateApiBookCoreInit(code: code);
-
-  Future<String> runAction({required String action});
-
-  Future<Value> searchBooks({
-    required String keyword,
-    required int page,
-    required int count,
-  });
-
-  Future<void> setEnv({required String key, required Value value});
-
-  Future<void> setEnvs({required Value envs});
-}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<JsResult < JsValue >>>
-abstract class JsResultJsValue implements RustOpaqueInterface {}
+Future<Value> coreChapter({
+  required String code,
+  required String bid,
+  required String cid,
+}) => Rc.instance.api.crateApiCoreChapter(code: code, bid: bid, cid: cid);
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Value>>
 abstract class Value implements RustOpaqueInterface {}

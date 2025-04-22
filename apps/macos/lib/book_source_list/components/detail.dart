@@ -11,7 +11,8 @@ class BookSourceDetail extends StatefulHookConsumerWidget {
   final BookSourceModel model;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _BookSourceDetailState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _BookSourceDetailState();
 }
 
 class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
@@ -38,10 +39,19 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(model.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text(
+                      model.name,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     Text(
                       model.description ?? "暂无描述",
-                      style: TextStyle(fontSize: 12, color: CupertinoColors.systemGrey2),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: CupertinoColors.systemGrey2,
+                      ),
                     ),
                   ],
                 ),
@@ -50,18 +60,24 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
               GestureDetector(
                 child: ContextMenuWidget(
                   key: _menuKey,
-                  child: Icon(CupertinoIcons.ellipsis_circle_fill, color: CupertinoColors.systemGrey, size: 18),
+                  child: Icon(
+                    CupertinoIcons.ellipsis_circle_fill,
+                    color: CupertinoColors.systemGrey,
+                    size: 18,
+                  ),
                   menuProvider: (request) {
                     return _menu;
                   },
                 ),
                 onTap: () {
                   // 获取icon的RenderBox
-                  final RenderBox renderBox = _menuKey.currentContext!.findRenderObject() as RenderBox;
+                  final RenderBox renderBox =
+                      _menuKey.currentContext!.findRenderObject() as RenderBox;
                   final position = renderBox.localToGlobal(Offset.zero);
 
                   // 模拟右键点击事件
-                  final RenderObject? object = _menuKey.currentContext?.findRenderObject();
+                  final RenderObject? object =
+                      _menuKey.currentContext?.findRenderObject();
                   if (object != null) {
                     // 创建鼠标右键按下事件
                     final PointerDownEvent event = PointerDownEvent(
@@ -82,7 +98,11 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
             ],
           ),
         ),
-        DivideredTag(label: "基本信息", color: CupertinoColors.systemBlue, padding: EdgeInsets.only(top: 8, bottom: 2)),
+        DivideredTag(
+          label: "基本信息",
+          color: CupertinoColors.systemBlue,
+          padding: EdgeInsets.only(top: 8, bottom: 2),
+        ),
         Padding(
           padding: EdgeInsets.only(top: 0),
           child: RichText(
@@ -90,11 +110,18 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
               children: [
                 TextSpan(
                   text: "作者：",
-                  style: TextStyle(fontSize: 12, color: CupertinoColors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 TextSpan(
                   text: model.author,
-                  style: TextStyle(fontSize: 12, color: CupertinoColors.black.withValues(alpha: .5)),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.black.withValues(alpha: .5),
+                  ),
                 ),
               ],
             ),
@@ -107,11 +134,18 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
               children: [
                 TextSpan(
                   text: "脚本ID：",
-                  style: TextStyle(fontSize: 12, color: CupertinoColors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 TextSpan(
                   text: model.uuid!,
-                  style: TextStyle(fontSize: 12, color: CupertinoColors.black.withValues(alpha: .5)),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.black.withValues(alpha: .5),
+                  ),
                 ),
               ],
             ),
@@ -124,11 +158,18 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
               children: [
                 TextSpan(
                   text: "安装时间：",
-                  style: TextStyle(fontSize: 12, color: CupertinoColors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 TextSpan(
                   text: model.updateDate,
-                  style: TextStyle(fontSize: 12, color: CupertinoColors.black.withValues(alpha: .5)),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.black.withValues(alpha: .5),
+                  ),
                 ),
               ],
             ),
@@ -141,11 +182,18 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
               children: [
                 TextSpan(
                   text: "基础地址：",
-                  style: TextStyle(fontSize: 12, color: CupertinoColors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 TextSpan(
                   text: "http://app.wenku8.com/android.php",
-                  style: TextStyle(fontSize: 12, color: CupertinoColors.black.withValues(alpha: .5)),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.black.withValues(alpha: .5),
+                  ),
                 ),
               ],
             ),
@@ -158,11 +206,18 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
               children: [
                 TextSpan(
                   text: "用户代理：",
-                  style: TextStyle(fontSize: 12, color: CupertinoColors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 TextSpan(
                   text: model.userAgent,
-                  style: TextStyle(fontSize: 12, color: CupertinoColors.black.withValues(alpha: .5)),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.black.withValues(alpha: .5),
+                  ),
                 ),
               ],
             ),
@@ -179,12 +234,22 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                     children: [
                       TextSpan(
                         text: "是否启用：",
-                        style: TextStyle(fontSize: 12, color: CupertinoColors.black, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: CupertinoColors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      TextSpan(text: "\n\n", style: TextStyle(height: 3, fontSize: 1)),
+                      TextSpan(
+                        text: "\n\n",
+                        style: TextStyle(height: 3, fontSize: 1),
+                      ),
                       TextSpan(
                         text: "只会影响是否在搜索时使用。如果你的书架有书籍依赖于此源，即使禁用也会继续使用此源。",
-                        style: TextStyle(fontSize: 12, color: CupertinoColors.black.withValues(alpha: .5)),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: CupertinoColors.black.withValues(alpha: .5),
+                        ),
                       ),
                     ],
                   ),
@@ -195,7 +260,9 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
                 height: 20,
                 value: model.enabled,
                 onChanged: (value) {
-                  ref.read(bookSourceProvider.notifier).toggleEnabled(model.uuid!);
+                  ref
+                      .read(bookSourceProvider.notifier)
+                      .toggleEnabled(model.uuid!);
                 },
               ),
             ],
@@ -276,9 +343,13 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
     return Menu(
       children: [
         MenuAction(
-          image: MenuImage.icon(CupertinoIcons.chevron_left_slash_chevron_right),
+          image: MenuImage.icon(
+            CupertinoIcons.chevron_left_slash_chevron_right,
+          ),
           callback: () {
-            BookSourceExecActionUseCase().call(BookSourceExecActionOptions(uuid: widget.model.uuid!, action: "test"));
+            BookSourceExecActionUseCase().call(
+              BookSourceActionOptions(uuid: widget.model.uuid!, action: "test"),
+            );
           },
           title: "测试书源",
           attributes: MenuActionAttributes(destructive: true),
@@ -304,7 +375,12 @@ class _BookSourceDetailState extends ConsumerState<BookSourceDetail> {
 }
 
 class DivideredTag extends StatelessWidget {
-  const DivideredTag({super.key, required this.label, required this.color, this.padding = EdgeInsets.zero});
+  const DivideredTag({
+    super.key,
+    required this.label,
+    required this.color,
+    this.padding = EdgeInsets.zero,
+  });
   final String label;
   final Color color;
   final EdgeInsetsGeometry padding;
@@ -318,7 +394,11 @@ class DivideredTag extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: TextStyle(fontSize: 12, color: color)),
-          Container(margin: EdgeInsets.only(top: 4, bottom: 4), height: 1.2, color: CupertinoColors.systemGrey5),
+          Container(
+            margin: EdgeInsets.only(top: 4, bottom: 4),
+            height: 1.2,
+            color: CupertinoColors.systemGrey5,
+          ),
         ],
       ),
     );

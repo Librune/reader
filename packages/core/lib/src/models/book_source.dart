@@ -22,7 +22,8 @@ abstract class BookSourceModel with _$BookSourceModel {
     @Default([]) List<BookSourceFormModel> forms,
     String? favIcon,
   }) = _BookSourceModel;
-  factory BookSourceModel.fromJson(Map<String, dynamic> json) => _$BookSourceModelFromJson(json);
+  factory BookSourceModel.fromJson(Map<String, dynamic> json) =>
+      _$BookSourceModelFromJson(json);
   const BookSourceModel._();
 }
 
@@ -33,7 +34,8 @@ abstract class BookSourceFormModel with _$BookSourceFormModel {
     required String? subtitle,
     required List<BookSourceFormItemGroup> form,
   }) = _BookSourceFormModel;
-  factory BookSourceFormModel.fromJson(Map<String, dynamic> json) => _$BookSourceFormModelFromJson(json);
+  factory BookSourceFormModel.fromJson(Map<String, dynamic> json) =>
+      _$BookSourceFormModelFromJson(json);
   const BookSourceFormModel._();
 }
 
@@ -47,6 +49,24 @@ abstract class BookSourceFormItemGroup with _$BookSourceFormItemGroup {
     required String title,
     required String? placeholder,
   }) = _BookSourceFormItemGroup;
-  factory BookSourceFormItemGroup.fromJson(Map<String, dynamic> json) => _$BookSourceFormItemGroupFromJson(json);
+  factory BookSourceFormItemGroup.fromJson(Map<String, dynamic> json) =>
+      _$BookSourceFormItemGroupFromJson(json);
   const BookSourceFormItemGroup._();
+}
+
+class BookSourceActionOptions<T extends dynamic> {
+  final String uuid;
+  final String action;
+  final T? params;
+
+  BookSourceActionOptions({
+    required this.uuid,
+    required this.action,
+    this.params,
+  });
+
+  @override
+  String toString() {
+    return 'BookSourceExecActionOptions{uuid: $uuid, action: $action, params: $params}';
+  }
 }
