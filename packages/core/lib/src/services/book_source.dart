@@ -3,12 +3,27 @@ import 'dart:convert';
 import 'package:core/core.dart';
 import 'package:rc/rc.dart';
 
+import 'wk8.dart';
+
 class BookSourceService {
+  final log = Logger('book_source_service');
   static final BookSourceService _instance = BookSourceService._internal();
   factory BookSourceService() => _instance;
   BookSourceService._internal();
 
-  final Map<String, Map<String, dynamic>> bookCores = {};
+  final Map<String, Map<String, dynamic>> bookCores = {
+    '352561f8-281c-4953-81f7-3772c6285c1c': {
+      'code': wk8,
+      'metadata': {
+        'name': 'wenku8',
+        'uuid': '352561f8-281c-4953-81f7-3772c6285c1c',
+        'baseUrl': 'http://app.wenku8.com/android.php',
+        'userAgent':
+            ' Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36(KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
+        'author': 'Nexw',
+      },
+    },
+  };
 
   init() async {}
 
@@ -25,6 +40,20 @@ class BookSourceService {
       action: options.action,
       envs: options.params,
     );
+    return res.toString();
+  }
+
+  searchBooks(BookSourceActionOptions options) async {
+    var uuid = options.uuid;
+    String code = bookCores[uuid]!['code'];
+    var params = options.params;
+    var res = await coreSearchBooks(
+      code: code,
+      page: params['page'] ?? 1,
+      keyword: params['keyword'],
+      count: params['count'] ?? 10,
+    );
+    log.info("搜索结果", res.toString());
     return res.toString();
   }
 }

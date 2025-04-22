@@ -1,6 +1,6 @@
 use book_core::BookCore;
 use flutter_rust_bridge::frb;
-use serde_json::Value;
+pub use serde_json::Value;
 
 
 #[frb]

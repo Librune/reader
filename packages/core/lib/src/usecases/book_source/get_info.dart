@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:core/src/interfaces/use_case.dart';
 import 'package:core/src/models/book_source.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:rc/rc.dart';
 
 class BookSourceGetInfoUsecase implements UseCase<String, BookSourceModel> {
   @override
   BookSourceModel call(String uuid) {
-    final envs = jsGetAttributes(uuid: uuid, keys: ["name", "author", "forms", "actions"]);
+    // final envs = jsGetAttributes(
+    //   uuid: uuid,
+    //   keys: ["name", "author", "forms", "actions"],
+    // );
+    final envs = {};
     final forms =
         (jsonDecode(envs["forms"] ?? "[]") as List)
             .map<BookSourceFormModel>((e) => BookSourceFormModel.fromJson(e))
