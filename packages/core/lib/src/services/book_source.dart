@@ -15,7 +15,7 @@ class BookSourceService {
     '352561f8-281c-4953-81f7-3772c6285c1c': {
       'code': wk8,
       'metadata': {
-        'name': 'wenku8',
+        'name': '轻小说文库',
         'uuid': '352561f8-281c-4953-81f7-3772c6285c1c',
         'baseUrl': 'http://app.wenku8.com/android.php',
         'userAgent':

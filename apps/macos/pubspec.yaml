@@ -48,6 +48,7 @@ dependencies:
   shadcn_ui: ^0.22.5
   nil: ^1.1.1
   super_context_menu: ^0.8.24
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
