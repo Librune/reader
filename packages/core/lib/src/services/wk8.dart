@@ -6,33 +6,34 @@ const metadata = {
   userAgent:
     ' Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36(KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
   author: 'Nexw',
+  version:"1.0.0",
 }
 const _APPVER = '1.13'
 const forms = [
   {
-    name: '用户登录',
-    desc: '你可以直接设置 Cookies，也可以填写账号密码后手动登录生成，二选一即可，最终以 Cookies 字段的值为准',
+    title: '用户登录',
+    description: '你可以直接设置 Cookies，也可以填写账号密码后手动登录生成，二选一即可，最终以 Cookies 字段的值为准',
     fields: [
       {
-        type: 'input',
+        fieldType: 'input',
         field: 'username',
         label: '用户名',
         placeholder: '请输入用户名',
       },
       {
-        type: 'input',
+        fieldType: 'input',
         field: 'password',
         label: '密码',
         password: true,
         placeholder: '请输入密码',
       },
       {
-        type: 'button',
+        fieldType: 'button',
         field: 'login',
         label: '登录',
       },
       {
-        type: 'input',
+        fieldType: 'input',
         field: 'cookies',
         label: 'Cookies',
         password: true,
@@ -85,21 +86,23 @@ const search = (params) => {
     const arrs =
       resp.result.item instanceof Array ? resp.result.item : [resp.result.item]
     return arrs.map(({ aid, data }) => ({
-      bid: String(aid),
+      id: String(aid),
       name: data[0].text,
       author: data[4].value,
       cover: getCover(aid),
       description: data[8].text,
-      creationStatus: data[5].value === '连载中' ? '1' : '0',
-      tag: data[7].value.split(' '),
-      update: data[6].value,
+      status: data[5].value === '连载中' ? '0' : '1',
+      tags: data[7].value.split(' '),
+      last_update_time: data[6].value,
     }))
   }
   return []
 }
 const getCover = (aid) => {
   const ia = parseInt(aid, 10)
-  return `https://img.wenku8.com/image/${Math.floor(ia / 1000)}/${aid}/${aid}s.jpg`
+  return `https://img.wenku8.com/image/${Math.floor(
+    ia / 1000
+  )}/${aid}/${aid}s.jpg`
 }
 const detail = ({ bid }) => {
   const res = post({
@@ -116,31 +119,31 @@ const detail = ({ bid }) => {
   })
   const data = xml2Json(res.body).metadata.data
   return {
+    id: bid,
     name: data.find((item) => item.name === 'Title').text,
     author: data.find((item) => item.name === 'Author').value,
-    bid: bid,
-    intro,
-    words: data.find((item) => item.name === 'BookLength').value,
+    description:intro,
+    wordCount: data.find((item) => item.name === 'BookLength').value,
     cover: getCover(bid),
     copyright: data.find((item) => item.name === 'PressId').value,
-    status: data.find((item) => item.name === 'BookStatus').value,
+    status: data.find((item) => item.name === 'BookStatus').value === '连载中' ? '0' : '1',
     lastUpdate: data.find((item) => item.name === 'LastUpdate').value,
     latestChapter: {
-      cid: data.find((item) => item.name === 'LatestSection').cid,
-      title: data.find((item) => item.name === 'LatestSection').text,
+      id: data.find((item) => item.name === 'LatestSection').cid+"",
+      name: data.find((item) => item.name === 'LatestSection').text,
     },
-    extraData: [
+    extraDatas: [
       {
         label: '总点击',
-        value: data.find((item) => item.name === 'TotalHitsCount').value,
+        value: data.find((item) => item.name === 'TotalHitsCount').value+"",
       },
       {
         label: '推荐数',
-        value: data.find((item) => item.name === 'PushCount').value,
+        value: data.find((item) => item.name === 'PushCount').value+"",
       },
       {
         label: '收藏数',
-        value: data.find((item) => item.name === 'FavCount').value,
+        value: data.find((item) => item.name === 'FavCount').value+"",
       },
     ],
   }
@@ -158,13 +161,13 @@ const catalog = ({ bid }) => {
     volumes = [volumes]
   }
   return volumes.map(({ chapter, text, vid }) => ({
-    vid: String(vid),
-    title: text,
+    id: String(vid),
+    name: text,
     chapters: chapter.map(({ cid, text }) => ({
-      title: text,
-      cid: String(cid),
+      name: text,
+      id: String(cid),
       isVip: false,
-      hasAccess: true,
+      canRead: true,
     })),
   }))
 }
@@ -177,6 +180,7 @@ const chapter = ({ bid, cid }) => {
     t: 0,
   })
   return {
+    id: cid,
     content: res.body.split('\n\n\n')[1],
   }
 }
@@ -189,4 +193,5 @@ const test = () => {
     c: 3,
   })
 }
+
 """;

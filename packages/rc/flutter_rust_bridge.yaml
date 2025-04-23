@@ -1,4 +1,4 @@
-rust_input: crate::api
+rust_input: crate::api,book_core::BookDetail,book_core::CatalogVolume,book_core::Chapter,book_core::MetaData,book_core::SearchBook,book_core::Action,book_core::Form
 rust_root: rust/
 dart_output: lib/src/rust
 dart_entrypoint_class_name: Rc

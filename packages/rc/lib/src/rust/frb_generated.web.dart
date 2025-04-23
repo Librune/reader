@@ -11,6 +11,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
+import 'third_party/book_core.dart';
 
 abstract class RcApiImplPlatform extends BaseApiImpl<RcWire> {
   RcApiImplPlatform({
@@ -20,26 +21,115 @@ abstract class RcApiImplPlatform extends BaseApiImpl<RcWire> {
     required super.portManager,
   });
 
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ValuePtr =>
-      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue;
-
-  @protected
-  Value
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    dynamic raw,
-  );
-
-  @protected
-  Value
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    dynamic raw,
-  );
-
   @protected
   String dco_decode_String(dynamic raw);
 
   @protected
+  BookDetail dco_decode_book_detail(dynamic raw);
+
+  @protected
+  BookExtraData dco_decode_book_extra_data(dynamic raw);
+
+  @protected
+  BookLatestChapter dco_decode_book_latest_chapter(dynamic raw);
+
+  @protected
+  BookStatus dco_decode_book_status(dynamic raw);
+
+  @protected
+  bool dco_decode_bool(dynamic raw);
+
+  @protected
+  BookLatestChapter dco_decode_box_autoadd_book_latest_chapter(dynamic raw);
+
+  @protected
+  BookStatus dco_decode_box_autoadd_book_status(dynamic raw);
+
+  @protected
+  bool dco_decode_box_autoadd_bool(dynamic raw);
+
+  @protected
+  Proxy dco_decode_box_autoadd_proxy(dynamic raw);
+
+  @protected
+  ProxyType dco_decode_box_autoadd_proxy_type(dynamic raw);
+
+  @protected
+  BigInt dco_decode_box_autoadd_u_64(dynamic raw);
+
+  @protected
+  CatalogChapter dco_decode_catalog_chapter(dynamic raw);
+
+  @protected
+  CatalogVolume dco_decode_catalog_volume(dynamic raw);
+
+  @protected
+  Chapter dco_decode_chapter(dynamic raw);
+
+  @protected
+  int dco_decode_i_32(dynamic raw);
+
+  @protected
+  List<String> dco_decode_list_String(dynamic raw);
+
+  @protected
+  List<BookExtraData> dco_decode_list_book_extra_data(dynamic raw);
+
+  @protected
+  List<CatalogChapter> dco_decode_list_catalog_chapter(dynamic raw);
+
+  @protected
+  List<CatalogVolume> dco_decode_list_catalog_volume(dynamic raw);
+
+  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  List<SearchBook> dco_decode_list_search_book(dynamic raw);
+
+  @protected
+  MetaData dco_decode_meta_data(dynamic raw);
+
+  @protected
+  String? dco_decode_opt_String(dynamic raw);
+
+  @protected
+  BookLatestChapter? dco_decode_opt_box_autoadd_book_latest_chapter(
+    dynamic raw,
+  );
+
+  @protected
+  BookStatus? dco_decode_opt_box_autoadd_book_status(dynamic raw);
+
+  @protected
+  bool? dco_decode_opt_box_autoadd_bool(dynamic raw);
+
+  @protected
+  Proxy? dco_decode_opt_box_autoadd_proxy(dynamic raw);
+
+  @protected
+  ProxyType? dco_decode_opt_box_autoadd_proxy_type(dynamic raw);
+
+  @protected
+  BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw);
+
+  @protected
+  List<String>? dco_decode_opt_list_String(dynamic raw);
+
+  @protected
+  List<BookExtraData>? dco_decode_opt_list_book_extra_data(dynamic raw);
+
+  @protected
+  Proxy dco_decode_proxy(dynamic raw);
+
+  @protected
+  ProxyType dco_decode_proxy_type(dynamic raw);
+
+  @protected
+  SearchBook dco_decode_search_book(dynamic raw);
+
+  @protected
+  BigInt dco_decode_u_64(dynamic raw);
 
   @protected
   int dco_decode_u_8(dynamic raw);
@@ -48,25 +138,130 @@ abstract class RcApiImplPlatform extends BaseApiImpl<RcWire> {
   void dco_decode_unit(dynamic raw);
 
   @protected
-  BigInt dco_decode_usize(dynamic raw);
-
-  @protected
-  Value
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    SseDeserializer deserializer,
-  );
-
-  @protected
-  Value
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    SseDeserializer deserializer,
-  );
-
-  @protected
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  BookDetail sse_decode_book_detail(SseDeserializer deserializer);
+
+  @protected
+  BookExtraData sse_decode_book_extra_data(SseDeserializer deserializer);
+
+  @protected
+  BookLatestChapter sse_decode_book_latest_chapter(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  BookStatus sse_decode_book_status(SseDeserializer deserializer);
+
+  @protected
+  bool sse_decode_bool(SseDeserializer deserializer);
+
+  @protected
+  BookLatestChapter sse_decode_box_autoadd_book_latest_chapter(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  BookStatus sse_decode_box_autoadd_book_status(SseDeserializer deserializer);
+
+  @protected
+  bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
+
+  @protected
+  Proxy sse_decode_box_autoadd_proxy(SseDeserializer deserializer);
+
+  @protected
+  ProxyType sse_decode_box_autoadd_proxy_type(SseDeserializer deserializer);
+
+  @protected
+  BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer);
+
+  @protected
+  CatalogChapter sse_decode_catalog_chapter(SseDeserializer deserializer);
+
+  @protected
+  CatalogVolume sse_decode_catalog_volume(SseDeserializer deserializer);
+
+  @protected
+  Chapter sse_decode_chapter(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_i_32(SseDeserializer deserializer);
+
+  @protected
+  List<String> sse_decode_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<BookExtraData> sse_decode_list_book_extra_data(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<CatalogChapter> sse_decode_list_catalog_chapter(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<CatalogVolume> sse_decode_list_catalog_volume(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  List<SearchBook> sse_decode_list_search_book(SseDeserializer deserializer);
+
+  @protected
+  MetaData sse_decode_meta_data(SseDeserializer deserializer);
+
+  @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer);
+
+  @protected
+  BookLatestChapter? sse_decode_opt_box_autoadd_book_latest_chapter(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  BookStatus? sse_decode_opt_box_autoadd_book_status(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer);
+
+  @protected
+  Proxy? sse_decode_opt_box_autoadd_proxy(SseDeserializer deserializer);
+
+  @protected
+  ProxyType? sse_decode_opt_box_autoadd_proxy_type(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  BigInt? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer);
+
+  @protected
+  List<String>? sse_decode_opt_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<BookExtraData>? sse_decode_opt_list_book_extra_data(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  Proxy sse_decode_proxy(SseDeserializer deserializer);
+
+  @protected
+  ProxyType sse_decode_proxy_type(SseDeserializer deserializer);
+
+  @protected
+  SearchBook sse_decode_search_book(SseDeserializer deserializer);
+
+  @protected
+  BigInt sse_decode_u_64(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_8(SseDeserializer deserializer);
@@ -75,30 +270,88 @@ abstract class RcApiImplPlatform extends BaseApiImpl<RcWire> {
   void sse_decode_unit(SseDeserializer deserializer);
 
   @protected
-  BigInt sse_decode_usize(SseDeserializer deserializer);
-
-  @protected
-  int sse_decode_i_32(SseDeserializer deserializer);
-
-  @protected
-  bool sse_decode_bool(SseDeserializer deserializer);
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    Value self,
-    SseSerializer serializer,
-  );
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    Value self,
-    SseSerializer serializer,
-  );
-
-  @protected
   void sse_encode_String(String self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_book_detail(BookDetail self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_book_extra_data(BookExtraData self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_book_latest_chapter(
+    BookLatestChapter self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_book_status(BookStatus self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_book_latest_chapter(
+    BookLatestChapter self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_book_status(
+    BookStatus self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_proxy(Proxy self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_proxy_type(
+    ProxyType self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_catalog_chapter(
+    CatalogChapter self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_catalog_volume(CatalogVolume self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_chapter(Chapter self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_String(List<String> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_book_extra_data(
+    List<BookExtraData> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_catalog_chapter(
+    List<CatalogChapter> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_catalog_volume(
+    List<CatalogVolume> self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_list_prim_u_8_strict(
@@ -107,41 +360,76 @@ abstract class RcApiImplPlatform extends BaseApiImpl<RcWire> {
   );
 
   @protected
+  void sse_encode_list_search_book(
+    List<SearchBook> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_meta_data(MetaData self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_book_latest_chapter(
+    BookLatestChapter? self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_opt_box_autoadd_book_status(
+    BookStatus? self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_proxy(Proxy? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_proxy_type(
+    ProxyType? self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_64(BigInt? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_String(List<String>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_book_extra_data(
+    List<BookExtraData>? self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_proxy(Proxy self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_proxy_type(ProxyType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_search_book(SearchBook self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_u_64(BigInt self, SseSerializer serializer);
+
+  @protected
   void sse_encode_u_8(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_unit(void self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_usize(BigInt self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_i_32(int self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer);
 }
 
 // Section: wire_class
 
 class RcWire implements BaseWire {
   RcWire.fromExternalLibrary(ExternalLibrary lib);
-
-  void
-  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    int ptr,
-  ) => wasmModule
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-        ptr,
-      );
-
-  void
-  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    int ptr,
-  ) => wasmModule
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-        ptr,
-      );
 }
 
 @JS('wasm_bindgen')
@@ -149,14 +437,4 @@ external RcWasmModule get wasmModule;
 
 @JS()
 @anonymous
-extension type RcWasmModule._(JSObject _) implements JSObject {
-  external void
-  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    int ptr,
-  );
-
-  external void
-  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    int ptr,
-  );
-}
+extension type RcWasmModule._(JSObject _) implements JSObject {}

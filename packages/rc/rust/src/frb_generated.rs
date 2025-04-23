@@ -25,7 +25,6 @@
 
 // Section: imports
 
-use crate::api::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
 use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
@@ -172,14 +171,14 @@ fn wire__crate__api__core_search_books_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_code = <String>::sse_decode(&mut deserializer);
-            let api_keyword = <String>::sse_decode(&mut deserializer);
+            let api_key = <String>::sse_decode(&mut deserializer);
             let api_page = <u8>::sse_decode(&mut deserializer);
             let api_count = <u8>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| {
                 transform_result_sse::<_, String>((move || {
                     let output_ok =
-                        crate::api::core_search_books(api_code, api_keyword, api_page, api_count)?;
+                        crate::api::core_search_books(api_code, api_key, api_page, api_count)?;
                     Ok(output_ok)
                 })())
             }
@@ -277,7 +276,7 @@ fn wire__crate__api__run_core_action_impl(
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_code = <String>::sse_decode(&mut deserializer);
             let api_action = <String>::sse_decode(&mut deserializer);
-            let api_envs = <Value>::sse_decode(&mut deserializer);
+            let api_envs = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| {
                 transform_result_sse::<_, String>((move || {
@@ -289,37 +288,291 @@ fn wire__crate__api__run_core_action_impl(
     )
 }
 
-// Section: related_funcs
+// Section: static_checks
 
-flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
-    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Value>
-);
+#[allow(clippy::unnecessary_literal_unwrap)]
+const _: fn() = || {
+    {
+        let BookDetail = None::<book_core::BookDetail>.unwrap();
+        let _: String = BookDetail.id;
+        let _: String = BookDetail.name;
+        let _: Option<String> = BookDetail.author;
+        let _: Option<String> = BookDetail.description;
+        let _: Option<u64> = BookDetail.word_count;
+        let _: Option<String> = BookDetail.cover;
+        let _: Option<Vec<String>> = BookDetail.tags;
+        let _: Option<book_core::BookStatus> = BookDetail.status;
+        let _: Option<String> = BookDetail.copy_right;
+        let _: Option<book_core::BookLatestChapter> = BookDetail.latest_chapter;
+        let _: Option<Vec<book_core::BookExtraData>> = BookDetail.extra_datas;
+    }
+    {
+        let BookExtraData = None::<book_core::BookExtraData>.unwrap();
+        let _: String = BookExtraData.label;
+        let _: String = BookExtraData.value;
+    }
+    {
+        let BookLatestChapter = None::<book_core::BookLatestChapter>.unwrap();
+        let _: String = BookLatestChapter.id;
+        let _: String = BookLatestChapter.name;
+        let _: Option<String> = BookLatestChapter.update_time;
+    }
+    {
+        let CatalogChapter = None::<book_core::CatalogChapter>.unwrap();
+        let _: String = CatalogChapter.id;
+        let _: String = CatalogChapter.name;
+        let _: Option<bool> = CatalogChapter.is_vip;
+        let _: Option<bool> = CatalogChapter.can_read;
+        let _: Option<String> = CatalogChapter.update_time;
+    }
+    {
+        let CatalogVolume = None::<book_core::CatalogVolume>.unwrap();
+        let _: String = CatalogVolume.id;
+        let _: String = CatalogVolume.name;
+        let _: Vec<book_core::CatalogChapter> = CatalogVolume.chapters;
+    }
+    {
+        let Chapter = None::<book_core::Chapter>.unwrap();
+        let _: String = Chapter.id;
+        let _: String = Chapter.content;
+        let _: Option<String> = Chapter.name;
+        let _: Option<bool> = Chapter.is_vip;
+        let _: Option<bool> = Chapter.can_read;
+        let _: Option<String> = Chapter.update_time;
+        let _: Option<u64> = Chapter.word_count;
+        let _: Option<u64> = Chapter.comment_count;
+        let _: Option<bool> = Chapter.comment_begin_at_title;
+    }
+    {
+        let MetaData = None::<book_core::MetaData>.unwrap();
+        let _: String = MetaData.name;
+        let _: String = MetaData.uuid;
+        let _: String = MetaData.base_url;
+        let _: String = MetaData.author;
+        let _: String = MetaData.user_agent;
+        let _: Option<book_core::Proxy> = MetaData.proxy;
+        let _: String = MetaData.version;
+    }
+    {
+        let Proxy = None::<book_core::Proxy>.unwrap();
+        let _: String = Proxy.host;
+        let _: u8 = Proxy.port;
+        let _: Option<book_core::ProxyType> = Proxy.proxy_type;
+        let _: Option<String> = Proxy.username;
+        let _: Option<String> = Proxy.password;
+    }
+    {
+        let SearchBook = None::<book_core::SearchBook>.unwrap();
+        let _: String = SearchBook.id;
+        let _: String = SearchBook.name;
+        let _: Option<String> = SearchBook.author;
+        let _: Option<String> = SearchBook.cover;
+        let _: Option<String> = SearchBook.description;
+        let _: Option<book_core::BookStatus> = SearchBook.status;
+        let _: Option<Vec<String>> = SearchBook.tags;
+        let _: Option<String> = SearchBook.last_update_time;
+        let _: Option<String> = SearchBook.lastest_chapter;
+    }
+};
 
 // Section: dart2rust
-
-impl SseDecode for Value {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <RustOpaqueMoi<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Value>,
-        >>::sse_decode(deserializer);
-        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
-    }
-}
-
-impl SseDecode for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Value>> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <usize>::sse_decode(deserializer);
-        return decode_rust_opaque_moi(inner);
-    }
-}
 
 impl SseDecode for String {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <Vec<u8>>::sse_decode(deserializer);
         return String::from_utf8(inner).unwrap();
+    }
+}
+
+impl SseDecode for book_core::BookDetail {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_author = <Option<String>>::sse_decode(deserializer);
+        let mut var_description = <Option<String>>::sse_decode(deserializer);
+        let mut var_wordCount = <Option<u64>>::sse_decode(deserializer);
+        let mut var_cover = <Option<String>>::sse_decode(deserializer);
+        let mut var_tags = <Option<Vec<String>>>::sse_decode(deserializer);
+        let mut var_status = <Option<book_core::BookStatus>>::sse_decode(deserializer);
+        let mut var_copyRight = <Option<String>>::sse_decode(deserializer);
+        let mut var_latestChapter =
+            <Option<book_core::BookLatestChapter>>::sse_decode(deserializer);
+        let mut var_extraDatas = <Option<Vec<book_core::BookExtraData>>>::sse_decode(deserializer);
+        return book_core::BookDetail {
+            id: var_id,
+            name: var_name,
+            author: var_author,
+            description: var_description,
+            word_count: var_wordCount,
+            cover: var_cover,
+            tags: var_tags,
+            status: var_status,
+            copy_right: var_copyRight,
+            latest_chapter: var_latestChapter,
+            extra_datas: var_extraDatas,
+        };
+    }
+}
+
+impl SseDecode for book_core::BookExtraData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_label = <String>::sse_decode(deserializer);
+        let mut var_value = <String>::sse_decode(deserializer);
+        return book_core::BookExtraData {
+            label: var_label,
+            value: var_value,
+        };
+    }
+}
+
+impl SseDecode for book_core::BookLatestChapter {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_updateTime = <Option<String>>::sse_decode(deserializer);
+        return book_core::BookLatestChapter {
+            id: var_id,
+            name: var_name,
+            update_time: var_updateTime,
+        };
+    }
+}
+
+impl SseDecode for book_core::BookStatus {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => book_core::BookStatus::Serializing,
+            1 => book_core::BookStatus::Finished,
+            2 => book_core::BookStatus::Removed,
+            3 => book_core::BookStatus::Stopped,
+            _ => unreachable!("Invalid variant for BookStatus: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for bool {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_u8().unwrap() != 0
+    }
+}
+
+impl SseDecode for book_core::CatalogChapter {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_isVip = <Option<bool>>::sse_decode(deserializer);
+        let mut var_canRead = <Option<bool>>::sse_decode(deserializer);
+        let mut var_updateTime = <Option<String>>::sse_decode(deserializer);
+        return book_core::CatalogChapter {
+            id: var_id,
+            name: var_name,
+            is_vip: var_isVip,
+            can_read: var_canRead,
+            update_time: var_updateTime,
+        };
+    }
+}
+
+impl SseDecode for book_core::CatalogVolume {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_chapters = <Vec<book_core::CatalogChapter>>::sse_decode(deserializer);
+        return book_core::CatalogVolume {
+            id: var_id,
+            name: var_name,
+            chapters: var_chapters,
+        };
+    }
+}
+
+impl SseDecode for book_core::Chapter {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_content = <String>::sse_decode(deserializer);
+        let mut var_name = <Option<String>>::sse_decode(deserializer);
+        let mut var_isVip = <Option<bool>>::sse_decode(deserializer);
+        let mut var_canRead = <Option<bool>>::sse_decode(deserializer);
+        let mut var_updateTime = <Option<String>>::sse_decode(deserializer);
+        let mut var_wordCount = <Option<u64>>::sse_decode(deserializer);
+        let mut var_commentCount = <Option<u64>>::sse_decode(deserializer);
+        let mut var_commentBeginAtTitle = <Option<bool>>::sse_decode(deserializer);
+        return book_core::Chapter {
+            id: var_id,
+            content: var_content,
+            name: var_name,
+            is_vip: var_isVip,
+            can_read: var_canRead,
+            update_time: var_updateTime,
+            word_count: var_wordCount,
+            comment_count: var_commentCount,
+            comment_begin_at_title: var_commentBeginAtTitle,
+        };
+    }
+}
+
+impl SseDecode for i32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_i32::<NativeEndian>().unwrap()
+    }
+}
+
+impl SseDecode for Vec<String> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<String>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<book_core::BookExtraData> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<book_core::BookExtraData>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<book_core::CatalogChapter> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<book_core::CatalogChapter>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<book_core::CatalogVolume> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<book_core::CatalogVolume>::sse_decode(deserializer));
+        }
+        return ans_;
     }
 }
 
@@ -335,6 +588,204 @@ impl SseDecode for Vec<u8> {
     }
 }
 
+impl SseDecode for Vec<book_core::SearchBook> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<book_core::SearchBook>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for book_core::MetaData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_uuid = <String>::sse_decode(deserializer);
+        let mut var_baseUrl = <String>::sse_decode(deserializer);
+        let mut var_author = <String>::sse_decode(deserializer);
+        let mut var_userAgent = <String>::sse_decode(deserializer);
+        let mut var_proxy = <Option<book_core::Proxy>>::sse_decode(deserializer);
+        let mut var_version = <String>::sse_decode(deserializer);
+        return book_core::MetaData {
+            name: var_name,
+            uuid: var_uuid,
+            base_url: var_baseUrl,
+            author: var_author,
+            user_agent: var_userAgent,
+            proxy: var_proxy,
+            version: var_version,
+        };
+    }
+}
+
+impl SseDecode for Option<String> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<String>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<book_core::BookLatestChapter> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<book_core::BookLatestChapter>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<book_core::BookStatus> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<book_core::BookStatus>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<bool> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<bool>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<book_core::Proxy> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<book_core::Proxy>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<book_core::ProxyType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<book_core::ProxyType>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<u64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<u64>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<Vec<String>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Vec<String>>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<Vec<book_core::BookExtraData>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Vec<book_core::BookExtraData>>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for book_core::Proxy {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_host = <String>::sse_decode(deserializer);
+        let mut var_port = <u8>::sse_decode(deserializer);
+        let mut var_proxyType = <Option<book_core::ProxyType>>::sse_decode(deserializer);
+        let mut var_username = <Option<String>>::sse_decode(deserializer);
+        let mut var_password = <Option<String>>::sse_decode(deserializer);
+        return book_core::Proxy {
+            host: var_host,
+            port: var_port,
+            proxy_type: var_proxyType,
+            username: var_username,
+            password: var_password,
+        };
+    }
+}
+
+impl SseDecode for book_core::ProxyType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => book_core::ProxyType::Http,
+            1 => book_core::ProxyType::Https,
+            2 => book_core::ProxyType::Socks4,
+            3 => book_core::ProxyType::Socks5,
+            _ => unreachable!("Invalid variant for ProxyType: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for book_core::SearchBook {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_author = <Option<String>>::sse_decode(deserializer);
+        let mut var_cover = <Option<String>>::sse_decode(deserializer);
+        let mut var_description = <Option<String>>::sse_decode(deserializer);
+        let mut var_status = <Option<book_core::BookStatus>>::sse_decode(deserializer);
+        let mut var_tags = <Option<Vec<String>>>::sse_decode(deserializer);
+        let mut var_lastUpdateTime = <Option<String>>::sse_decode(deserializer);
+        let mut var_lastestChapter = <Option<String>>::sse_decode(deserializer);
+        return book_core::SearchBook {
+            id: var_id,
+            name: var_name,
+            author: var_author,
+            cover: var_cover,
+            description: var_description,
+            status: var_status,
+            tags: var_tags,
+            last_update_time: var_lastUpdateTime,
+            lastest_chapter: var_lastestChapter,
+        };
+    }
+}
+
+impl SseDecode for u64 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_u64::<NativeEndian>().unwrap()
+    }
+}
+
 impl SseDecode for u8 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -345,27 +796,6 @@ impl SseDecode for u8 {
 impl SseDecode for () {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {}
-}
-
-impl SseDecode for usize {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        deserializer.cursor.read_u64::<NativeEndian>().unwrap() as _
-    }
-}
-
-impl SseDecode for i32 {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        deserializer.cursor.read_i32::<NativeEndian>().unwrap()
-    }
-}
-
-impl SseDecode for bool {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        deserializer.cursor.read_u8().unwrap() != 0
-    }
 }
 
 fn pde_ffi_dispatcher_primary_impl(
@@ -403,36 +833,263 @@ fn pde_ffi_dispatcher_sync_impl(
 // Section: rust2dart
 
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<Value> {
+impl flutter_rust_bridge::IntoDart for FrbWrapper<book_core::BookDetail> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
-            .into_dart()
+        [
+            self.0.id.into_into_dart().into_dart(),
+            self.0.name.into_into_dart().into_dart(),
+            self.0.author.into_into_dart().into_dart(),
+            self.0.description.into_into_dart().into_dart(),
+            self.0.word_count.into_into_dart().into_dart(),
+            self.0.cover.into_into_dart().into_dart(),
+            self.0.tags.into_into_dart().into_dart(),
+            self.0.status.into_into_dart().into_dart(),
+            self.0.copy_right.into_into_dart().into_dart(),
+            self.0.latest_chapter.into_into_dart().into_dart(),
+            self.0.extra_datas.into_into_dart().into_dart(),
+        ]
+        .into_dart()
     }
 }
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<Value> {}
-
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<Value>> for Value {
-    fn into_into_dart(self) -> FrbWrapper<Value> {
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<book_core::BookDetail>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<book_core::BookDetail>>
+    for book_core::BookDetail
+{
+    fn into_into_dart(self) -> FrbWrapper<book_core::BookDetail> {
         self.into()
     }
 }
-
-impl SseEncode for Value {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Value>>>::sse_encode(
-            flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self),
-            serializer,
-        );
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<book_core::BookExtraData> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.label.into_into_dart().into_dart(),
+            self.0.value.into_into_dart().into_dart(),
+        ]
+        .into_dart()
     }
 }
-
-impl SseEncode for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Value>> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        let (ptr, size) = self.sse_encode_raw();
-        <usize>::sse_encode(ptr, serializer);
-        <i32>::sse_encode(size, serializer);
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<book_core::BookExtraData>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<book_core::BookExtraData>>
+    for book_core::BookExtraData
+{
+    fn into_into_dart(self) -> FrbWrapper<book_core::BookExtraData> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<book_core::BookLatestChapter> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.id.into_into_dart().into_dart(),
+            self.0.name.into_into_dart().into_dart(),
+            self.0.update_time.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<book_core::BookLatestChapter>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<book_core::BookLatestChapter>>
+    for book_core::BookLatestChapter
+{
+    fn into_into_dart(self) -> FrbWrapper<book_core::BookLatestChapter> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<book_core::BookStatus> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            book_core::BookStatus::Serializing => 0.into_dart(),
+            book_core::BookStatus::Finished => 1.into_dart(),
+            book_core::BookStatus::Removed => 2.into_dart(),
+            book_core::BookStatus::Stopped => 3.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<book_core::BookStatus>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<book_core::BookStatus>>
+    for book_core::BookStatus
+{
+    fn into_into_dart(self) -> FrbWrapper<book_core::BookStatus> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<book_core::CatalogChapter> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.id.into_into_dart().into_dart(),
+            self.0.name.into_into_dart().into_dart(),
+            self.0.is_vip.into_into_dart().into_dart(),
+            self.0.can_read.into_into_dart().into_dart(),
+            self.0.update_time.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<book_core::CatalogChapter>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<book_core::CatalogChapter>>
+    for book_core::CatalogChapter
+{
+    fn into_into_dart(self) -> FrbWrapper<book_core::CatalogChapter> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<book_core::CatalogVolume> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.id.into_into_dart().into_dart(),
+            self.0.name.into_into_dart().into_dart(),
+            self.0.chapters.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<book_core::CatalogVolume>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<book_core::CatalogVolume>>
+    for book_core::CatalogVolume
+{
+    fn into_into_dart(self) -> FrbWrapper<book_core::CatalogVolume> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<book_core::Chapter> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.id.into_into_dart().into_dart(),
+            self.0.content.into_into_dart().into_dart(),
+            self.0.name.into_into_dart().into_dart(),
+            self.0.is_vip.into_into_dart().into_dart(),
+            self.0.can_read.into_into_dart().into_dart(),
+            self.0.update_time.into_into_dart().into_dart(),
+            self.0.word_count.into_into_dart().into_dart(),
+            self.0.comment_count.into_into_dart().into_dart(),
+            self.0.comment_begin_at_title.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<book_core::Chapter>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<book_core::Chapter>> for book_core::Chapter {
+    fn into_into_dart(self) -> FrbWrapper<book_core::Chapter> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<book_core::MetaData> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.name.into_into_dart().into_dart(),
+            self.0.uuid.into_into_dart().into_dart(),
+            self.0.base_url.into_into_dart().into_dart(),
+            self.0.author.into_into_dart().into_dart(),
+            self.0.user_agent.into_into_dart().into_dart(),
+            self.0.proxy.into_into_dart().into_dart(),
+            self.0.version.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<book_core::MetaData>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<book_core::MetaData>> for book_core::MetaData {
+    fn into_into_dart(self) -> FrbWrapper<book_core::MetaData> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<book_core::Proxy> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.host.into_into_dart().into_dart(),
+            self.0.port.into_into_dart().into_dart(),
+            self.0.proxy_type.into_into_dart().into_dart(),
+            self.0.username.into_into_dart().into_dart(),
+            self.0.password.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<book_core::Proxy> {}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<book_core::Proxy>> for book_core::Proxy {
+    fn into_into_dart(self) -> FrbWrapper<book_core::Proxy> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<book_core::ProxyType> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            book_core::ProxyType::Http => 0.into_dart(),
+            book_core::ProxyType::Https => 1.into_dart(),
+            book_core::ProxyType::Socks4 => 2.into_dart(),
+            book_core::ProxyType::Socks5 => 3.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<book_core::ProxyType>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<book_core::ProxyType>> for book_core::ProxyType {
+    fn into_into_dart(self) -> FrbWrapper<book_core::ProxyType> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<book_core::SearchBook> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.id.into_into_dart().into_dart(),
+            self.0.name.into_into_dart().into_dart(),
+            self.0.author.into_into_dart().into_dart(),
+            self.0.cover.into_into_dart().into_dart(),
+            self.0.description.into_into_dart().into_dart(),
+            self.0.status.into_into_dart().into_dart(),
+            self.0.tags.into_into_dart().into_dart(),
+            self.0.last_update_time.into_into_dart().into_dart(),
+            self.0.lastest_chapter.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<book_core::SearchBook>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<book_core::SearchBook>>
+    for book_core::SearchBook
+{
+    fn into_into_dart(self) -> FrbWrapper<book_core::SearchBook> {
+        self.into()
     }
 }
 
@@ -443,6 +1100,147 @@ impl SseEncode for String {
     }
 }
 
+impl SseEncode for book_core::BookDetail {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.name, serializer);
+        <Option<String>>::sse_encode(self.author, serializer);
+        <Option<String>>::sse_encode(self.description, serializer);
+        <Option<u64>>::sse_encode(self.word_count, serializer);
+        <Option<String>>::sse_encode(self.cover, serializer);
+        <Option<Vec<String>>>::sse_encode(self.tags, serializer);
+        <Option<book_core::BookStatus>>::sse_encode(self.status, serializer);
+        <Option<String>>::sse_encode(self.copy_right, serializer);
+        <Option<book_core::BookLatestChapter>>::sse_encode(self.latest_chapter, serializer);
+        <Option<Vec<book_core::BookExtraData>>>::sse_encode(self.extra_datas, serializer);
+    }
+}
+
+impl SseEncode for book_core::BookExtraData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.label, serializer);
+        <String>::sse_encode(self.value, serializer);
+    }
+}
+
+impl SseEncode for book_core::BookLatestChapter {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.name, serializer);
+        <Option<String>>::sse_encode(self.update_time, serializer);
+    }
+}
+
+impl SseEncode for book_core::BookStatus {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                book_core::BookStatus::Serializing => 0,
+                book_core::BookStatus::Finished => 1,
+                book_core::BookStatus::Removed => 2,
+                book_core::BookStatus::Stopped => 3,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for bool {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_u8(self as _).unwrap();
+    }
+}
+
+impl SseEncode for book_core::CatalogChapter {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.name, serializer);
+        <Option<bool>>::sse_encode(self.is_vip, serializer);
+        <Option<bool>>::sse_encode(self.can_read, serializer);
+        <Option<String>>::sse_encode(self.update_time, serializer);
+    }
+}
+
+impl SseEncode for book_core::CatalogVolume {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.name, serializer);
+        <Vec<book_core::CatalogChapter>>::sse_encode(self.chapters, serializer);
+    }
+}
+
+impl SseEncode for book_core::Chapter {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.content, serializer);
+        <Option<String>>::sse_encode(self.name, serializer);
+        <Option<bool>>::sse_encode(self.is_vip, serializer);
+        <Option<bool>>::sse_encode(self.can_read, serializer);
+        <Option<String>>::sse_encode(self.update_time, serializer);
+        <Option<u64>>::sse_encode(self.word_count, serializer);
+        <Option<u64>>::sse_encode(self.comment_count, serializer);
+        <Option<bool>>::sse_encode(self.comment_begin_at_title, serializer);
+    }
+}
+
+impl SseEncode for i32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_i32::<NativeEndian>(self).unwrap();
+    }
+}
+
+impl SseEncode for Vec<String> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <String>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<book_core::BookExtraData> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <book_core::BookExtraData>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<book_core::CatalogChapter> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <book_core::CatalogChapter>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<book_core::CatalogVolume> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <book_core::CatalogVolume>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -450,6 +1248,170 @@ impl SseEncode for Vec<u8> {
         for item in self {
             <u8>::sse_encode(item, serializer);
         }
+    }
+}
+
+impl SseEncode for Vec<book_core::SearchBook> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <book_core::SearchBook>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for book_core::MetaData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.name, serializer);
+        <String>::sse_encode(self.uuid, serializer);
+        <String>::sse_encode(self.base_url, serializer);
+        <String>::sse_encode(self.author, serializer);
+        <String>::sse_encode(self.user_agent, serializer);
+        <Option<book_core::Proxy>>::sse_encode(self.proxy, serializer);
+        <String>::sse_encode(self.version, serializer);
+    }
+}
+
+impl SseEncode for Option<String> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <String>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<book_core::BookLatestChapter> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <book_core::BookLatestChapter>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<book_core::BookStatus> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <book_core::BookStatus>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<bool> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <bool>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<book_core::Proxy> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <book_core::Proxy>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<book_core::ProxyType> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <book_core::ProxyType>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<u64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <u64>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<Vec<String>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<String>>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<Vec<book_core::BookExtraData>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<book_core::BookExtraData>>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for book_core::Proxy {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.host, serializer);
+        <u8>::sse_encode(self.port, serializer);
+        <Option<book_core::ProxyType>>::sse_encode(self.proxy_type, serializer);
+        <Option<String>>::sse_encode(self.username, serializer);
+        <Option<String>>::sse_encode(self.password, serializer);
+    }
+}
+
+impl SseEncode for book_core::ProxyType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                book_core::ProxyType::Http => 0,
+                book_core::ProxyType::Https => 1,
+                book_core::ProxyType::Socks4 => 2,
+                book_core::ProxyType::Socks5 => 3,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for book_core::SearchBook {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <String>::sse_encode(self.name, serializer);
+        <Option<String>>::sse_encode(self.author, serializer);
+        <Option<String>>::sse_encode(self.cover, serializer);
+        <Option<String>>::sse_encode(self.description, serializer);
+        <Option<book_core::BookStatus>>::sse_encode(self.status, serializer);
+        <Option<Vec<String>>>::sse_encode(self.tags, serializer);
+        <Option<String>>::sse_encode(self.last_update_time, serializer);
+        <Option<String>>::sse_encode(self.lastest_chapter, serializer);
+    }
+}
+
+impl SseEncode for u64 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_u64::<NativeEndian>(self).unwrap();
     }
 }
 
@@ -465,30 +1427,6 @@ impl SseEncode for () {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
 }
 
-impl SseEncode for usize {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        serializer
-            .cursor
-            .write_u64::<NativeEndian>(self as _)
-            .unwrap();
-    }
-}
-
-impl SseEncode for i32 {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        serializer.cursor.write_i32::<NativeEndian>(self).unwrap();
-    }
-}
-
-impl SseEncode for bool {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        serializer.cursor.write_u8(self as _).unwrap();
-    }
-}
-
 #[cfg(not(target_family = "wasm"))]
 mod io {
     // This file is automatically generated, so please do not edit it.
@@ -497,7 +1435,6 @@ mod io {
     // Section: imports
 
     use super::*;
-    use crate::api::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
@@ -507,20 +1444,6 @@ mod io {
     // Section: boilerplate
 
     flutter_rust_bridge::frb_generated_boilerplate_io!();
-
-    #[no_mangle]
-    pub extern "C" fn frbgen_rc_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Value>>::increment_strong_count(ptr as _);
-    }
-
-    #[no_mangle]
-    pub extern "C" fn frbgen_rc_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Value>>::decrement_strong_count(ptr as _);
-    }
 }
 #[cfg(not(target_family = "wasm"))]
 pub use io::*;
@@ -534,7 +1457,6 @@ mod web {
     // Section: imports
 
     use super::*;
-    use crate::api::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
@@ -546,20 +1468,6 @@ mod web {
     // Section: boilerplate
 
     flutter_rust_bridge::frb_generated_boilerplate_web!();
-
-    #[wasm_bindgen]
-    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Value>>::increment_strong_count(ptr as _);
-    }
-
-    #[wasm_bindgen]
-    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Value>>::decrement_strong_count(ptr as _);
-    }
 }
 #[cfg(target_family = "wasm")]
 pub use web::*;

@@ -29,7 +29,7 @@ class BookSourceService {
 
   add(String code) async {
     var metadata = await getCodeMetadata(code: code);
-    return jsonDecode(metadata);
+    return metadata;
   }
 
   runAction(BookSourceActionOptions options) async {
@@ -43,17 +43,20 @@ class BookSourceService {
     return res.toString();
   }
 
-  searchBooks(BookSourceActionOptions options) async {
+  Future<List<SearchBook>> searchBooks(BookSourceActionOptions options) async {
     var uuid = options.uuid;
     String code = bookCores[uuid]!['code'];
     var params = options.params;
-    var res = await coreSearchBooks(
-      code: code,
-      page: params['page'] ?? 1,
-      keyword: params['keyword'],
-      count: params['count'] ?? 10,
-    );
-    log.info("搜索结果", res.toString());
-    return res.toString();
+    try {
+      return await coreSearchBooks(
+        code: code,
+        page: params['page'] ?? 1,
+        key: params['key'],
+        count: params['count'] ?? 10,
+      );
+    } catch (e) {
+      log.error("搜索失败", e);
+      return [];
+    }
   }
 }

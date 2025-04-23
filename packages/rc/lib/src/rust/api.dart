@@ -5,45 +5,47 @@
 
 import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'third_party/book_core.dart';
 
 Future<void> helloWorld() => Rc.instance.api.crateApiHelloWorld();
 
-Future<String> getCodeMetadata({required String code}) =>
+Future<MetaData> getCodeMetadata({required String code}) =>
     Rc.instance.api.crateApiGetCodeMetadata(code: code);
 
-Future<Value> runCoreAction({
+Future<String> runCoreAction({
   required String code,
   required String action,
-  required Value envs,
+  required String envs,
 }) => Rc.instance.api.crateApiRunCoreAction(
   code: code,
   action: action,
   envs: envs,
 );
 
-Future<Value> coreSearchBooks({
+Future<List<SearchBook>> coreSearchBooks({
   required String code,
-  required String keyword,
+  required String key,
   required int page,
   required int count,
 }) => Rc.instance.api.crateApiCoreSearchBooks(
   code: code,
-  keyword: keyword,
+  key: key,
   page: page,
   count: count,
 );
 
-Future<Value> coreBookDetail({required String code, required String bid}) =>
-    Rc.instance.api.crateApiCoreBookDetail(code: code, bid: bid);
+Future<BookDetail> coreBookDetail({
+  required String code,
+  required String bid,
+}) => Rc.instance.api.crateApiCoreBookDetail(code: code, bid: bid);
 
-Future<Value> coreCatalog({required String code, required String bid}) =>
-    Rc.instance.api.crateApiCoreCatalog(code: code, bid: bid);
+Future<List<CatalogVolume>> coreCatalog({
+  required String code,
+  required String bid,
+}) => Rc.instance.api.crateApiCoreCatalog(code: code, bid: bid);
 
-Future<Value> coreChapter({
+Future<Chapter> coreChapter({
   required String code,
   required String bid,
   required String cid,
 }) => Rc.instance.api.crateApiCoreChapter(code: code, bid: bid, cid: cid);
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Value>>
-abstract class Value implements RustOpaqueInterface {}

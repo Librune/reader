@@ -35,13 +35,19 @@ class SearchBooks extends _$SearchBooks {
     // );
     // log.debug("搜索结果", res);
     BookSourceService().bookCores.forEach((uuid, value) {
-      BookSourceSearchBooksCase().call(
-        BookSourceActionOptions(
-          uuid: uuid,
-          action: "search",
-          params: {"keyword": key, "page": 1, "count": 10},
-        ),
-      );
+      BookSourceSearchBooksCase()
+          .call(
+            BookSourceActionOptions(
+              uuid: uuid,
+              action: "search",
+              params: {"key": key, "page": 1, "count": 10},
+            ),
+          )
+          .then((res) {
+            res.forEach((r) {
+              log.info(r.name);
+            });
+          });
     });
     state = AsyncData([]);
   }

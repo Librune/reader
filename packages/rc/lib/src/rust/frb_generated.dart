@@ -10,6 +10,7 @@ import 'frb_generated.dart';
 import 'frb_generated.io.dart'
     if (dart.library.js_interop) 'frb_generated.web.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'third_party/book_core.dart';
 
 /// Main entrypoint of the Rust API
 class Rc extends BaseEntrypoint<RcApi, RcApiImpl, RcWire> {
@@ -71,44 +72,38 @@ class Rc extends BaseEntrypoint<RcApi, RcApiImpl, RcWire> {
 }
 
 abstract class RcApi extends BaseApi {
-  Future<Value> crateApiCoreBookDetail({
+  Future<BookDetail> crateApiCoreBookDetail({
     required String code,
     required String bid,
   });
 
-  Future<Value> crateApiCoreCatalog({
+  Future<List<CatalogVolume>> crateApiCoreCatalog({
     required String code,
     required String bid,
   });
 
-  Future<Value> crateApiCoreChapter({
+  Future<Chapter> crateApiCoreChapter({
     required String code,
     required String bid,
     required String cid,
   });
 
-  Future<Value> crateApiCoreSearchBooks({
+  Future<List<SearchBook>> crateApiCoreSearchBooks({
     required String code,
-    required String keyword,
+    required String key,
     required int page,
     required int count,
   });
 
-  Future<String> crateApiGetCodeMetadata({required String code});
+  Future<MetaData> crateApiGetCodeMetadata({required String code});
 
   Future<void> crateApiHelloWorld();
 
-  Future<Value> crateApiRunCoreAction({
+  Future<String> crateApiRunCoreAction({
     required String code,
     required String action,
-    required Value envs,
+    required String envs,
   });
-
-  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Value;
-
-  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Value;
-
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ValuePtr;
 }
 
 class RcApiImpl extends RcApiImplPlatform implements RcApi {
@@ -120,7 +115,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   });
 
   @override
-  Future<Value> crateApiCoreBookDetail({
+  Future<BookDetail> crateApiCoreBookDetail({
     required String code,
     required String bid,
   }) {
@@ -138,8 +133,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
           );
         },
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+          decodeSuccessData: sse_decode_book_detail,
           decodeErrorData: sse_decode_String,
         ),
         constMeta: kCrateApiCoreBookDetailConstMeta,
@@ -155,7 +149,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   );
 
   @override
-  Future<Value> crateApiCoreCatalog({
+  Future<List<CatalogVolume>> crateApiCoreCatalog({
     required String code,
     required String bid,
   }) {
@@ -173,8 +167,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
           );
         },
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+          decodeSuccessData: sse_decode_list_catalog_volume,
           decodeErrorData: sse_decode_String,
         ),
         constMeta: kCrateApiCoreCatalogConstMeta,
@@ -188,7 +181,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
       const TaskConstMeta(debugName: "core_catalog", argNames: ["code", "bid"]);
 
   @override
-  Future<Value> crateApiCoreChapter({
+  Future<Chapter> crateApiCoreChapter({
     required String code,
     required String bid,
     required String cid,
@@ -208,8 +201,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
           );
         },
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+          decodeSuccessData: sse_decode_chapter,
           decodeErrorData: sse_decode_String,
         ),
         constMeta: kCrateApiCoreChapterConstMeta,
@@ -225,9 +217,9 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   );
 
   @override
-  Future<Value> crateApiCoreSearchBooks({
+  Future<List<SearchBook>> crateApiCoreSearchBooks({
     required String code,
-    required String keyword,
+    required String key,
     required int page,
     required int count,
   }) {
@@ -236,7 +228,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
         callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(code, serializer);
-          sse_encode_String(keyword, serializer);
+          sse_encode_String(key, serializer);
           sse_encode_u_8(page, serializer);
           sse_encode_u_8(count, serializer);
           pdeCallFfi(
@@ -247,12 +239,11 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
           );
         },
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+          decodeSuccessData: sse_decode_list_search_book,
           decodeErrorData: sse_decode_String,
         ),
         constMeta: kCrateApiCoreSearchBooksConstMeta,
-        argValues: [code, keyword, page, count],
+        argValues: [code, key, page, count],
         apiImpl: this,
       ),
     );
@@ -260,11 +251,11 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
 
   TaskConstMeta get kCrateApiCoreSearchBooksConstMeta => const TaskConstMeta(
     debugName: "core_search_books",
-    argNames: ["code", "keyword", "page", "count"],
+    argNames: ["code", "key", "page", "count"],
   );
 
   @override
-  Future<String> crateApiGetCodeMetadata({required String code}) {
+  Future<MetaData> crateApiGetCodeMetadata({required String code}) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -278,7 +269,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
           );
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
+          decodeSuccessData: sse_decode_meta_data,
           decodeErrorData: sse_decode_String,
         ),
         constMeta: kCrateApiGetCodeMetadataConstMeta,
@@ -319,10 +310,10 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
       const TaskConstMeta(debugName: "hello_world", argNames: []);
 
   @override
-  Future<Value> crateApiRunCoreAction({
+  Future<String> crateApiRunCoreAction({
     required String code,
     required String action,
-    required Value envs,
+    required String envs,
   }) {
     return handler.executeNormal(
       NormalTask(
@@ -330,10 +321,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(code, serializer);
           sse_encode_String(action, serializer);
-          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-            envs,
-            serializer,
-          );
+          sse_encode_String(envs, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -342,8 +330,7 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
           );
         },
         codec: SseCodec(
-          decodeSuccessData:
-              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue,
+          decodeSuccessData: sse_decode_String,
           decodeErrorData: sse_decode_String,
         ),
         constMeta: kCrateApiRunCoreActionConstMeta,
@@ -358,30 +345,6 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
     argNames: ["code", "action", "envs"],
   );
 
-  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Value =>
-      wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue;
-
-  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Value =>
-      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue;
-
-  @protected
-  Value
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return ValueImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
-  @protected
-  Value
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    dynamic raw,
-  ) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return ValueImpl.frbInternalDcoDecode(raw as List<dynamic>);
-  }
-
   @protected
   String dco_decode_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -389,9 +352,305 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   }
 
   @protected
+  BookDetail dco_decode_book_detail(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 11)
+      throw Exception('unexpected arr length: expect 11 but see ${arr.length}');
+    return BookDetail(
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      author: dco_decode_opt_String(arr[2]),
+      description: dco_decode_opt_String(arr[3]),
+      wordCount: dco_decode_opt_box_autoadd_u_64(arr[4]),
+      cover: dco_decode_opt_String(arr[5]),
+      tags: dco_decode_opt_list_String(arr[6]),
+      status: dco_decode_opt_box_autoadd_book_status(arr[7]),
+      copyRight: dco_decode_opt_String(arr[8]),
+      latestChapter: dco_decode_opt_box_autoadd_book_latest_chapter(arr[9]),
+      extraDatas: dco_decode_opt_list_book_extra_data(arr[10]),
+    );
+  }
+
+  @protected
+  BookExtraData dco_decode_book_extra_data(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return BookExtraData(
+      label: dco_decode_String(arr[0]),
+      value: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
+  BookLatestChapter dco_decode_book_latest_chapter(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return BookLatestChapter(
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      updateTime: dco_decode_opt_String(arr[2]),
+    );
+  }
+
+  @protected
+  BookStatus dco_decode_book_status(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return BookStatus.values[raw as int];
+  }
+
+  @protected
+  bool dco_decode_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as bool;
+  }
+
+  @protected
+  BookLatestChapter dco_decode_box_autoadd_book_latest_chapter(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_book_latest_chapter(raw);
+  }
+
+  @protected
+  BookStatus dco_decode_box_autoadd_book_status(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_book_status(raw);
+  }
+
+  @protected
+  bool dco_decode_box_autoadd_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as bool;
+  }
+
+  @protected
+  Proxy dco_decode_box_autoadd_proxy(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_proxy(raw);
+  }
+
+  @protected
+  ProxyType dco_decode_box_autoadd_proxy_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_proxy_type(raw);
+  }
+
+  @protected
+  BigInt dco_decode_box_autoadd_u_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_u_64(raw);
+  }
+
+  @protected
+  CatalogChapter dco_decode_catalog_chapter(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return CatalogChapter(
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      isVip: dco_decode_opt_box_autoadd_bool(arr[2]),
+      canRead: dco_decode_opt_box_autoadd_bool(arr[3]),
+      updateTime: dco_decode_opt_String(arr[4]),
+    );
+  }
+
+  @protected
+  CatalogVolume dco_decode_catalog_volume(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return CatalogVolume(
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      chapters: dco_decode_list_catalog_chapter(arr[2]),
+    );
+  }
+
+  @protected
+  Chapter dco_decode_chapter(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 9)
+      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    return Chapter(
+      id: dco_decode_String(arr[0]),
+      content: dco_decode_String(arr[1]),
+      name: dco_decode_opt_String(arr[2]),
+      isVip: dco_decode_opt_box_autoadd_bool(arr[3]),
+      canRead: dco_decode_opt_box_autoadd_bool(arr[4]),
+      updateTime: dco_decode_opt_String(arr[5]),
+      wordCount: dco_decode_opt_box_autoadd_u_64(arr[6]),
+      commentCount: dco_decode_opt_box_autoadd_u_64(arr[7]),
+      commentBeginAtTitle: dco_decode_opt_box_autoadd_bool(arr[8]),
+    );
+  }
+
+  @protected
+  int dco_decode_i_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
+  List<String> dco_decode_list_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_String).toList();
+  }
+
+  @protected
+  List<BookExtraData> dco_decode_list_book_extra_data(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_book_extra_data).toList();
+  }
+
+  @protected
+  List<CatalogChapter> dco_decode_list_catalog_chapter(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_catalog_chapter).toList();
+  }
+
+  @protected
+  List<CatalogVolume> dco_decode_list_catalog_volume(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_catalog_volume).toList();
+  }
+
+  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
+  }
+
+  @protected
+  List<SearchBook> dco_decode_list_search_book(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_search_book).toList();
+  }
+
+  @protected
+  MetaData dco_decode_meta_data(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    return MetaData(
+      name: dco_decode_String(arr[0]),
+      uuid: dco_decode_String(arr[1]),
+      baseUrl: dco_decode_String(arr[2]),
+      author: dco_decode_String(arr[3]),
+      userAgent: dco_decode_String(arr[4]),
+      proxy: dco_decode_opt_box_autoadd_proxy(arr[5]),
+      version: dco_decode_String(arr[6]),
+    );
+  }
+
+  @protected
+  String? dco_decode_opt_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_String(raw);
+  }
+
+  @protected
+  BookLatestChapter? dco_decode_opt_box_autoadd_book_latest_chapter(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_book_latest_chapter(raw);
+  }
+
+  @protected
+  BookStatus? dco_decode_opt_box_autoadd_book_status(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_book_status(raw);
+  }
+
+  @protected
+  bool? dco_decode_opt_box_autoadd_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_bool(raw);
+  }
+
+  @protected
+  Proxy? dco_decode_opt_box_autoadd_proxy(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_proxy(raw);
+  }
+
+  @protected
+  ProxyType? dco_decode_opt_box_autoadd_proxy_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_proxy_type(raw);
+  }
+
+  @protected
+  BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_u_64(raw);
+  }
+
+  @protected
+  List<String>? dco_decode_opt_list_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_String(raw);
+  }
+
+  @protected
+  List<BookExtraData>? dco_decode_opt_list_book_extra_data(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_book_extra_data(raw);
+  }
+
+  @protected
+  Proxy dco_decode_proxy(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return Proxy(
+      host: dco_decode_String(arr[0]),
+      port: dco_decode_u_8(arr[1]),
+      proxyType: dco_decode_opt_box_autoadd_proxy_type(arr[2]),
+      username: dco_decode_opt_String(arr[3]),
+      password: dco_decode_opt_String(arr[4]),
+    );
+  }
+
+  @protected
+  ProxyType dco_decode_proxy_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ProxyType.values[raw as int];
+  }
+
+  @protected
+  SearchBook dco_decode_search_book(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 9)
+      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    return SearchBook(
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      author: dco_decode_opt_String(arr[2]),
+      cover: dco_decode_opt_String(arr[3]),
+      description: dco_decode_opt_String(arr[4]),
+      status: dco_decode_opt_box_autoadd_book_status(arr[5]),
+      tags: dco_decode_opt_list_String(arr[6]),
+      lastUpdateTime: dco_decode_opt_String(arr[7]),
+      lastestChapter: dco_decode_opt_String(arr[8]),
+    );
+  }
+
+  @protected
+  BigInt dco_decode_u_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dcoDecodeU64(raw);
   }
 
   @protected
@@ -407,36 +666,6 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   }
 
   @protected
-  BigInt dco_decode_usize(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dcoDecodeU64(raw);
-  }
-
-  @protected
-  Value
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return ValueImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
-  Value
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    SseDeserializer deserializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return ValueImpl.frbInternalSseDecode(
-      sse_decode_usize(deserializer),
-      sse_decode_i_32(deserializer),
-    );
-  }
-
-  @protected
   String sse_decode_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_prim_u_8_strict(deserializer);
@@ -444,10 +673,421 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   }
 
   @protected
+  BookDetail sse_decode_book_detail(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    var var_author = sse_decode_opt_String(deserializer);
+    var var_description = sse_decode_opt_String(deserializer);
+    var var_wordCount = sse_decode_opt_box_autoadd_u_64(deserializer);
+    var var_cover = sse_decode_opt_String(deserializer);
+    var var_tags = sse_decode_opt_list_String(deserializer);
+    var var_status = sse_decode_opt_box_autoadd_book_status(deserializer);
+    var var_copyRight = sse_decode_opt_String(deserializer);
+    var var_latestChapter = sse_decode_opt_box_autoadd_book_latest_chapter(
+      deserializer,
+    );
+    var var_extraDatas = sse_decode_opt_list_book_extra_data(deserializer);
+    return BookDetail(
+      id: var_id,
+      name: var_name,
+      author: var_author,
+      description: var_description,
+      wordCount: var_wordCount,
+      cover: var_cover,
+      tags: var_tags,
+      status: var_status,
+      copyRight: var_copyRight,
+      latestChapter: var_latestChapter,
+      extraDatas: var_extraDatas,
+    );
+  }
+
+  @protected
+  BookExtraData sse_decode_book_extra_data(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_label = sse_decode_String(deserializer);
+    var var_value = sse_decode_String(deserializer);
+    return BookExtraData(label: var_label, value: var_value);
+  }
+
+  @protected
+  BookLatestChapter sse_decode_book_latest_chapter(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    var var_updateTime = sse_decode_opt_String(deserializer);
+    return BookLatestChapter(
+      id: var_id,
+      name: var_name,
+      updateTime: var_updateTime,
+    );
+  }
+
+  @protected
+  BookStatus sse_decode_book_status(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return BookStatus.values[inner];
+  }
+
+  @protected
+  bool sse_decode_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint8() != 0;
+  }
+
+  @protected
+  BookLatestChapter sse_decode_box_autoadd_book_latest_chapter(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_book_latest_chapter(deserializer));
+  }
+
+  @protected
+  BookStatus sse_decode_box_autoadd_book_status(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_book_status(deserializer));
+  }
+
+  @protected
+  bool sse_decode_box_autoadd_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_bool(deserializer));
+  }
+
+  @protected
+  Proxy sse_decode_box_autoadd_proxy(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_proxy(deserializer));
+  }
+
+  @protected
+  ProxyType sse_decode_box_autoadd_proxy_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_proxy_type(deserializer));
+  }
+
+  @protected
+  BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_u_64(deserializer));
+  }
+
+  @protected
+  CatalogChapter sse_decode_catalog_chapter(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    var var_isVip = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_canRead = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_updateTime = sse_decode_opt_String(deserializer);
+    return CatalogChapter(
+      id: var_id,
+      name: var_name,
+      isVip: var_isVip,
+      canRead: var_canRead,
+      updateTime: var_updateTime,
+    );
+  }
+
+  @protected
+  CatalogVolume sse_decode_catalog_volume(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    var var_chapters = sse_decode_list_catalog_chapter(deserializer);
+    return CatalogVolume(id: var_id, name: var_name, chapters: var_chapters);
+  }
+
+  @protected
+  Chapter sse_decode_chapter(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_content = sse_decode_String(deserializer);
+    var var_name = sse_decode_opt_String(deserializer);
+    var var_isVip = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_canRead = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_updateTime = sse_decode_opt_String(deserializer);
+    var var_wordCount = sse_decode_opt_box_autoadd_u_64(deserializer);
+    var var_commentCount = sse_decode_opt_box_autoadd_u_64(deserializer);
+    var var_commentBeginAtTitle = sse_decode_opt_box_autoadd_bool(deserializer);
+    return Chapter(
+      id: var_id,
+      content: var_content,
+      name: var_name,
+      isVip: var_isVip,
+      canRead: var_canRead,
+      updateTime: var_updateTime,
+      wordCount: var_wordCount,
+      commentCount: var_commentCount,
+      commentBeginAtTitle: var_commentBeginAtTitle,
+    );
+  }
+
+  @protected
+  int sse_decode_i_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getInt32();
+  }
+
+  @protected
+  List<String> sse_decode_list_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <String>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_String(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<BookExtraData> sse_decode_list_book_extra_data(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <BookExtraData>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_book_extra_data(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<CatalogChapter> sse_decode_list_catalog_chapter(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <CatalogChapter>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_catalog_chapter(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<CatalogVolume> sse_decode_list_catalog_volume(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <CatalogVolume>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_catalog_volume(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  List<SearchBook> sse_decode_list_search_book(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <SearchBook>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_search_book(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  MetaData sse_decode_meta_data(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_name = sse_decode_String(deserializer);
+    var var_uuid = sse_decode_String(deserializer);
+    var var_baseUrl = sse_decode_String(deserializer);
+    var var_author = sse_decode_String(deserializer);
+    var var_userAgent = sse_decode_String(deserializer);
+    var var_proxy = sse_decode_opt_box_autoadd_proxy(deserializer);
+    var var_version = sse_decode_String(deserializer);
+    return MetaData(
+      name: var_name,
+      uuid: var_uuid,
+      baseUrl: var_baseUrl,
+      author: var_author,
+      userAgent: var_userAgent,
+      proxy: var_proxy,
+      version: var_version,
+    );
+  }
+
+  @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_String(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  BookLatestChapter? sse_decode_opt_box_autoadd_book_latest_chapter(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_book_latest_chapter(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  BookStatus? sse_decode_opt_box_autoadd_book_status(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_book_status(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_bool(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  Proxy? sse_decode_opt_box_autoadd_proxy(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_proxy(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  ProxyType? sse_decode_opt_box_autoadd_proxy_type(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_proxy_type(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  BigInt? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_u_64(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  List<String>? sse_decode_opt_list_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_String(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  List<BookExtraData>? sse_decode_opt_list_book_extra_data(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_book_extra_data(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  Proxy sse_decode_proxy(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_host = sse_decode_String(deserializer);
+    var var_port = sse_decode_u_8(deserializer);
+    var var_proxyType = sse_decode_opt_box_autoadd_proxy_type(deserializer);
+    var var_username = sse_decode_opt_String(deserializer);
+    var var_password = sse_decode_opt_String(deserializer);
+    return Proxy(
+      host: var_host,
+      port: var_port,
+      proxyType: var_proxyType,
+      username: var_username,
+      password: var_password,
+    );
+  }
+
+  @protected
+  ProxyType sse_decode_proxy_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return ProxyType.values[inner];
+  }
+
+  @protected
+  SearchBook sse_decode_search_book(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    var var_author = sse_decode_opt_String(deserializer);
+    var var_cover = sse_decode_opt_String(deserializer);
+    var var_description = sse_decode_opt_String(deserializer);
+    var var_status = sse_decode_opt_box_autoadd_book_status(deserializer);
+    var var_tags = sse_decode_opt_list_String(deserializer);
+    var var_lastUpdateTime = sse_decode_opt_String(deserializer);
+    var var_lastestChapter = sse_decode_opt_String(deserializer);
+    return SearchBook(
+      id: var_id,
+      name: var_name,
+      author: var_author,
+      cover: var_cover,
+      description: var_description,
+      status: var_status,
+      tags: var_tags,
+      lastUpdateTime: var_lastUpdateTime,
+      lastestChapter: var_lastestChapter,
+    );
+  }
+
+  @protected
+  BigInt sse_decode_u_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getBigUint64();
   }
 
   @protected
@@ -462,53 +1102,192 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   }
 
   @protected
-  BigInt sse_decode_usize(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getBigUint64();
-  }
-
-  @protected
-  int sse_decode_i_32(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getInt32();
-  }
-
-  @protected
-  bool sse_decode_bool(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getUint8() != 0;
-  }
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    Value self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as ValueImpl).frbInternalSseEncode(move: true),
-      serializer,
-    );
-  }
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    Value self,
-    SseSerializer serializer,
-  ) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_usize(
-      (self as ValueImpl).frbInternalSseEncode(move: null),
-      serializer,
-    );
-  }
-
-  @protected
   void sse_encode_String(String self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
+  }
+
+  @protected
+  void sse_encode_book_detail(BookDetail self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.name, serializer);
+    sse_encode_opt_String(self.author, serializer);
+    sse_encode_opt_String(self.description, serializer);
+    sse_encode_opt_box_autoadd_u_64(self.wordCount, serializer);
+    sse_encode_opt_String(self.cover, serializer);
+    sse_encode_opt_list_String(self.tags, serializer);
+    sse_encode_opt_box_autoadd_book_status(self.status, serializer);
+    sse_encode_opt_String(self.copyRight, serializer);
+    sse_encode_opt_box_autoadd_book_latest_chapter(
+      self.latestChapter,
+      serializer,
+    );
+    sse_encode_opt_list_book_extra_data(self.extraDatas, serializer);
+  }
+
+  @protected
+  void sse_encode_book_extra_data(
+    BookExtraData self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.label, serializer);
+    sse_encode_String(self.value, serializer);
+  }
+
+  @protected
+  void sse_encode_book_latest_chapter(
+    BookLatestChapter self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.name, serializer);
+    sse_encode_opt_String(self.updateTime, serializer);
+  }
+
+  @protected
+  void sse_encode_book_status(BookStatus self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint8(self ? 1 : 0);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_book_latest_chapter(
+    BookLatestChapter self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_book_latest_chapter(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_book_status(
+    BookStatus self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_book_status(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_bool(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_proxy(Proxy self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_proxy(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_proxy_type(
+    ProxyType self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_proxy_type(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_u_64(self, serializer);
+  }
+
+  @protected
+  void sse_encode_catalog_chapter(
+    CatalogChapter self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.name, serializer);
+    sse_encode_opt_box_autoadd_bool(self.isVip, serializer);
+    sse_encode_opt_box_autoadd_bool(self.canRead, serializer);
+    sse_encode_opt_String(self.updateTime, serializer);
+  }
+
+  @protected
+  void sse_encode_catalog_volume(CatalogVolume self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.name, serializer);
+    sse_encode_list_catalog_chapter(self.chapters, serializer);
+  }
+
+  @protected
+  void sse_encode_chapter(Chapter self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.content, serializer);
+    sse_encode_opt_String(self.name, serializer);
+    sse_encode_opt_box_autoadd_bool(self.isVip, serializer);
+    sse_encode_opt_box_autoadd_bool(self.canRead, serializer);
+    sse_encode_opt_String(self.updateTime, serializer);
+    sse_encode_opt_box_autoadd_u_64(self.wordCount, serializer);
+    sse_encode_opt_box_autoadd_u_64(self.commentCount, serializer);
+    sse_encode_opt_box_autoadd_bool(self.commentBeginAtTitle, serializer);
+  }
+
+  @protected
+  void sse_encode_i_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putInt32(self);
+  }
+
+  @protected
+  void sse_encode_list_String(List<String> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_String(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_book_extra_data(
+    List<BookExtraData> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_book_extra_data(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_catalog_chapter(
+    List<CatalogChapter> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_catalog_chapter(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_catalog_volume(
+    List<CatalogVolume> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_catalog_volume(item, serializer);
+    }
   }
 
   @protected
@@ -522,6 +1301,171 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   }
 
   @protected
+  void sse_encode_list_search_book(
+    List<SearchBook> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_search_book(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_meta_data(MetaData self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.name, serializer);
+    sse_encode_String(self.uuid, serializer);
+    sse_encode_String(self.baseUrl, serializer);
+    sse_encode_String(self.author, serializer);
+    sse_encode_String(self.userAgent, serializer);
+    sse_encode_opt_box_autoadd_proxy(self.proxy, serializer);
+    sse_encode_String(self.version, serializer);
+  }
+
+  @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_String(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_book_latest_chapter(
+    BookLatestChapter? self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_book_latest_chapter(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_book_status(
+    BookStatus? self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_book_status(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_bool(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_proxy(Proxy? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_proxy(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_proxy_type(
+    ProxyType? self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_proxy_type(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_64(BigInt? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_u_64(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_list_String(
+    List<String>? self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_String(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_list_book_extra_data(
+    List<BookExtraData>? self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_book_extra_data(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_proxy(Proxy self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.host, serializer);
+    sse_encode_u_8(self.port, serializer);
+    sse_encode_opt_box_autoadd_proxy_type(self.proxyType, serializer);
+    sse_encode_opt_String(self.username, serializer);
+    sse_encode_opt_String(self.password, serializer);
+  }
+
+  @protected
+  void sse_encode_proxy_type(ProxyType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_search_book(SearchBook self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.name, serializer);
+    sse_encode_opt_String(self.author, serializer);
+    sse_encode_opt_String(self.cover, serializer);
+    sse_encode_opt_String(self.description, serializer);
+    sse_encode_opt_box_autoadd_book_status(self.status, serializer);
+    sse_encode_opt_list_String(self.tags, serializer);
+    sse_encode_opt_String(self.lastUpdateTime, serializer);
+    sse_encode_opt_String(self.lastestChapter, serializer);
+  }
+
+  @protected
+  void sse_encode_u_64(BigInt self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putBigUint64(self);
+  }
+
+  @protected
   void sse_encode_u_8(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self);
@@ -531,42 +1475,4 @@ class RcApiImpl extends RcApiImplPlatform implements RcApi {
   void sse_encode_unit(void self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
   }
-
-  @protected
-  void sse_encode_usize(BigInt self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putBigUint64(self);
-  }
-
-  @protected
-  void sse_encode_i_32(int self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putInt32(self);
-  }
-
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putUint8(self ? 1 : 0);
-  }
-}
-
-@sealed
-class ValueImpl extends RustOpaque implements Value {
-  // Not to be used by end users
-  ValueImpl.frbInternalDcoDecode(List<dynamic> wire)
-    : super.frbInternalDcoDecode(wire, _kStaticData);
-
-  // Not to be used by end users
-  ValueImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
-    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        Rc.instance.api.rust_arc_increment_strong_count_Value,
-    rustArcDecrementStrongCount:
-        Rc.instance.api.rust_arc_decrement_strong_count_Value,
-    rustArcDecrementStrongCountPtr:
-        Rc.instance.api.rust_arc_decrement_strong_count_ValuePtr,
-  );
 }
