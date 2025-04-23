@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:core/src/interfaces/use_case.dart';
-import 'package:core/src/services/book_source.dart';
 import 'package:rc/rc.dart';
 
 class BookSourceSearchBooksCase<T>

@@ -59,4 +59,10 @@ class BookSourceService {
       return [];
     }
   }
+
+  Future<BookDetail> bookDetail(BookSourceActionOptions options) async {
+    var uuid = options.uuid;
+    String code = bookCores[uuid]!['code'];
+    return coreBookDetail(code: code, bid: options.params['bid']);
+  }
 }

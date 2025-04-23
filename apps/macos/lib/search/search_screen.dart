@@ -54,44 +54,40 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 26, bottom: 14),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 6,
-                        height: 20,
-                        margin: EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(
-                          color: colorFromString(group.name),
-                          borderRadius: BorderRadius.circular(1),
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: group.name,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: CupertinoColors.black.withValues(
-                                  alpha: .8,
-                                ),
-                              ),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        WidgetSpan(
+                          child: Container(
+                            width: 6,
+                            height: 16,
+                            margin: EdgeInsets.only(right: 6, bottom: 1),
+                            decoration: BoxDecoration(
+                              color: colorFromString(group.name),
+                              borderRadius: BorderRadius.circular(1),
                             ),
-                            TextSpan(text: "\n"),
-                            TextSpan(
-                              text: group.uuid,
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: CupertinoColors.black.withValues(
-                                  alpha: .4,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
+                        TextSpan(
+                          text: group.name,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: CupertinoColors.black.withValues(alpha: .8),
+                          ),
+                        ),
+                        TextSpan(
+                          text: "\n\t\n",
+                          style: TextStyle(fontSize: 1, height: 3),
+                        ),
+                        TextSpan(
+                          text: group.uuid,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: CupertinoColors.black.withValues(alpha: .4),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 GridView.builder(
@@ -106,7 +102,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   itemCount: group.books.length,
                   itemBuilder: (context, index) {
                     final book = group.books[index];
-                    return Row(
+                    return GestureDetector(
+                      child:  Row(
                       spacing: 12,
                       children: [
                         CachedNetworkImage(
@@ -170,6 +167,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           ),
                         ),
                       ],
+                    )
+                ,onTap: () {
+                  BookSource
+                },
                     );
                   },
                 ),
