@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader_macos/app/components/content_area.dart';
 import 'package:reader_macos/app/utils/color.dart';
@@ -103,74 +104,109 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   itemBuilder: (context, index) {
                     final book = group.books[index];
                     return GestureDetector(
-                      child:  Row(
-                      spacing: 12,
-                      children: [
-                        CachedNetworkImage(
-                          httpHeaders: {
-                            "user-agent":
-                                BookSourceService().bookCores[group
-                                    .uuid]!['metadata']['userAgent'],
-                          },
-                          imageUrl: book.cover ?? "",
-                          fit: BoxFit.cover,
-                          width: 72,
-                          height: 100,
-                        ),
-                        Expanded(
-                          child: SizedBox(
+                      child: Row(
+                        spacing: 12,
+                        children: [
+                          CachedNetworkImage(
+                            httpHeaders: {
+                              "user-agent":
+                                  BookSourceService().bookCores[group
+                                      .uuid]!['metadata']['userAgent'],
+                            },
+                            imageUrl: book.cover ?? "",
+                            fit: BoxFit.cover,
+                            width: 72,
                             height: 100,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  book.name,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: CupertinoColors.black.withValues(
-                                      alpha: .8,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              height: 100,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    book.name,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: CupertinoColors.black.withValues(
+                                        alpha: .8,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Text(
-                                  "${book.author ?? "佚名"} / ${book.status?.name ?? "连载中"}",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: CupertinoColors.black.withValues(
-                                      alpha: .4,
+                                  SizedBox(height: 4),
+                                  Text(
+                                    "${book.author ?? "佚名"} / ${book.status?.name ?? "连载中"}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: CupertinoColors.black.withValues(
+                                        alpha: .4,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Text(
-                                  book.lastUpdateTime ?? "",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: CupertinoColors.black.withValues(
-                                      alpha: .4,
+                                  Text(
+                                    book.lastUpdateTime ?? "",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: CupertinoColors.black.withValues(
+                                        alpha: .4,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Text(
-                                  "标签：${(book.tags ?? []).take(4).join("、")}",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: CupertinoColors.black.withValues(
-                                      alpha: .4,
+                                  Text(
+                                    "标签：${(book.tags ?? []).take(4).join("、")}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: CupertinoColors.black.withValues(
+                                        alpha: .4,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                ,onTap: () {
-                  BookSource
-                },
+                        ],
+                      ),
+                      onTap: () {
+                        // ref
+                        //     .read(
+                        //       bookDetailProvider(
+                        //         book.id,
+                        //         uuid: group.uuid,
+                        //       ).notifier,
+                        //     )
+                        //     .refresh();
+                        context.push("/book_detail/${group.uuid}/${book.id}");
+                        // showShadDialog(
+                        //   context: context,
+                        //   builder: (context) {
+                        //     return ShadDialog(
+                        //       title: const Text('Edit Profile'),
+                        //       description: const Text(
+                        //         "Make changes to your profile here. Click save when you're done",
+                        //       ),
+                        //       actions: const [
+                        //         ShadButton(child: Text('Save changes')),
+                        //       ],
+                        //       child: Container(
+                        //         width: 375,
+                        //         padding: const EdgeInsets.symmetric(
+                        //           vertical: 20,
+                        //         ),
+                        //         child: Column(
+                        //           mainAxisSize: MainAxisSize.min,
+                        //           crossAxisAlignment: CrossAxisAlignment.end,
+                        //           children: [],
+                        //         ),
+                        //       ),
+                        //     );
+                        //   },
+                        // );
+                      },
                     );
                   },
                 ),

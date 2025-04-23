@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reader_macos/app/app_entry.dart';
+import 'package:reader_macos/book_detail/book_detail_screen.dart';
 import 'package:reader_macos/book_source_list/book_source_list_screen.dart';
 import 'package:reader_macos/booksource_editor/booksource_editor_screen.dart';
 import 'package:reader_macos/search/search_screen.dart';
@@ -30,12 +31,80 @@ final router = GoRouter(
         );
       },
       branches: [
-        StatefulShellBranch(routes: [GoRoute(path: '/home', builder: (context, state) => BooksourceEditorScreen())]),
-        StatefulShellBranch(routes: [GoRoute(path: '/search', builder: (context, state) => SearchScreen())]),
         StatefulShellBranch(
-          routes: [GoRoute(path: '/book_source_list', builder: (context, state) => const BookSourceListScreen())],
+          routes: [
+            GoRoute(
+              path: '/home',
+              builder: (context, state) => BooksourceEditorScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/search',
+              builder: (context, state) => SearchScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/book_source_list',
+              builder: (context, state) => const BookSourceListScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/home',
+              builder: (context, state) => BooksourceEditorScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/home',
+              builder: (context, state) => BooksourceEditorScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/home',
+              builder: (context, state) => BooksourceEditorScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/home',
+              builder: (context, state) => BooksourceEditorScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/home',
+              builder: (context, state) => BooksourceEditorScreen(),
+            ),
+          ],
         ),
       ],
+    ),
+    // Add book detail route outside of StatefulShellRoute since it contains path parameters
+    GoRoute(
+      path: '/book_detail/:uuid/:id',
+      builder: (context, state) {
+        final uuid = state.pathParameters['uuid']!;
+        final bid = state.pathParameters['id']!;
+        return BookDetailScreen(uuid: uuid, id: bid);
+      },
     ),
   ],
 );

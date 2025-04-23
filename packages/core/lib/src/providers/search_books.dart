@@ -1,6 +1,4 @@
 import 'package:core/core.dart';
-import 'package:core/src/models/search_group.dart';
-import 'package:core/src/services/book_source.dart';
 import 'package:core/src/usecases/book_source/search_books.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

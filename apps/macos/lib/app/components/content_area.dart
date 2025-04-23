@@ -2,10 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ContentArea extends StatefulHookConsumerWidget {
-  const ContentArea({super.key, required this.title, this.subtitle, this.action, required this.child});
+  const ContentArea({
+    super.key,
+    required this.title,
+    this.subtitle,
+    this.action,
+    required this.child,
+    this.padding,
+  });
   final String title;
   final String? subtitle;
   final Widget? action;
+  final EdgeInsets? padding;
   final Widget child;
 
   @override
@@ -17,6 +25,7 @@ class _ContentAreaState extends ConsumerState<ContentArea> {
   Widget build(BuildContext context) {
     return Container(
       color: CupertinoColors.white,
+      padding: widget.padding,
       child: Column(
         spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +49,8 @@ class _ContentAreaState extends ConsumerState<ContentArea> {
                           height: 1,
                         ),
                       ),
-                      if (widget.action != null) Expanded(child: widget.action!),
+                      if (widget.action != null)
+                        Expanded(child: widget.action!),
                     ],
                   ),
                 ),
