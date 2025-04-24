@@ -94,9 +94,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 GridView.builder(
                   padding: EdgeInsets.only(left: 26, right: 26, bottom: 14),
                   shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 480,
-                    childAspectRatio: 3,
+                    maxCrossAxisExtent: 340,
+                    mainAxisExtent: 106,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 24,
                   ),

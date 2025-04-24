@@ -18,19 +18,4 @@ class BookDetail extends _$BookDetail {
       ),
     );
   }
-
-  refresh() async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
-      var a = await BookSourceBookDetailUseCase().call(
-        BookSourceActionOptions(
-          uuid: uuid,
-          action: "book_detail",
-          params: {"bid": bid},
-        ),
-      );
-      log.info("刷新书籍详情", a.description);
-      return a;
-    });
-  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ContentArea extends StatefulHookConsumerWidget {
@@ -9,11 +10,13 @@ class ContentArea extends StatefulHookConsumerWidget {
     this.action,
     required this.child,
     this.padding,
+    this.canPop = false,
   });
   final String title;
   final String? subtitle;
   final Widget? action;
   final EdgeInsets? padding;
+  final bool? canPop;
   final Widget child;
 
   @override
@@ -39,7 +42,19 @@ class _ContentAreaState extends ConsumerState<ContentArea> {
                   right: 24,
                   top: 24,
                   child: Row(
+                    spacing: 16,
                     children: [
+                      if (widget.canPop!)
+                        GestureDetector(
+                          onTap: () {
+                            context.pop();
+                          },
+                          child: Icon(
+                            CupertinoIcons.arrow_left,
+                            size: 28,
+                            color: CupertinoColors.black,
+                          ),
+                        ),
                       Text(
                         widget.title,
                         style: TextStyle(

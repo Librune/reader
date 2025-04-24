@@ -45,6 +45,14 @@ final router = GoRouter(
               path: '/search',
               builder: (context, state) => SearchScreen(),
             ),
+            GoRoute(
+              path: '/book_detail/:uuid/:id',
+              builder: (context, state) {
+                final uuid = state.pathParameters['uuid']!;
+                final bid = state.pathParameters['id']!;
+                return BookDetailScreen(uuid: uuid, id: bid);
+              },
+            ),
           ],
         ),
         StatefulShellBranch(
@@ -96,15 +104,6 @@ final router = GoRouter(
           ],
         ),
       ],
-    ),
-    // Add book detail route outside of StatefulShellRoute since it contains path parameters
-    GoRoute(
-      path: '/book_detail/:uuid/:id',
-      builder: (context, state) {
-        final uuid = state.pathParameters['uuid']!;
-        final bid = state.pathParameters['id']!;
-        return BookDetailScreen(uuid: uuid, id: bid);
-      },
     ),
   ],
 );
