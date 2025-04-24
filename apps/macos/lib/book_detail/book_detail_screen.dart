@@ -40,50 +40,101 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  spacing: 16,
-                  children: [
-                    BookCover(
-                      widget.id,
-                      uuid: widget.uuid,
-                      width: 90,
-                      height: 128,
-                      coverUrl: value.cover,
+                // 封面和书籍信息部分 - 与其他部分统一风格
+                Container(
+                  constraints: BoxConstraints(minWidth: double.infinity),
+                  padding: EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: CupertinoColors.systemBackground,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: CupertinoColors.systemGrey5,
+                      width: 1,
                     ),
-                    Expanded(
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 120),
+                  ),
+                  child: Row(
+                    spacing: 18,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 书籍封面带轻微阴影和边框
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          boxShadow: [
+                            BoxShadow(
+                              color: CupertinoColors.black.withOpacity(0.08),
+                              blurRadius: 6,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: BookCover(
+                            widget.id,
+                            uuid: widget.uuid,
+                            width: 95,
+                            height: 135,
+                            coverUrl: value.cover,
+                          ),
+                        ),
+                      ),
+                      // 书籍信息部分
+                      Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(bottom: 8),
+                              padding: EdgeInsets.only(bottom: 10),
                               child: Text(
                                 value.name,
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w600,
                                   color: CupertinoColors.black,
                                 ),
                               ),
                             ),
                             ...value.infoLines.map(
-                              (line) => Text(
-                                line,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  height: 1.7,
-                                  color: CupertinoColors.systemGrey,
+                              (line) => Padding(
+                                padding: EdgeInsets.only(bottom: 5),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 4,
+                                      height: 4,
+                                      margin: EdgeInsets.only(
+                                        top: 10,
+                                        right: 8,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: CupertinoColors.systemGrey,
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        line,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          height: 1.6,
+                                          color: CupertinoColors.systemGrey,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+
                 // 图书简介部分 - 统一风格
                 Padding(
                   padding: EdgeInsets.only(top: 20),
