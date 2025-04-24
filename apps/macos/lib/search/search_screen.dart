@@ -49,23 +49,23 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       ),
       child: switch (groups) {
         AsyncData(:final value) => ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 28),
           itemBuilder: (context, index) {
             final SearchGroupModel group = value[index];
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
                 // 来源标题部分
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.only(bottom: 16),
                   child: Row(
                     children: [
                       Container(
                         width: 4,
                         height: 16,
                         decoration: BoxDecoration(
-                          color: colorFromString(group.name).withOpacity(0.7),
+                          color: colorFromString(group.name).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -83,7 +83,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         group.uuid,
                         style: TextStyle(
                           fontSize: 11,
-                          color: CupertinoColors.black.withAlpha(100),
+                          color: CupertinoColors.black.withAlpha(90),
                         ),
                       ),
                     ],
@@ -94,10 +94,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 360,
-                    mainAxisExtent: 120,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 20,
+                    maxCrossAxisExtent: 380,
+                    mainAxisExtent: 160, // 增加高度以适应内容
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 24,
                   ),
                   itemCount: group.books.length,
                   itemBuilder: (context, index) {
@@ -111,12 +111,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             width: 1,
                           ),
                         ),
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(14),
                         child: Row(
-                          spacing: 14,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(4),
+                              borderRadius: BorderRadius.circular(6),
                               child: CachedNetworkImage(
                                 httpHeaders: {
                                   "user-agent":
@@ -125,8 +125,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 },
                                 imageUrl: book.cover ?? "",
                                 fit: BoxFit.cover,
-                                width: 66,
-                                height: 96,
+                                width: 80,
+                                height: 120, // 保持约 2:3 的宽高比例
                                 placeholder:
                                     (context, url) => Container(
                                       color: CupertinoColors.systemGrey6,
@@ -136,71 +136,65 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       color: CupertinoColors.systemGrey6,
                                       child: const Icon(
                                         CupertinoIcons.book,
+                                        size: 24,
                                         color: CupertinoColors.systemGrey,
                                       ),
                                     ),
                               ),
                             ),
+                            const SizedBox(width: 14),
                             Expanded(
-                              child: SizedBox(
-                                height: 96,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      book.name,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        height: 1.3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    book.name,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      height: 1.3,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    "${book.author ?? "佚名"} · ${book.status?.name ?? "连载中"}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: CupertinoColors.black.withAlpha(
+                                        110,
                                       ),
                                     ),
-                                    const SizedBox(height: 4),
+                                  ),
+                                  const SizedBox(height: 3),
+                                  if (book.lastUpdateTime != null)
                                     Text(
-                                      "${book.author ?? "佚名"} · ${book.status?.name ?? "连载中"}",
+                                      book.lastUpdateTime!,
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: CupertinoColors.black.withAlpha(
-                                          120,
+                                          110,
                                         ),
                                       ),
                                     ),
-                                    if (book.lastUpdateTime != null)
-                                      Text(
-                                        book.lastUpdateTime!,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: CupertinoColors.black
-                                              .withAlpha(120),
+                                  const SizedBox(height: 3),
+                                  // 标签使用与其他信息相同的样式
+                                  if (book.tags != null &&
+                                      book.tags!.isNotEmpty)
+                                    Text(
+                                      book.tags!.take(4).join(" · "),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: CupertinoColors.black.withAlpha(
+                                          110,
                                         ),
                                       ),
-                                    if (book.tags != null &&
-                                        book.tags!.isNotEmpty)
-                                      Row(
-                                        children: [
-                                          Flexible(
-                                            child: Text(
-                                              (book.tags ?? [])
-                                                  .take(4)
-                                                  .join(" · "),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 11,
-                                                color: CupertinoColors
-                                                    .systemBlue
-                                                    .withAlpha(180),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                  ],
-                                ),
+                                    ),
+                                ],
                               ),
                             ),
                           ],
@@ -212,18 +206,32 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     );
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
               ],
             );
           },
           itemCount: value.length,
         ),
-        _ => const Center(
+        _ => Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 64),
-            child: Text(
-              '输入关键词开始搜索',
-              style: TextStyle(fontSize: 14, color: CupertinoColors.systemGrey),
+            padding: const EdgeInsets.symmetric(vertical: 64),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  CupertinoIcons.search,
+                  size: 36,
+                  color: CupertinoColors.systemGrey.withOpacity(0.7),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  '输入关键词开始搜索',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: CupertinoColors.systemGrey,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
