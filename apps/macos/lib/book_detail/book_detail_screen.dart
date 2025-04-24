@@ -84,31 +84,64 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                     ),
                   ],
                 ),
+                // 图书简介部分 - 统一风格
                 Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: Container(
                     constraints: BoxConstraints(minWidth: double.infinity),
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.all(0),
                     decoration: BoxDecoration(
-                      color: CupertinoColors.systemGrey6.withOpacity(.6),
+                      color: CupertinoColors.systemBackground,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         color: CupertinoColors.systemGrey5,
                         width: 1,
                       ),
                     ),
-                    child: Text(
-                      value.description ?? "暂无简介",
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        fontSize: 14,
-                        height: 1.7,
-                        fontWeight: FontWeight.w500,
-                        color: CupertinoColors.black,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 18,
+                            vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: CupertinoColors.systemGrey6.withOpacity(0.7),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(7),
+                              topRight: Radius.circular(7),
+                            ),
+                          ),
+                          child: Text(
+                            "图书简介",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: CupertinoColors.black,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(18),
+                          child: Text(
+                            value.description ?? "暂无简介",
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                              fontSize: 14,
+                              height: 1.7,
+                              color: CupertinoColors.black.withOpacity(0.85),
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
+
+                // 目录部分 - 保持一致风格
                 switch (bookCatalog) {
                   AsyncLoading() => Center(
                     child: CupertinoActivityIndicator(radius: 10),
@@ -170,7 +203,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                               Container(
                                 width: double.infinity,
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: 16,
+                                  horizontal: 18,
                                   vertical: 12,
                                 ),
                                 decoration: BoxDecoration(
@@ -208,6 +241,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                                     return Container(
                                       padding: EdgeInsets.symmetric(
                                         horizontal: 12,
+                                        vertical: 0,
                                       ),
                                       decoration: BoxDecoration(
                                         color: CupertinoColors.systemGrey6
@@ -233,7 +267,8 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                                               style: TextStyle(
                                                 fontSize: 11,
                                                 fontWeight: FontWeight.w500,
-                                                color: CupertinoColors.black,
+                                                color: CupertinoColors.black
+                                                    .withOpacity(0.8),
                                               ),
                                             ),
                                           ),
