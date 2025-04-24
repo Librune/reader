@@ -4,6 +4,7 @@ import 'package:reader_macos/app/app_entry.dart';
 import 'package:reader_macos/book_detail/book_detail_screen.dart';
 import 'package:reader_macos/book_source_list/book_source_list_screen.dart';
 import 'package:reader_macos/booksource_editor/booksource_editor_screen.dart';
+import 'package:reader_macos/reader/reader_screen.dart';
 import 'package:reader_macos/search/search_screen.dart';
 
 final router = GoRouter(
@@ -104,6 +105,15 @@ final router = GoRouter(
           ],
         ),
       ],
+    ),
+    GoRoute(
+      path: '/reader/:uuid/:bid/:cid',
+      builder: (context, state) {
+        final uuid = state.pathParameters['uuid']!;
+        final bid = state.pathParameters['bid']!;
+        final cid = state.pathParameters['cid']!;
+        return ReaderScreen(uuid: uuid, bid: bid, cid: cid);
+      },
     ),
   ],
 );

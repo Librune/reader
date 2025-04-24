@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reader_macos/app/components/book_cover.dart';
 import 'package:reader_macos/app/components/content_area.dart';
@@ -289,53 +290,62 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                                   itemCount: volume.chapters.length,
                                   itemBuilder: (context, index) {
                                     final chapter = volume.chapters[index];
-                                    return Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 0,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: CupertinoColors.systemGrey6
-                                            .withOpacity(0.4),
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(right: 8),
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 6,
-                                              vertical: 2,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  CupertinoColors.systemGrey5,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                            ),
-                                            child: Text(
-                                              "${index + 1}",
-                                              style: TextStyle(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w500,
-                                                color: CupertinoColors.black
-                                                    .withOpacity(0.8),
+                                    return GestureDetector(
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 0,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: CupertinoColors.systemGrey6
+                                              .withOpacity(0.4),
+                                          borderRadius: BorderRadius.circular(
+                                            6,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(right: 8),
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 6,
+                                                vertical: 2,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    CupertinoColors.systemGrey5,
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                              ),
+                                              child: Text(
+                                                "${index + 1}",
+                                                style: TextStyle(
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: CupertinoColors.black
+                                                      .withOpacity(0.8),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              chapter.name,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                color: CupertinoColors.black,
-                                                fontWeight: FontWeight.w400,
+                                            Expanded(
+                                              child: Text(
+                                                chapter.name,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: CupertinoColors.black,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
+                                      onTap: () {
+                                        context.push(
+                                          "/reader/${widget.uuid}/${widget.id}/${chapter.id}",
+                                        );
+                                      },
                                     );
                                   },
                                 ),
