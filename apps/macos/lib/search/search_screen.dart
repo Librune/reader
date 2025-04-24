@@ -24,17 +24,18 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       subtitle: "按关键字搜索书籍",
       action: Row(
         children: [
-          Spacer(),
+          const Spacer(),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 280),
             child: ShadInput(
-              style: TextStyle(fontSize: 13),
-              placeholderStyle: TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: 13),
+              placeholderStyle: const TextStyle(fontSize: 13),
               cursorHeight: 14,
-              placeholder: Text('搜索书籍或作者'),
+              placeholder: const Text('搜索书籍或作者'),
               cursorColor: CupertinoColors.systemGrey,
               keyboardType: TextInputType.name,
-              leading: Icon(
+              // variant: ShadInputVariant.outline,
+              leading: const Icon(
                 CupertinoIcons.search,
                 size: 16,
                 color: CupertinoColors.systemGrey,
@@ -47,179 +48,185 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         ],
       ),
       child: switch (groups) {
-        AsyncData(:final value) => ListView.separated(
+        AsyncData(:final value) => ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           itemBuilder: (context, index) {
             final SearchGroupModel group = value[index];
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 16),
+                // 来源标题部分
                 Padding(
-                  padding: EdgeInsets.only(left: 26, bottom: 14),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        WidgetSpan(
-                          child: Container(
-                            width: 6,
-                            height: 16,
-                            margin: EdgeInsets.only(right: 6, bottom: 1),
-                            decoration: BoxDecoration(
-                              color: colorFromString(group.name),
-                              borderRadius: BorderRadius.circular(1),
-                            ),
-                          ),
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 4,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: colorFromString(group.name).withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(2),
                         ),
-                        TextSpan(
-                          text: group.name,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: CupertinoColors.black.withValues(alpha: .8),
-                          ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        group.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: CupertinoColors.black,
                         ),
-                        TextSpan(
-                          text: "\n\t\n",
-                          style: TextStyle(fontSize: 1, height: 3),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        group.uuid,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: CupertinoColors.black.withAlpha(100),
                         ),
-                        TextSpan(
-                          text: group.uuid,
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: CupertinoColors.black.withValues(alpha: .4),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
+                // 书籍列表
                 GridView.builder(
-                  padding: EdgeInsets.only(left: 26, right: 26, bottom: 14),
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 340,
-                    mainAxisExtent: 106,
-                    mainAxisSpacing: 12,
-                    crossAxisSpacing: 24,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 360,
+                    mainAxisExtent: 120,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 20,
                   ),
                   itemCount: group.books.length,
                   itemBuilder: (context, index) {
                     final book = group.books[index];
                     return GestureDetector(
-                      child: Row(
-                        spacing: 12,
-                        children: [
-                          CachedNetworkImage(
-                            httpHeaders: {
-                              "user-agent":
-                                  BookSourceService().bookCores[group
-                                      .uuid]!['metadata']['userAgent'],
-                            },
-                            imageUrl: book.cover ?? "",
-                            fit: BoxFit.cover,
-                            width: 72,
-                            height: 100,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: CupertinoColors.systemGrey6,
+                            width: 1,
                           ),
-                          Expanded(
-                            child: SizedBox(
-                              height: 100,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    book.name,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: CupertinoColors.black.withValues(
-                                        alpha: .8,
+                        ),
+                        padding: const EdgeInsets.all(12),
+                        child: Row(
+                          spacing: 14,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: CachedNetworkImage(
+                                httpHeaders: {
+                                  "user-agent":
+                                      BookSourceService().bookCores[group
+                                          .uuid]!['metadata']['userAgent'],
+                                },
+                                imageUrl: book.cover ?? "",
+                                fit: BoxFit.cover,
+                                width: 66,
+                                height: 96,
+                                placeholder:
+                                    (context, url) => Container(
+                                      color: CupertinoColors.systemGrey6,
+                                    ),
+                                errorWidget:
+                                    (context, url, error) => Container(
+                                      color: CupertinoColors.systemGrey6,
+                                      child: const Icon(
+                                        CupertinoIcons.book,
+                                        color: CupertinoColors.systemGrey,
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    "${book.author ?? "佚名"} / ${book.status?.name ?? "连载中"}",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: CupertinoColors.black.withValues(
-                                        alpha: .4,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    book.lastUpdateTime ?? "",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: CupertinoColors.black.withValues(
-                                        alpha: .4,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    "标签：${(book.tags ?? []).take(4).join("、")}",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: CupertinoColors.black.withValues(
-                                        alpha: .4,
-                                      ),
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: SizedBox(
+                                height: 96,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      book.name,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.3,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      "${book.author ?? "佚名"} · ${book.status?.name ?? "连载中"}",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: CupertinoColors.black.withAlpha(
+                                          120,
+                                        ),
+                                      ),
+                                    ),
+                                    if (book.lastUpdateTime != null)
+                                      Text(
+                                        book.lastUpdateTime!,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: CupertinoColors.black
+                                              .withAlpha(120),
+                                        ),
+                                      ),
+                                    if (book.tags != null &&
+                                        book.tags!.isNotEmpty)
+                                      Row(
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              (book.tags ?? [])
+                                                  .take(4)
+                                                  .join(" · "),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                color: CupertinoColors
+                                                    .systemBlue
+                                                    .withAlpha(180),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       onTap: () {
-                        // ref
-                        //     .read(
-                        //       bookDetailProvider(
-                        //         book.id,
-                        //         uuid: group.uuid,
-                        //       ).notifier,
-                        //     )
-                        //     .refresh();
                         context.push("/book_detail/${group.uuid}/${book.id}");
-                        // showShadDialog(
-                        //   context: context,
-                        //   builder: (context) {
-                        //     return ShadDialog(
-                        //       title: const Text('Edit Profile'),
-                        //       description: const Text(
-                        //         "Make changes to your profile here. Click save when you're done",
-                        //       ),
-                        //       actions: const [
-                        //         ShadButton(child: Text('Save changes')),
-                        //       ],
-                        //       child: Container(
-                        //         width: 375,
-                        //         padding: const EdgeInsets.symmetric(
-                        //           vertical: 20,
-                        //         ),
-                        //         child: Column(
-                        //           mainAxisSize: MainAxisSize.min,
-                        //           crossAxisAlignment: CrossAxisAlignment.end,
-                        //           children: [],
-                        //         ),
-                        //       ),
-                        //     );
-                        //   },
-                        // );
                       },
                     );
                   },
                 ),
+                const SizedBox(height: 16),
               ],
             );
           },
-          separatorBuilder: (context, index) {
-            return SizedBox.shrink();
-          },
           itemCount: value.length,
         ),
-        _ => const Center(child: SizedBox.shrink()),
+        _ => const Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 64),
+            child: Text(
+              '输入关键词开始搜索',
+              style: TextStyle(fontSize: 14, color: CupertinoColors.systemGrey),
+            ),
+          ),
+        ),
       },
     );
   }
