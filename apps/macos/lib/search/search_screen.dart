@@ -95,7 +95,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 380,
-                    mainAxisExtent: 145, // 从160减少到145，减少底部多余空间
+                    mainAxisExtent: 138, // 从145减少到138，进一步减少底部空间
                     mainAxisSpacing: 20,
                     crossAxisSpacing: 24,
                   ),
@@ -111,7 +111,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             width: 1,
                           ),
                         ),
-                        padding: const EdgeInsets.all(14),
+                        padding: const EdgeInsets.all(
+                          14,
+                        ).copyWith(bottom: 10), // 减少底部padding
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
