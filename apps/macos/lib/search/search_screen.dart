@@ -95,7 +95,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 380,
-                    mainAxisExtent: 160, // 增加高度以适应内容
+                    mainAxisExtent: 145, // 从160减少到145，减少底部多余空间
                     mainAxisSpacing: 20,
                     crossAxisSpacing: 24,
                   ),
@@ -125,8 +125,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 },
                                 imageUrl: book.cover ?? "",
                                 fit: BoxFit.cover,
-                                width: 80,
-                                height: 120, // 保持约 2:3 的宽高比例
+                                width: 72,
+                                height: 108, // 调整为更合适的高度，保持约 2:3 的宽高比例
                                 placeholder:
                                     (context, url) => Container(
                                       color: CupertinoColors.systemGrey6,
@@ -158,7 +158,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       height: 1.3,
                                     ),
                                   ),
-                                  const SizedBox(height: 6),
+                                  const SizedBox(height: 10), // 增加间距，从6改为10
                                   Text(
                                     "${book.author ?? "佚名"} · ${book.status?.name ?? "连载中"}",
                                     style: TextStyle(
