@@ -120,7 +120,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 24, bottom: 16),
+                        padding: EdgeInsets.only(top: 24, bottom: 18),
                         child: Row(
                           children: [
                             Text(
@@ -131,7 +131,7 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                                 color: CupertinoColors.black,
                               ),
                             ),
-                            SizedBox(width: 8),
+                            SizedBox(width: 10),
                             Container(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 8,
@@ -157,19 +157,12 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                         (volume) => Container(
                           margin: EdgeInsets.only(bottom: 20),
                           decoration: BoxDecoration(
-                            color: CupertinoColors.white,
+                            color: CupertinoColors.systemBackground,
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color: CupertinoColors.systemGrey6,
-                              width: 1,
+                              color: CupertinoColors.systemGrey5,
+                              width: 1.0,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: CupertinoColors.black.withOpacity(0.03),
-                                blurRadius: 4,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,37 +174,32 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                                   vertical: 12,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: CupertinoColors.systemBackground,
+                                  color: CupertinoColors.systemGrey6
+                                      .withOpacity(0.7),
                                   borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    topRight: Radius.circular(8),
-                                  ),
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: CupertinoColors.systemGrey6,
-                                      width: 1,
-                                    ),
+                                    topLeft: Radius.circular(7),
+                                    topRight: Radius.circular(7),
                                   ),
                                 ),
                                 child: Text(
                                   volume.name,
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w600,
-                                    color: CupertinoColors.activeBlue,
+                                    color: CupertinoColors.black,
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.all(12),
+                                padding: EdgeInsets.all(16),
                                 child: GridView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithMaxCrossAxisExtent(
                                         maxCrossAxisExtent: 320,
-                                        mainAxisExtent: 36,
-                                        mainAxisSpacing: 8,
+                                        mainAxisExtent: 38,
+                                        mainAxisSpacing: 10,
                                         crossAxisSpacing: 16,
                                       ),
                                   itemCount: volume.chapters.length,
@@ -223,46 +211,40 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                                       ),
                                       decoration: BoxDecoration(
                                         color: CupertinoColors.systemGrey6
-                                            .withOpacity(0.5),
+                                            .withOpacity(0.4),
                                         borderRadius: BorderRadius.circular(6),
-                                        border: Border.all(
-                                          color: CupertinoColors.systemGrey5,
-                                          width: 1,
-                                        ),
                                       ),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
                                         children: [
+                                          Container(
+                                            margin: EdgeInsets.only(right: 8),
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 6,
+                                              vertical: 2,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  CupertinoColors.systemGrey5,
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: Text(
+                                              "${index + 1}",
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w500,
+                                                color: CupertinoColors.black,
+                                              ),
+                                            ),
+                                          ),
                                           Expanded(
                                             child: Text(
                                               chapter.name,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: 13,
-                                                color: CupertinoColors.black
-                                                    .withOpacity(0.8),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 6,
-                                              vertical: 2,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: CupertinoColors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                            ),
-                                            child: Text(
-                                              // 假设这里有章节字数或其他信息
-                                              "${index + 1}",
-                                              style: TextStyle(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w500,
-                                                color:
-                                                    CupertinoColors.systemGrey,
+                                                color: CupertinoColors.black,
+                                                fontWeight: FontWeight.w400,
                                               ),
                                             ),
                                           ),
