@@ -120,56 +120,160 @@ class _BookDetailScreenState extends ConsumerState<BookDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 20),
-                        child: Text(
-                          "目录",
-                          // \t\t\t 共${value.fold(0, (int sum, item) => sum + item.chapters.length)}章
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: CupertinoColors.black,
-                          ),
-                        ),
-                      ),
-                      ...value.map(
-                        (volume) => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        padding: EdgeInsets.only(top: 24, bottom: 16),
+                        child: Row(
                           children: [
+                            Text(
+                              "目录",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: CupertinoColors.black,
+                              ),
+                            ),
+                            SizedBox(width: 8),
                             Container(
-                              padding: EdgeInsets.only(top: 8, bottom: 8),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: CupertinoColors.systemGrey6,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                               child: Text(
-                                volume.name,
+                                "${value.fold(0, (int sum, item) => sum + item.chapters.length)}章",
                                 style: TextStyle(
-                                  fontSize: 14,
-                                  height: 1.7,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
                                   color: CupertinoColors.systemGrey,
                                 ),
                               ),
                             ),
-                            GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 320,
-                                    mainAxisExtent: 32,
+                          ],
+                        ),
+                      ),
+                      ...value.map(
+                        (volume) => Container(
+                          margin: EdgeInsets.only(bottom: 20),
+                          decoration: BoxDecoration(
+                            color: CupertinoColors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: CupertinoColors.systemGrey6,
+                              width: 1,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: CupertinoColors.black.withOpacity(0.03),
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: CupertinoColors.systemBackground,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8),
                                   ),
-                              itemCount: volume.chapters.length,
-                              itemBuilder: (context, index) {
-                                final chapter = volume.chapters[index];
-                                return Container(
-                                  child: Text(
-                                    chapter.name,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      height: 1.7,
-                                      color: CupertinoColors.systemGrey,
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: CupertinoColors.systemGrey6,
+                                      width: 1,
                                     ),
                                   ),
-                                );
-                              },
-                            ),
-                          ],
+                                ),
+                                child: Text(
+                                  volume.name,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: CupertinoColors.activeBlue,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(12),
+                                child: GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  gridDelegate:
+                                      SliverGridDelegateWithMaxCrossAxisExtent(
+                                        maxCrossAxisExtent: 320,
+                                        mainAxisExtent: 36,
+                                        mainAxisSpacing: 8,
+                                        crossAxisSpacing: 16,
+                                      ),
+                                  itemCount: volume.chapters.length,
+                                  itemBuilder: (context, index) {
+                                    final chapter = volume.chapters[index];
+                                    return Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: CupertinoColors.systemGrey6
+                                            .withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(6),
+                                        border: Border.all(
+                                          color: CupertinoColors.systemGrey5,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              chapter.name,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: CupertinoColors.black
+                                                    .withOpacity(0.8),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 6,
+                                              vertical: 2,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: CupertinoColors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: Text(
+                                              // 假设这里有章节字数或其他信息
+                                              "${index + 1}",
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w500,
+                                                color:
+                                                    CupertinoColors.systemGrey,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
