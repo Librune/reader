@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:core/core.dart';
+import 'package:core/src/providers/book_catalog.dart';
 import 'package:rc/rc.dart';
 
 import 'wk8.dart';
@@ -64,5 +65,13 @@ class BookSourceService {
     var uuid = options.uuid;
     String code = bookCores[uuid]!['code'];
     return coreBookDetail(code: code, bid: options.params['bid']);
+  }
+
+  Future<List<CatalogVolume>> bookCatalog(
+    BookSourceActionOptions options,
+  ) async {
+    var uuid = options.uuid;
+    String code = bookCores[uuid]!['code'];
+    return coreCatalog(code: code, bid: options.params['id']);
   }
 }
