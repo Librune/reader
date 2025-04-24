@@ -74,4 +74,14 @@ class BookSourceService {
     String code = bookCores[uuid]!['code'];
     return coreCatalog(code: code, bid: options.params['id']);
   }
+
+  Future<Chapter> bookChapter(BookSourceActionOptions options) async {
+    var uuid = options.uuid;
+    String code = bookCores[uuid]!['code'];
+    return coreChapter(
+      code: code,
+      bid: options.params['bid'],
+      cid: options.params['cid'],
+    );
+  }
 }
