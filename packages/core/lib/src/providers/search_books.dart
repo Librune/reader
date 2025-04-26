@@ -20,7 +20,7 @@ class SearchBooks extends _$SearchBooks {
         BookSourceActionOptions(
           uuid: uuid,
           action: "search",
-          params: {"key": key, "page": 1, "count": 10},
+          params: {"key": key, "page": 0, "count": 10},
         ),
       );
       state = AsyncData([
@@ -28,7 +28,7 @@ class SearchBooks extends _$SearchBooks {
         SearchGroupModel(
           name: value['metadata']['name'],
           uuid: uuid,
-          books: books,
+          books: books.take(5).toList(),
         ),
       ]);
     });

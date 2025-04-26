@@ -127,7 +127,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 },
                                 imageUrl: book.cover ?? "",
                                 fit: BoxFit.cover,
-                                width: 72,
+                                width: 78,
                                 height: 108, // 调整为更合适的高度，保持约 2:3 的宽高比例
                                 placeholder:
                                     (context, url) => Container(

@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:core/core.dart';
-import 'package:core/src/providers/book_catalog.dart';
+import 'package:core/src/services/cwm.dart';
 import 'package:rc/rc.dart';
 
 import 'wk8.dart';
@@ -24,6 +22,16 @@ class BookSourceService {
         'author': 'Nexw',
       },
     },
+    // '415637e4-b5b8-4c0e-adac-76ce4ab4f356': {
+    //   'code': cwm,
+    //   'metadata': {
+    //     'name': '刺猬猫阅读',
+    //     'uuid': '415637e4-b5b8-4c0e-adac-76ce4ab4f356',
+    //     "baseUrl": 'https://app.happybooker.cn',
+    //     "userAgent":
+    //         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36(KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
+    //   },
+    // },
   };
 
   init() async {}
@@ -51,7 +59,7 @@ class BookSourceService {
     try {
       return await coreSearchBooks(
         code: code,
-        page: params['page'] ?? 1,
+        page: params['page'] ?? 0,
         key: params['key'],
         count: params['count'] ?? 10,
       );

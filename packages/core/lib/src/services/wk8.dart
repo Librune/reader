@@ -73,7 +73,7 @@ const login = () => {
   }
 }
 const search = (params) => {
-  const { key, page = 1, count = 10 } = params
+  const { key, page = 0, count = 10 } = params
   const res = post({
     action: 'search',
     searchtype: 'articlename',
