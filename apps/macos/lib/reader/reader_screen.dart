@@ -2,6 +2,8 @@ import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reader_macos/reader/components/bottom_bar.dart';
+import 'package:reader_macos/reader/components/top_bar.dart';
 
 class ReaderScreen extends StatefulHookConsumerWidget {
   const ReaderScreen({
@@ -168,80 +170,81 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
             child: Column(
               children: [
                 // 顶部工具栏
-                Container(
-                  height: 48,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: _bgColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 2,
-                        offset: Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      // 目录按钮
-                      IconButton(
-                        icon: Icon(
-                          _showTableOfContents ? Icons.menu_open : Icons.menu,
-                          color: _textColor,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _showTableOfContents = !_showTableOfContents;
-                          });
-                        },
-                        tooltip: '目录',
-                      ),
+                // Container(
+                //   height: 48,
+                //   padding: EdgeInsets.symmetric(horizontal: 16),
+                //   decoration: BoxDecoration(
+                //     color: _bgColor,
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.black.withOpacity(0.05),
+                //         blurRadius: 2,
+                //         offset: Offset(0, 1),
+                //       ),
+                //     ],
+                //   ),
+                //   child: Row(
+                //     children: [
+                //       // 目录按钮
+                //       IconButton(
+                //         icon: Icon(
+                //           _showTableOfContents ? Icons.menu_open : Icons.menu,
+                //           color: _textColor,
+                //         ),
+                //         onPressed: () {
+                //           setState(() {
+                //             _showTableOfContents = !_showTableOfContents;
+                //           });
+                //         },
+                //         tooltip: '目录',
+                //       ),
 
-                      // 标题
-                      Text(
-                        bookTitle,
-                        style: TextStyle(
-                          color: _textColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        ' · ',
-                        style: TextStyle(
-                          color: _textColor.withOpacity(0.5),
-                          fontSize: 16,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          chapterTitle,
-                          style: TextStyle(
-                            color: _textColor.withOpacity(0.8),
-                            fontSize: 16,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                //       // 标题
+                //       Text(
+                //         bookTitle,
+                //         style: TextStyle(
+                //           color: _textColor,
+                //           fontSize: 16,
+                //           fontWeight: FontWeight.w500,
+                //         ),
+                //       ),
+                //       Text(
+                //         ' · ',
+                //         style: TextStyle(
+                //           color: _textColor.withOpacity(0.5),
+                //           fontSize: 16,
+                //         ),
+                //       ),
+                //       Expanded(
+                //         child: Text(
+                //           chapterTitle,
+                //           style: TextStyle(
+                //             color: _textColor.withOpacity(0.8),
+                //             fontSize: 16,
+                //           ),
+                //           overflow: TextOverflow.ellipsis,
+                //         ),
+                //       ),
 
-                      // 右侧工具按钮
-                      IconButton(
-                        icon: Icon(Icons.bookmark_border, color: _textColor),
-                        onPressed: () {},
-                        tooltip: '书签',
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.text_fields, color: _textColor),
-                        onPressed: () {
-                          setState(() {
-                            _showSettings = !_showSettings;
-                          });
-                        },
-                        tooltip: '阅读设置',
-                      ),
-                    ],
-                  ),
-                ),
+                //       // 右侧工具按钮
+                //       IconButton(
+                //         icon: Icon(Icons.bookmark_border, color: _textColor),
+                //         onPressed: () {},
+                //         tooltip: '书签',
+                //       ),
+                //       IconButton(
+                //         icon: Icon(Icons.text_fields, color: _textColor),
+                //         onPressed: () {
+                //           setState(() {
+                //             _showSettings = !_showSettings;
+                //           });
+                //         },
+                //         tooltip: '阅读设置',
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                ReaderTopBar(),
 
                 // 内容区域
                 Expanded(
@@ -392,104 +395,105 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
                   },
                 ),
 
+                ReaderBottomBar(),
                 // 底部控制栏
-                Container(
-                  height: 48,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: _bgColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 2,
-                        offset: Offset(0, -1),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      // 上一章
-                      TextButton.icon(
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                          size: 16,
-                          color: _textColor.withOpacity(0.7),
-                        ),
-                        label: Text(
-                          '上一章',
-                          style: TextStyle(
-                            color: _textColor.withOpacity(0.7),
-                            fontSize: 14,
-                          ),
-                        ),
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                        ),
-                        onPressed: () {},
-                      ),
+                // Container(
+                //   height: 48,
+                //   padding: EdgeInsets.symmetric(horizontal: 16),
+                //   decoration: BoxDecoration(
+                //     color: _bgColor,
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.black.withOpacity(0.05),
+                //         blurRadius: 2,
+                //         offset: Offset(0, -1),
+                //       ),
+                //     ],
+                //   ),
+                //   child: Row(
+                //     children: [
+                //       // 上一章
+                //       TextButton.icon(
+                //         icon: Icon(
+                //           Icons.arrow_back_ios,
+                //           size: 16,
+                //           color: _textColor.withOpacity(0.7),
+                //         ),
+                //         label: Text(
+                //           '上一章',
+                //           style: TextStyle(
+                //             color: _textColor.withOpacity(0.7),
+                //             fontSize: 14,
+                //           ),
+                //         ),
+                //         style: TextButton.styleFrom(
+                //           padding: EdgeInsets.symmetric(horizontal: 12),
+                //         ),
+                //         onPressed: () {},
+                //       ),
 
-                      SizedBox(width: 16),
+                //       SizedBox(width: 16),
 
-                      // 章节导航控件
-                      Text(
-                        '${currentChapterIndex}/${totalChapters}',
-                        style: TextStyle(
-                          color: _textColor.withOpacity(0.7),
-                          fontSize: 14,
-                        ),
-                      ),
+                //       // 章节导航控件
+                //       Text(
+                //         '${currentChapterIndex}/${totalChapters}',
+                //         style: TextStyle(
+                //           color: _textColor.withOpacity(0.7),
+                //           fontSize: 14,
+                //         ),
+                //       ),
 
-                      SizedBox(width: 16),
+                //       SizedBox(width: 16),
 
-                      // 下一章
-                      TextButton.icon(
-                        icon: Text(
-                          '下一章',
-                          style: TextStyle(
-                            color: _textColor.withOpacity(0.7),
-                            fontSize: 14,
-                          ),
-                        ),
-                        label: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: _textColor.withOpacity(0.7),
-                        ),
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                        ),
-                        onPressed: () {},
-                      ),
+                //       // 下一章
+                //       TextButton.icon(
+                //         icon: Text(
+                //           '下一章',
+                //           style: TextStyle(
+                //             color: _textColor.withOpacity(0.7),
+                //             fontSize: 14,
+                //           ),
+                //         ),
+                //         label: Icon(
+                //           Icons.arrow_forward_ios,
+                //           size: 16,
+                //           color: _textColor.withOpacity(0.7),
+                //         ),
+                //         style: TextButton.styleFrom(
+                //           padding: EdgeInsets.symmetric(horizontal: 12),
+                //         ),
+                //         onPressed: () {},
+                //       ),
 
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 24),
-                          child: SliderTheme(
-                            data: SliderThemeData(
-                              trackHeight: 4,
-                              thumbShape: RoundSliderThumbShape(
-                                enabledThumbRadius: 6,
-                              ),
-                              overlayShape: RoundSliderOverlayShape(
-                                overlayRadius: 14,
-                              ),
-                            ),
-                            child: Slider(
-                              value: _readingProgress,
-                              onChanged: (value) {
-                                setState(() {
-                                  _readingProgress = value;
-                                });
-                              },
-                              activeColor: Color(0xFF18181B),
-                              inactiveColor: Color(0xFFE4E4E7),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                //       Expanded(
+                //         child: Container(
+                //           margin: EdgeInsets.symmetric(horizontal: 24),
+                //           child: SliderTheme(
+                //             data: SliderThemeData(
+                //               trackHeight: 4,
+                //               thumbShape: RoundSliderThumbShape(
+                //                 enabledThumbRadius: 6,
+                //               ),
+                //               overlayShape: RoundSliderOverlayShape(
+                //                 overlayRadius: 14,
+                //               ),
+                //             ),
+                //             child: Slider(
+                //               value: _readingProgress,
+                //               onChanged: (value) {
+                //                 setState(() {
+                //                   _readingProgress = value;
+                //                 });
+                //               },
+                //               activeColor: Color(0xFF18181B),
+                //               inactiveColor: Color(0xFFE4E4E7),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),

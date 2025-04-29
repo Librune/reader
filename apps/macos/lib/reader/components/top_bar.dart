@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 class ReaderTopBar extends StatefulHookConsumerWidget {
   const ReaderTopBar({super.key});
@@ -9,76 +11,92 @@ class ReaderTopBar extends StatefulHookConsumerWidget {
 }
 
 class _ReaderTopBarState extends ConsumerState<ReaderTopBar> {
+  final String bookTitle = "三体";
+  final String chapterTitle = "第一章 科学边界";
+  final String authorName = "刘慈欣";
   @override
   Widget build(BuildContext context) {
+    final themeData = CupertinoTheme.of(context);
+    final shwoToc = useState(false);
     return Container(
-      height: 48,
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      height: 36,
+      padding: EdgeInsets.only(top: 0, left: 76),
       decoration: BoxDecoration(
-        color: _bgColor,
+        color: themeData.scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: CupertinoColors.black.withOpacity(0.05),
             blurRadius: 2,
             offset: Offset(0, 1),
           ),
         ],
       ),
       child: Row(
+        spacing: 14,
         children: [
           // 目录按钮
-          IconButton(
-            icon: Icon(
-              _showTableOfContents ? Icons.menu_open : Icons.menu,
-              color: _textColor,
+          ShadIconButton.outline(
+            width: 24,
+            height: 24,
+            decoration: ShadDecoration(),
+            icon: SvgPicture.asset(
+              shwoToc.value
+                  ? "assets/svg/ic_menu_fold.svg"
+                  : "assets/svg/ic_menu.svg",
+              width: 15,
             ),
             onPressed: () {
               setState(() {
-                _showTableOfContents = !_showTableOfContents;
+                shwoToc.value = !shwoToc.value;
               });
             },
-            tooltip: '目录',
           ),
 
-          // 标题
-          Text(
-            bookTitle,
-            style: TextStyle(
-              color: _textColor,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: bookTitle,
+                  style: TextStyle(
+                    color: CupertinoColors.black,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                TextSpan(
+                  text: ' · ',
+                  style: TextStyle(
+                    color: CupertinoColors.black.withOpacity(0.5),
+                    fontSize: 13,
+                  ),
+                ),
+                TextSpan(
+                  text: chapterTitle,
+                  style: TextStyle(
+                    color: CupertinoColors.black.withOpacity(0.8),
+                    fontSize: 13,
+                  ),
+                ),
+              ],
             ),
           ),
-          Text(
-            ' · ',
-            style: TextStyle(color: _textColor.withOpacity(0.5), fontSize: 16),
-          ),
-          Expanded(
-            child: Text(
-              chapterTitle,
-              style: TextStyle(
-                color: _textColor.withOpacity(0.8),
-                fontSize: 16,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-
+          Spacer(),
           // 右侧工具按钮
-          IconButton(
-            icon: Icon(Icons.bookmark_border, color: _textColor),
+          ShadIconButton.ghost(
+            width: 24,
+            height: 24,
+            icon: SvgPicture.asset("assets/svg/ic_bookmark.svg", width: 16),
             onPressed: () {},
-            tooltip: '书签',
           ),
-          IconButton(
-            icon: Icon(Icons.text_fields, color: _textColor),
-            onPressed: () {
-              setState(() {
-                _showSettings = !_showSettings;
-              });
-            },
-            tooltip: '阅读设置',
+          ShadIconButton.ghost(
+            width: 24,
+            height: 24,
+            icon: SvgPicture.asset(
+              "assets/svg/ic_font_settings.svg",
+              width: 16,
+            ),
           ),
+          SizedBox(width: 0),
         ],
       ),
     );
